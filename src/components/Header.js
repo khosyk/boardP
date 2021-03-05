@@ -41,7 +41,7 @@ const LinkList = styled('li')`
 `
 
 const Border = styled('div')`
-  border-top: rgba(0,0,0,0.25) groove 1.5px;
+  border-top: rgba(0,0,0,0.3) groove 1.5px;
 `
 
 const Item = styled("ul")`

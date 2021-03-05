@@ -1,7 +1,6 @@
 import { createGlobalStyle } from "styled-components";
 import reset from "styled-reset";
 
-
 const GlobalStyles = createGlobalStyle`
     ${reset};
 
@@ -12,7 +11,7 @@ const GlobalStyles = createGlobalStyle`
     body{      
       font-family:'NanumBarunpenR';
       font-weight:lighter;
-      background-color: #fafafa;
+      color:#343a40;
     }
     a{
         text-decoration:none;
