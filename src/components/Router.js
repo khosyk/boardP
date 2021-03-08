@@ -17,7 +17,6 @@ export default function Router() {
       <Route path= '/issue' component = {Issue}/>
       <Route path= '/game' component = {Game} />
       <Route path='/movie' component={Movie} />
-    <Route path='/board' component ={Board}/>
     </Switch>
     </Rotuer>
   )

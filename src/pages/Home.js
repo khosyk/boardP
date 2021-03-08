@@ -1,8 +1,13 @@
 import React from "react";
 import styled from "styled-components";
+import { ImFire } from "react-icons/im";
+
+//images
 import covid from "../covid.png";
 import diablo from "../diablo2re.png";
 import parasite from "../parasite.png";
+
+
 
 const MainBlock = styled("div")`
 	display: flex;
@@ -13,7 +18,7 @@ const MainBlock = styled("div")`
 	margin-left: 11.5%;
 	margin-top: 20px;
 	opacity: 0.9;
-	@media (max-width: 900px) {
+	@media (max-width: 960px) {
 		box-sizing: border-box;
 		height: 100rem;
 		background-color: none;
@@ -21,6 +26,7 @@ const MainBlock = styled("div")`
 		box-shadow: none;
 	}
 `;
+
 
 const MainArticleBlock = styled("div")`
 	display: flex;
@@ -33,7 +39,8 @@ const MainArticleBlock = styled("div")`
 	background-color: rgba(255, 255, 255, 0.5);
 	height: 46rem;
 	border-bottom: 1px solid rgba(0, 0, 0, 0.2);
-	@media (max-width: 900px) {
+	
+	@media (max-width: 960px) {
 		height: 47rem;
 		width: 100%;
 		transition: width 0.2s ease-out;
@@ -41,14 +48,13 @@ const MainArticleBlock = styled("div")`
 `;
 
 const TitleBox = styled("div")`
+
 	height: 45px;
-	padding: 0 10px;
 	width: 100%;
+	padding:0px 30px;
 	padding-top: 10px;
-	padding-left: 10px;
 	font-size: 1.2rem;
 	font-weight: 600;
-	background-color: #ffffff;
 	line-height: 1.5rem;
 	overflow: hidden;
 	text-overflow: ellipsis;
@@ -56,7 +62,7 @@ const TitleBox = styled("div")`
 	white-space: nowrap;
 	z-index: 2;
 	border-top-left-radius: 5px;
-	@media (max-width: 900px) {
+	@media (max-width: 960px) {
 		font-size: 1.2rem;
 	}
 `;
@@ -73,10 +79,9 @@ const MainImg = styled("img")`
 
 const MainText = styled("div")`
 	width: 100%;
-	height: 23%;
+	height: 24%;
 	margin-top: 10px;
-	padding-bottom: -50px;
-	padding: 0 32px;
+	padding: 0 30px;
 	text-align: justify;
 	display: -webkit-box;
 	word-break: break-word;
@@ -100,7 +105,7 @@ const SubBoxes = styled("div")`
 	box-sizing: border-box;
 	height: 46rem;
 	z-index: 1;
-	@media (max-width: 900px) {
+	@media (max-width: 960px) {
 		height: 47rem;
 		width: 100%;
 		padding-bottom: 50px;
@@ -123,22 +128,21 @@ const SubBox = styled.div`
 	&:first-child {
 		margin-top: 0px;
 	}
-	@media (max-width: 900px) {
+	@media (max-width: 960px) {
 		margin-bottom: 20px;
 		margin-top: 0px;
 	}
 `;
 
 const SubTitle = styled("div")`
-	height: 13%;
 	width: 100%;
-	padding: 8px;
+	padding: 0 30px;
 	padding-bottom: 10px;
 	margin: 0px 30px;
 	margin-bottom: 3px;
 	font-size: 1.2rem;
 	font-weight: 600;
-	line-height: 1.1rem;
+	line-height: 1.5rem;
 	background-color: rgba(255, 255, 255, 0.9);
 	border-top-left-radius: 5px;
 	z-index: 3;
@@ -146,7 +150,7 @@ const SubTitle = styled("div")`
 	overflow: hidden;
 	text-overflow: ellipsis;
 	text-transform: uppercase;
-	@media (max-width: 900px) {
+	@media (max-width: 960px) {
 		font-size: 1.1rem;
 	}
 `;
@@ -154,7 +158,7 @@ const SubTitle = styled("div")`
 const SubImg = styled.img`
 	width: 90%;
 	max-width: 350px;
-	height: 70%;
+	height: 68%;
 	position: relative;
 	z-index: 1;
 	top: -10px;
@@ -163,8 +167,8 @@ const SubImg = styled.img`
 `;
 const SubText = styled.div`
 	width: 100%;
-	height: 5.6rem;
-	padding: 5px 10px;
+	height: 6rem;
+	padding: 5px 30px;
 	display: -webkit-box;
 	word-break: break-word;
 	-webkit-line-clamp: 3;
@@ -209,7 +213,7 @@ export default function Home() {
 				</SubBox>
 				<SubBox>
 					<SubTitle>
-						박찬욱 감동영화 기생충 칸에서는 호평 나에게는 혹평
+						박찬욱 감독영화 기생충 칸에서는 호평 나에게는 혹평
 					</SubTitle>
 					<SubImg src={parasite} />
 

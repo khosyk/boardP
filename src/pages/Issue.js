@@ -1,18 +1,23 @@
-import React, { useState } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { FiEdit2 } from "react-icons/fi";
 
-const MainBlock = styled.table`
+const MainBlock = styled.div`
+
+`
+
+const MainTable = styled.table`
 	width: 75%;
 	padding: 0.5%;
-	margin-left: 11.5%;
-	margin-top: 20px;
-	opacity: 0.9;
+	margin:20px 12.5%;
 	background-color: rgba(255, 255, 255, 0.9);
 	height: 49rem;
 	box-sizing: border-box;
+	min-width:500px;
 `;
+
+//table head
 
 const Thead = styled.thead`
 	width: 100%;
@@ -20,13 +25,18 @@ const Thead = styled.thead`
 	font-size: 1rem;
 	font-weight: 500;
 	border-bottom: 1px solid rgba(1, 1, 1, 0.5);
+
 `;
 const TheadContent = styled.tr`
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
 	margin: 0px 30px;
+	padding-bottom:5px;
 `;
+
+
+//table body
 
 const Tbody = styled.tbody`
 	height: 90%;
@@ -78,20 +88,48 @@ const TDate = styled.td`
 	margin-right: -10px;
 `;
 
-const TFooter = styled.div`
+///table footer
+
+const TFooter = styled.tfoot`
 	margin-top: 5px;
 `;
 
 const TTools = styled.tr`
 	display: flex;
 	justify-content: space-between;
-	padding: 5px 25px;
+	margin:0px 25px;
+	margin-top:10px;
+
 `;
 
-const Guides = styled.td`
-	@media (max-width: 900px) {
-		margin-left: 3%;
+
+const TSearch = styled.td`
+display:flex;
+align-content:center;
+	@media (max-width: 960px) {
 	}
+`;
+
+const SearchText = styled.input`
+	border: none;
+	border-bottom: 1px solid black;
+	font-size: 0.7rem;
+	line-height:1rem;
+	width:120px;
+	margin-left: 5px;
+`;
+
+const SearchBtn = styled.button`
+	display: inline-block;
+	border: 1px solid #ced4da;
+	border-radius: 2px;
+	font-weight: 300;
+	font-size: 0.8rem;
+`;
+
+
+const Guides = styled.td`
+margin-left:-12%;
 `;
 
 const Prev = styled(Link)`
@@ -109,43 +147,27 @@ const Next = styled(Link)`
 	margin-right: 10px;
 `;
 
+
+
+const PostBlock = styled.td`
+
+`;
+
 const Post = styled(Link)`
 	display: block;
 	padding: 2px 5px;
 	border-radius: 2px;
-	margin-top: -5.5px;
 	font-weight: 300;
 	border: 1px solid #ced4da;
 	background-color: #f1f3f5;
 	color: #343a40;
-`;
-
-const TSearch = styled.tr`
-	@media (max-width: 900px) {
-		position: absolute;
-		left: 20%;
-		width: 90%;
-		bottom: 1%;
-	}
-`;
-
-const SearchText = styled.input`
-	border: none;
-	border-bottom: 1px solid black;
-	font-size: 0.9rem;
-`;
-
-const SearchBtn = styled.button`
-	display: inline-block;
-	border: 1px solid #ced4da;
-	border-radius: 2px;
-	font-weight: 300;
-	font-size: 0.9rem;
+	font-size:0.8rem;
 `;
 
 export default function Issue() {
 	return (
 		<MainBlock>
+		<MainTable>
 			<Thead>
 				<TheadContent>
 					<td>번호</td>
@@ -157,10 +179,10 @@ export default function Issue() {
 				<Tlist>
 					<TNumber>1</TNumber>
 					<TTitle>
-						<TContent>찌릿찌릿 지구촌</TContent>
-						<Reply to="/">12</Reply>
+						<TContent>COVID 19, can we get back daily life oneday?</TContent>
+						<Reply to="/">15</Reply>
 					</TTitle>
-					<TDate>{new Date().toLocaleDateString()}</TDate>
+						<TDate>{new Date().toLocaleDateString()}</TDate>
 				</Tlist>
 			</Tbody>
 			<TFooter>
@@ -174,12 +196,15 @@ export default function Issue() {
 						<Pages>1 2 3 4 5 ...</Pages>
 						<Next>다음 ▶</Next>
 					</Guides>
-					<Post>
-						<FiEdit2 style={{ fontSize: "0.7rem", marginRight: "3px" }} />
+					<PostBlock>
+					<Post to='/board'>
+						<FiEdit2  style={{ fontSize: "0.7rem", marginRight: "3px" }} />
 						글쓰기
 					</Post>
+					</PostBlock>
 				</TTools>
 			</TFooter>
-		</MainBlock>
+			</MainTable>
+			</MainBlock>
 	);
 }
