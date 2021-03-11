@@ -1,18 +1,29 @@
-import React, { useState } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { FiEdit2 } from "react-icons/fi";
 
-const MainBlock = styled.table`
+const MainBlock = styled.div`
 	width: 75%;
-	padding: 0.5%;
-	margin-left: 11.5%;
-	margin-top: 20px;
-	opacity: 0.9;
+	margin: 0px 12.5%;
 	background-color: rgba(255, 255, 255, 0.9);
-	height: 49rem;
+	height: 48rem;
 	box-sizing: border-box;
+	min-width: 500px;
+	margin-top: -0.5px;
 `;
+
+const Banner = styled.div`
+	height: 100px;
+	background-color: green;
+`;
+
+const MainTable = styled.table`
+	width: 100%;
+	height: 90%;
+`;
+
+//table head
 
 const Thead = styled.thead`
 	width: 100%;
@@ -26,7 +37,10 @@ const TheadContent = styled.tr`
 	align-items: center;
 	justify-content: space-between;
 	margin: 0px 30px;
+	padding-bottom: 5px;
 `;
+
+//table body
 
 const Tbody = styled.tbody`
 	height: 90%;
@@ -78,20 +92,45 @@ const TDate = styled.td`
 	margin-right: -10px;
 `;
 
-const TFooter = styled.div`
+///table footer
+
+const TFooter = styled.tfoot`
 	margin-top: 5px;
 `;
 
 const TTools = styled.tr`
 	display: flex;
 	justify-content: space-between;
-	padding: 5px 25px;
+	margin: 0px 25px;
+	margin-top: 10px;
+`;
+
+const TSearch = styled.td`
+	display: flex;
+	align-content: center;
+	@media (max-width: 960px) {
+	}
+`;
+
+const SearchText = styled.input`
+	border: none;
+	border-bottom: 1px solid black;
+	font-size: 0.7rem;
+	line-height: 1rem;
+	width: 120px;
+	margin-left: 5px;
+`;
+
+const SearchBtn = styled.button`
+	display: inline-block;
+	border: 1px solid #ced4da;
+	border-radius: 2px;
+	font-weight: 300;
+	font-size: 0.8rem;
 `;
 
 const Guides = styled.td`
-	@media (max-width: 900px) {
-		margin-left: 3%;
-	}
+	margin-left: -12%;
 `;
 
 const Prev = styled(Link)`
@@ -109,77 +148,61 @@ const Next = styled(Link)`
 	margin-right: 10px;
 `;
 
+const PostBlock = styled.td``;
+
 const Post = styled(Link)`
 	display: block;
 	padding: 2px 5px;
 	border-radius: 2px;
-	margin-top: -5.5px;
 	font-weight: 300;
 	border: 1px solid #ced4da;
 	background-color: #f1f3f5;
 	color: #343a40;
-`;
-
-const TSearch = styled.tr`
-	@media (max-width: 900px) {
-		position: absolute;
-		left: 20%;
-		width: 90%;
-		bottom: 1%;
-	}
-`;
-
-const SearchText = styled.input`
-	border: none;
-	border-bottom: 1px solid black;
-	font-size: 0.9rem;
-`;
-
-const SearchBtn = styled.button`
-	display: inline-block;
-	border: 1px solid #ced4da;
-	border-radius: 2px;
-	font-weight: 300;
-	font-size: 0.9rem;
+	font-size: 0.8rem;
 `;
 
 export default function Issue() {
 	return (
 		<MainBlock>
-			<Thead>
-				<TheadContent>
-					<td>번호</td>
-					<td>제목</td>
-					<td>날짜</td>
-				</TheadContent>
-			</Thead>
-			<Tbody>
-				<Tlist>
-					<TNumber>1</TNumber>
-					<TTitle>
-						<TContent>찌릿찌릿 지구촌</TContent>
-						<Reply to="/">12</Reply>
-					</TTitle>
-					<TDate>{new Date().toLocaleDateString()}</TDate>
-				</Tlist>
-			</Tbody>
-			<TFooter>
-				<TTools>
-					<TSearch>
-						<SearchBtn>검색</SearchBtn>{" "}
-						<SearchText placeholder="검색어를 입력해주세요." />
-					</TSearch>
-					<Guides>
-						<Prev>◀ 이전</Prev>
-						<Pages>1 2 3 4 5 ...</Pages>
-						<Next>다음 ▶</Next>
-					</Guides>
-					<Post>
-						<FiEdit2 style={{ fontSize: "0.7rem", marginRight: "3px" }} />
-						글쓰기
-					</Post>
-				</TTools>
-			</TFooter>
+			<Banner>hello</Banner>
+			<MainTable>
+				<Thead>
+					<TheadContent>
+						<td>번호</td>
+						<td>제목</td>
+						<td>날짜</td>
+					</TheadContent>
+				</Thead>
+				<Tbody>
+					<Tlist>
+						<TNumber>1</TNumber>
+						<TTitle>
+							<TContent>COVID 19, can we get back daily life oneday?</TContent>
+							<Reply to="/">15</Reply>
+						</TTitle>
+						<TDate>{new Date().toLocaleDateString()}</TDate>
+					</Tlist>
+				</Tbody>
+				<TFooter>
+					<TTools>
+						<TSearch>
+							<SearchBtn>검색</SearchBtn>{" "}
+							<SearchText placeholder="검색어를 입력해주세요." />
+						</TSearch>
+						<Guides>
+							<Prev>◀ 이전</Prev>
+							<Pages>1 2 3 4 5 ...</Pages>
+							<Next>다음 ▶</Next>
+						</Guides>
+						<PostBlock>
+							<Post to="/board">
+								<FiEdit2 style={{ fontSize: "0.7rem", marginRight: "3px" }} />
+								글쓰기
+							</Post>
+						</PostBlock>
+					</TTools>
+				</TFooter>
+			</MainTable>
 		</MainBlock>
 	);
 }

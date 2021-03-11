@@ -18,6 +18,7 @@ const GlobalStyles = createGlobalStyle`
         color:inherit;
     }
     *{
+ 
         box-sizing:border-box;
         font-size:16px;
     }
