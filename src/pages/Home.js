@@ -16,6 +16,8 @@ import { Link } from "react-router-dom";
 
 // 화면이 960px 이하 => 일정크기까지 줄어들다가, 화면 안으로 (기준은 768px)
 
+
+
 const MainBlock = styled("div")`
 	display: flex;
 	justify-content: flex-end;
@@ -29,6 +31,7 @@ const MainBlock = styled("div")`
 const MainPosition = styled.div`
 	margin-top: 2rem;
 	width: 75%;
+<<<<<<< HEAD
 	margin-left: auto;
 	margin-right: auto;
 	@media (max-width: 768px) {
@@ -79,6 +82,58 @@ const ArticleBlock = styled.div`
 		}
 	}
 	@media (min-width: 1360px) {
+=======
+	padding: 0.5%;
+	margin-left: 11.5%;
+	margin-top: 20px;
+	opacity: 0.9;
+	@media (max-width: 960px) {
+		box-sizing: border-box;
+		height: 100rem;
+		background-color: none;
+		border: none;
+		box-shadow: none;
+	}
+`;
+
+
+const MainArticleBlock = styled("div")`
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+	align-items: center;
+	width: 52%;
+	margin-right: 2%;
+	margin-left: 2%;
+	background-color: rgba(255, 255, 255, 0.5);
+	height: 46rem;
+	border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+	
+	@media (max-width: 960px) {
+		height: 47rem;
+		width: 100%;
+		transition: width 0.2s ease-out;
+	}
+`;
+
+const TitleBox = styled("div")`
+
+	height: 45px;
+	width: 100%;
+	padding:0px 30px;
+	padding-top: 10px;
+	font-size: 1.2rem;
+	font-weight: 600;
+	line-height: 1.5rem;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	text-transform: uppercase;
+	white-space: nowrap;
+	z-index: 2;
+	border-top-left-radius: 5px;
+	@media (max-width: 960px) {
+		font-size: 1.2rem;
+>>>>>>> 53475f028ad5630d0f6b2e5ddd39850668de16fb
 	}
 `;
 
@@ -99,6 +154,7 @@ const ContentImg = styled.img`
 	top: -1px;
 	left: 0px;
 	width: 100%;
+<<<<<<< HEAD
 	height: 100%;
 	display: block;
 	object-fit: cover;
@@ -114,6 +170,13 @@ const Title = styled.div`
 	font-size: 1.1rem;
 	line-height: 1.5rem;
 	font-weight: 600;
+=======
+	height: 24%;
+	margin-top: 10px;
+	padding: 0 30px;
+	text-align: justify;
+	display: -webkit-box;
+>>>>>>> 53475f028ad5630d0f6b2e5ddd39850668de16fb
 	word-break: break-word;
 	white-space: nowrap;
 	overflow: hidden;
@@ -132,14 +195,33 @@ const InfoBlock = styled.div`
 
 const InfoLeft = styled.div`
 	display: flex;
+<<<<<<< HEAD
 	align-content: center;
 	flex: 1 50%;
+=======
+	flex-direction: column;
+	align-items: center;
+	width: 35%;
+	margin-right: 2%;
+	margin-left: 2%;
+	box-sizing: border-box;
+	height: 46rem;
+	z-index: 1;
+	@media (max-width: 960px) {
+		height: 47rem;
+		width: 100%;
+		padding-bottom: 50px;
+		margin-top: -35px;
+		margin-bottom: 2%;
+	}
+>>>>>>> 53475f028ad5630d0f6b2e5ddd39850668de16fb
 `;
 
 const Writer = styled.div``;
 
 const InfoRight = styled.div`
 	display: flex;
+<<<<<<< HEAD
 	flex: 1 50%;
 	justify-content: flex-end;
 `;
@@ -163,6 +245,61 @@ const RankBlock = styled.div`
 const RankTitle = styled.div`
 	border-bottom: 1px solid grey;
 	padding-bottom: 0.25rem;
+=======
+	flex-direction: column;
+	width: 100%;
+	align-items: center;
+	height: 22.35rem;
+	background-color: rgba(255, 255, 255, 0.9);
+	border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+	z-index: 2;
+	margin-top: 20px;
+	&:first-child {
+		margin-top: 0px;
+	}
+	@media (max-width: 960px) {
+		margin-bottom: 20px;
+		margin-top: 0px;
+	}
+`;
+
+const SubTitle = styled("div")`
+	width: 100%;
+	padding: 0 30px;
+	padding-bottom: 10px;
+	margin: 0px 30px;
+	margin-bottom: 3px;
+	font-size: 1.2rem;
+	font-weight: 600;
+	line-height: 1.5rem;
+	background-color: rgba(255, 255, 255, 0.9);
+	border-top-left-radius: 5px;
+	z-index: 3;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	text-transform: uppercase;
+	@media (max-width: 960px) {
+		font-size: 1.1rem;
+	}
+`;
+
+const SubImg = styled.img`
+	width: 90%;
+	max-width: 350px;
+	height: 68%;
+	position: relative;
+	z-index: 1;
+	top: -10px;
+	margin-bottom: 10px;
+	background-color: rgba(255, 255, 255, 0.8);
+`;
+const SubText = styled.div`
+	width: 100%;
+	height: 6rem;
+	padding: 5px 30px;
+	display: -webkit-box;
+>>>>>>> 53475f028ad5630d0f6b2e5ddd39850668de16fb
 	word-break: break-word;
 	white-space: nowrap;
 	overflow: hidden;
@@ -172,6 +309,7 @@ const RankTitle = styled.div`
 export default function Home() {
 	return (
 		<MainBlock>
+<<<<<<< HEAD
 			<MainPosition>
 				<ArticleBlock>
 					<LinkBlock to="/diablo">
@@ -459,6 +597,48 @@ export default function Home() {
 					<RankTitle>10. 갓겜인가?</RankTitle>
 				</RankBlock>
 			</SidePosition>
+=======
+			<MainArticleBlock>
+				<TitleBox>디아블로2 리마스터 최초 공개!! (똥겜 or 갓겜인가?)</TitleBox>
+				<MainImg src={diablo} />
+				<MainText>
+					시스템 사양은 디아블로 3보다 훨씬 더 높으며, CPU/RAM 사양은 WoW
+					어둠땅보다 높다. 권장사양기준으로 RAM이 16GB로 3D 그래픽 렌더링과 광원
+					효과로 인해 기본 메모리 사양이 높아진걸로 추측된다. 하지만 디아블로
+					2처럼 2D 그래픽으로 전환하는 것도 가능한걸로 보아 실제로 플레이를
+					해봐야 알 수 있을것으로 보인다. macOS의 시스템 사양은 아직 발표하지
+					않았다. 3. 상세[편집] 2021년 2월 20일 발표와 동시에 공식 사이트에서
+					2개의 상품을 예약판매 중이며 2021년 내 출시한다. 디아블로 2:
+					레저렉션에는 디아블로 2와 확장팩인 파괴의 군주의 스토리가 포함되어
+					있고[7], 디아블로 대악마 컬렉션은 디아블로 2: 레저럭션에 디아블로 3
+					이터널 컬렉션[8]에 디아블로 3의 수집품[9]이 추가된 패키지이다.
+					디아블로 2 레저럭션: 48,000원 디아블로 대악마 컬렉션: 72,000원[10]
+				</MainText>
+			</MainArticleBlock>
+			<SubBoxes>
+				<SubBox>
+					<SubTitle>COVID 19, can we get back daily life oneday?</SubTitle>
+					<SubImg src={covid} />
+					<SubText>
+						This is a story about COVID 19. No matter whoever's fault, it
+						doesn't matter. Since 2019, it just destroyed our daily life and I
+						really hate it.
+					</SubText>
+					<br />
+				</SubBox>
+				<SubBox>
+					<SubTitle>
+						박찬욱 감독영화 기생충 칸에서는 호평 나에게는 혹평
+					</SubTitle>
+					<SubImg src={parasite} />
+
+					<SubText>
+						내꺼하 자! 네 옆에 있을게! 어! 이 세상 끝까지 책임질게! 뚜루루루루
+						따라라 뚜루루루 따라! 뚜!
+					</SubText>
+				</SubBox>
+			</SubBoxes>
+>>>>>>> 53475f028ad5630d0f6b2e5ddd39850668de16fb
 		</MainBlock>
 	);
 }

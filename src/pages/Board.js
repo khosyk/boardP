@@ -6,6 +6,7 @@ import ReactHtmlParser from "react-html-parser";
 import "./Ck.css";
 
 const BrdBox = styled.form`
+<<<<<<< HEAD
 	display: flex;
 	flex-direction: column;
 	align-items: center;
@@ -31,6 +32,38 @@ const CKWrapper = styled.div`
 	border-radius: 2px;
 	text-indent: 2px;
 `;
+=======
+display:flex;
+flex-direction:column;
+align-items:center;
+`
+
+const BrdTitle = styled.input`
+margin-top:3%;
+width:70%;
+height:30px;
+font-size:1rem;
+border:none;
+border-radius:2px;
+text-indent:2px;
+font-family:'NanumBarunpenR';
+border: 1px solid #495057;
+`
+
+const BrdText = styled.textarea`
+margin-top:10px;
+font-size:1rem;
+width:70%;
+height:600px;
+border:none;
+border-radius:2px;
+font-family:'NanumBarunpenR';
+font-weight:lighter;
+color:#343a40;
+text-indent:2px;
+border: 1px solid #495057;
+resize: none;
+>>>>>>> 53475f028ad5630d0f6b2e5ddd39850668de16fb
 
 const BrdBtnBlock = styled.div`
 	display: flex;
@@ -39,6 +72,7 @@ const BrdBtnBlock = styled.div`
 	justify-content: flex-end;
 `;
 
+<<<<<<< HEAD
 const BrdBtn = styled.button`
 	font-family: "NanumBarunpenR";
 	border: 1px solid #757e86;
@@ -154,6 +188,23 @@ export default function Board({ test }) {
 	//1. 펑션들 상위 컴포넌트로 올리기, 스테이트 상위에 저장,
 
 	//2. 저장 된 스테이트를 기반으로 페이지에 스테이트 전달
+=======
+const BrdBtnBlcok = styled.div`
+display:flex;
+margin-top:10px;
+width:70%;
+justify-content:flex-end;
+`;
+
+const BrdBtn = styled.button`
+	font-family:'NanumBarunpenR';
+	border: 1px solid #495057;
+	border-radius: 2px;
+	padding:3px 15px;
+	font-weight: 300;
+	font-size: 0.8rem;
+`
+>>>>>>> 53475f028ad5630d0f6b2e5ddd39850668de16fb
 
 	// 3. 수정펑션 제작// 수정 클릭 ->id 확인하여 해당내용 추출 ->
 	// 보드로 전달 페이지 이동 -> 보드 내용 수정 ->
@@ -161,6 +212,7 @@ export default function Board({ test }) {
 
 	return (
 		<BrdBox>
+<<<<<<< HEAD
 			<BrdTitle
 				name="title"
 				type="text"
@@ -237,6 +289,11 @@ export default function Board({ test }) {
 					</BtnBlock>
 				</Preview>
 			))}
+=======
+			<BrdTitle placeholder="글 제목을 입력해주세요." />
+			<BrdText placeholder="내용을 작성해주세요." />
+			<BrdBtnBlcok><BrdBtn>저장</BrdBtn></BrdBtnBlcok>
+>>>>>>> 53475f028ad5630d0f6b2e5ddd39850668de16fb
 		</BrdBox>
 	);
 }

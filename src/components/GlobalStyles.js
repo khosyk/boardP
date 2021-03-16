@@ -19,7 +19,10 @@ const GlobalStyles = createGlobalStyle`
     }
     *{
  
+<<<<<<< HEAD
       font-family:'NanumBarunpenR';
+=======
+>>>>>>> 53475f028ad5630d0f6b2e5ddd39850668de16fb
         box-sizing:border-box;
         font-size:16px;
     }
