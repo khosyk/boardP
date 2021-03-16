@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { FiEdit2 } from "react-icons/fi";
+import List from "./List";
 
 const MainBlock = styled.div`
 	width: 75%;
@@ -45,51 +46,6 @@ const TheadContent = styled.tr`
 const Tbody = styled.tbody`
 	height: 90%;
 	border-bottom: 1px solid rgba(1, 1, 1, 0.5);
-`;
-
-const Tlist = styled.tr`
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
-	margin: 0px 5px;
-	padding: 5px 25px;
-	line-height: 1.1rem;
-	border-bottom: 1px solid rgba(1, 1, 1, 0.3);
-`;
-
-const TNumber = styled.td`
-	font-size: 0.8rem;
-	color: #343a40;
-	margin-left: 9px;
-`;
-
-const TTitle = styled.td`
-	margin-left: 10px;
-	width: 85%;
-`;
-
-const TContent = styled(Link)`
-	font-size: 0.9rem;
-	color: #212529;
-	&:hover {
-		color: rgba(0, 0, 0, 0.5);
-	}
-`;
-
-const Reply = styled(Link)`
-	margin-left: 5px;
-	font-size: 0.7rem;
-	font-weight: 600;
-	color: #141618;
-	&:hover {
-		color: rgba(0, 0, 0, 0.5);
-	}
-`;
-
-const TDate = styled.td`
-	font-size: 0.7rem;
-	color: #343a40;
-	margin-right: -10px;
 `;
 
 ///table footer
@@ -161,7 +117,29 @@ const Post = styled(Link)`
 	font-size: 0.8rem;
 `;
 
+// issue 포스팅 누르면 /issue/1 -> 가라 포스팅 (수정,삭제버튼 링크) -> 수정링크 issue/1/modify /삭제링크 issue/1/delete
+
 export default function Issue() {
+	const [data, setData] = useState([
+		{
+			id: 1,
+			title: "COVID 19, can we get back daily life oneday?",
+			review: 15,
+		},
+		{
+			id: 2,
+			title: "조용히 대학입시를 덮친 저출산 여파",
+			review: 1,
+		},
+		{
+			id: 3,
+			title: "의외로 일본에 많은 외국인 국적",
+			review: 5,
+		},
+	]);
+
+	const { id, title, review } = data;
+
 	return (
 		<MainBlock>
 			<Banner>hello</Banner>
@@ -174,14 +152,14 @@ export default function Issue() {
 					</TheadContent>
 				</Thead>
 				<Tbody>
-					<Tlist>
-						<TNumber>1</TNumber>
-						<TTitle>
-							<TContent>COVID 19, can we get back daily life oneday?</TContent>
-							<Reply to="/">15</Reply>
-						</TTitle>
-						<TDate>{new Date().toLocaleDateString()}</TDate>
-					</Tlist>
+					{data.map((row) => (
+						<List
+							key={row.id}
+							id={row.id}
+							title={row.title}
+							review={row.review}
+						/>
+					))}
 				</Tbody>
 				<TFooter>
 					<TTools>
@@ -190,9 +168,9 @@ export default function Issue() {
 							<SearchText placeholder="검색어를 입력해주세요." />
 						</TSearch>
 						<Guides>
-							<Prev>◀ 이전</Prev>
-							<Pages>1 2 3 4 5 ...</Pages>
-							<Next>다음 ▶</Next>
+							<Prev to="/issue">◀ 이전</Prev>
+							<Pages to="/issue">1 2 3 4 5 ...</Pages>
+							<Next to="/issue">다음 ▶</Next>
 						</Guides>
 						<PostBlock>
 							<Post to="/board">

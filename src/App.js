@@ -5,8 +5,8 @@ import Reducer from "./modules/Reducer";
 function App() {
 	return (
 		<>
-			<GlobalStyles />
-			<Router />
+			<GlobalStyles/>
+			<Router/>
 		</>
 	);
 }

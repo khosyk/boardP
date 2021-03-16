@@ -32,7 +32,7 @@ const CKWrapper = styled.div`
 	text-indent: 2px;
 `;
 
-const BrdBtnBlcok = styled.div`
+const BrdBtnBlock = styled.div`
 	display: flex;
 	margin-top: 10px;
 	width: 70%;
@@ -92,7 +92,9 @@ const Update = styled.button`
 	z-index: 1;
 `;
 
-export default function Board() {
+export default function Board({ test }) {
+	console.log(test, "t2");
+
 	const [input, setInput] = useState({
 		title: "",
 		content: "",
@@ -115,13 +117,13 @@ export default function Board() {
 	//Remove
 
 	const onRemove = (id) => {
-		if (window.confirm("마스터, 제거 할까요?")) {
-			alert("구축하겠습니다.");
+		if (window.confirm("정말 삭제합니까?")) {
+			alert("삭제 되었습니다.");
 			setViewContent(
 				viewContent.filter((viewContent) => viewContent.id !== id)
 			);
 		} else {
-			alert("타겟에서 해제합니다.");
+			alert("취소합니다.");
 		}
 	};
 
@@ -139,15 +141,23 @@ export default function Board() {
 		);
 	};
 
-	const onUpdate = (id) => {
-		setViewContent(
-			viewContent.map((viewContent) =>
-				viewContent.id === id
-					? { ...viewContent, active: !viewContent.active }
-					: viewContent
-			)
-		);
-	};
+	// const onUpdate = (id) => {
+	// 	setViewContent(
+	// 		viewContent.map((viewContent) =>
+	// 			viewContent.id === id
+	// 				? { ...viewContent, active: !viewContent.active }
+	// 				: viewContent
+	// 		)
+	// 	);
+	// };
+
+	//1. 펑션들 상위 컴포넌트로 올리기, 스테이트 상위에 저장,
+
+	//2. 저장 된 스테이트를 기반으로 페이지에 스테이트 전달
+
+	// 3. 수정펑션 제작// 수정 클릭 ->id 확인하여 해당내용 추출 ->
+	// 보드로 전달 페이지 이동 -> 보드 내용 수정 ->
+	//   저장클릭 -> 기존배열로 반환,
 
 	return (
 		<BrdBox>
@@ -182,7 +192,7 @@ export default function Board() {
 					}}
 				/>
 			</CKWrapper>
-			<BrdBtnBlcok>
+			<BrdBtnBlock>
 				<BrdBtn
 					onClick={(e) => {
 						e.preventDefault();
@@ -191,7 +201,7 @@ export default function Board() {
 					}}>
 					저장
 				</BrdBtn>
-			</BrdBtnBlcok>
+			</BrdBtnBlock>
 			{viewContent.map((viewContent) => (
 				<Preview key={viewContent.id}>
 					<PreviewBlock>

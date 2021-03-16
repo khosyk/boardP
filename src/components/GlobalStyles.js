@@ -19,6 +19,7 @@ const GlobalStyles = createGlobalStyle`
     }
     *{
  
+      font-family:'NanumBarunpenR';
         box-sizing:border-box;
         font-size:16px;
     }
