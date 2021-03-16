@@ -53,9 +53,7 @@ export default function List({ id, review, title }) {
 			<TNumber>{id}</TNumber>
 			<TTitle>
 				<TContent>
-					<Link to={`/issue/${id}`}>
-						{title}
-					</Link>
+					<Link to={`/issue/${id}`}>{title}</Link>
 				</TContent>
 				<Reply>
 					<Link to={`/issue/${id}`}>{review}</Link>
