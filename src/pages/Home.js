@@ -21,6 +21,8 @@ const MainBlock = styled("div")`
 	justify-content: flex-end;
 	width: 100%;
 	background-color: #f1f3f5;
+	margin-left: auto;
+	margin-right: auto;
 	@media (max-width: 768px) {
 		justify-content: center;
 	}

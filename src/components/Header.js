@@ -5,10 +5,14 @@ import uthis from "../uthis.png";
 
 const HeaderBlock = styled("header")`
 	display: flex;
-	padding-top: 100px;
+	padding-top: 50px;
+	padding-bottom: 30px;
 	justify-content: center;
 	margin: 0px 100px;
-	margin-bottom: 30px;
+	@media (max-width: 480px) {
+		padding-top: 20px;
+		padding-bottom: 10px;
+	}
 `;
 
 const Main = styled("img")`
@@ -21,12 +25,12 @@ const Main = styled("img")`
 		position: fixed;
 		opacity: 0.5;
 		margin-left: 2%;
-		width: 18%;
-		height: 5%;
+		width: 100px;
+		height: 40px;
 		top: 92%;
 		bottom: 50px;
 		transition: width 0.1s ease-in;
-		z-index: -1;
+		z-index: 1;
 	}
 `;
 
@@ -34,6 +38,7 @@ const LinkList = styled("li")`
 	display: flex;
 	justify-content: space-between;
 	width: 500px;
+	min-width: 250px;
 `;
 
 const Item = styled("ul")`
