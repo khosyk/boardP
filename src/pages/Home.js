@@ -47,7 +47,6 @@ const MainPosition = styled.div`
 `;
 
 const SidePosition = styled.div`
-	position: -webkit-sticky;
 	position: sticky;
 	width: 20%;
 	min-width: 12rem;

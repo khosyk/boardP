@@ -12,6 +12,7 @@ const MainBlock = styled.div`
 	box-sizing: border-box;
 	min-width: 500px;
 	margin-top: -0.5px;
+	margin-bottom: 10vh;
 `;
 
 const Banner = styled.div`
@@ -137,8 +138,6 @@ export default function Issue() {
 			review: 5,
 		},
 	]);
-
-	const { id, title, review } = data;
 
 	return (
 		<MainBlock>

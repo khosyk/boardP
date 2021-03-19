@@ -1,7 +1,16 @@
-import React from "react";
-import styled from "styled-components";
+import React, { useState } from "react";
 import covid from "../covid.png";
-import { VscEdit, VscChromeClose } from "react-icons/vsc";
+import styled from "styled-components";
+import { Link } from "react-router-dom";
+import ReactHtmlParser from "react-html-parser";
+import {
+	VscDebugStepOut,
+	VscHeart,
+	VscEdit,
+	VscChromeClose,
+	VscArrowSmallUp,
+} from "react-icons/vsc";
+import Issue from "./Issue";
 
 const MainPosition = styled.div`
 	display: flex;
@@ -21,7 +30,7 @@ const MainBlock = styled.div`
 	min-width: 700px;
 	max-width: 1200px;
 	border-bottom: 1px solid #adb5bd;
-	margin-bottom: 10vh;
+	margin-bottom: 5vh;
 	@media (max-width: 767px) {
 		min-width: 300px;
 	}
@@ -59,7 +68,7 @@ const BtnBlock = styled.div`
 	justify-content: flex-end;
 `;
 
-const Btn = styled.button`
+const BtnEdit = styled(Link)`
 	border: none;
 	background-color: transparent;
 	width: 55px;
@@ -67,7 +76,23 @@ const Btn = styled.button`
 	border-radius: 2px;
 	padding: 0px 5px;
 	font-weight: 300;
-	font-size: 0.8rem;
+	font-size: 0.9rem;
+	opacity: 0.5;
+	cursor: pointer;
+	&:hover {
+		opacity: 1;
+	}
+`;
+
+const BtnDelete = styled.a`
+	border: none;
+	background-color: transparent;
+	width: 55px;
+	height: 25px;
+	border-radius: 2px;
+	padding: 0px 5px;
+	font-weight: 300;
+	font-size: 0.9rem;
 	opacity: 0.5;
 	cursor: pointer;
 	&:hover {
@@ -78,6 +103,7 @@ const Btn = styled.button`
 const Content = styled.div`
 	display: block;
 	word-break: break-word;
+	text-align: justify;
 	padding: 1rem;
 	padding-top: 0px;
 	line-height: 1.2rem;
@@ -91,9 +117,136 @@ const ContentImg = styled.img`
 	max-width: 600px;
 `;
 
-const ContentBottom = styled.div``;
+//좋아요, 싫어요, 공유,
 
-const ContentLike = styled.div``;
+const ContentBottomPosition = styled.div`
+	display: flex;
+	flex-direction: column;
+	margin-top: 20px;
+`;
+
+const ContentBottomBlock = styled.div`
+	display: flex;
+	justify-content: center;
+`;
+
+const ContentBottomMenus = styled.div`
+	display: flex;
+	flex-direction: row;
+	max-width: 300px;
+	margin-bottom: 10px;
+`;
+
+const ContentBottomMenuLike = styled.div`
+	display: flex;
+	position: relative;
+	flex-direction: column;
+`;
+
+const ContentBottomMenuLikeHeart = styled.div`
+	width: fit-content;
+	height: fit-content;
+	font-size: 30px;
+	&:hover {
+		& > div {
+			visibility: visible;
+			opacity: 0.9;
+		}
+	}
+`;
+
+const ContentBottomMenuShare = styled.div`
+	margin-left: 3rem;
+	position: relative;
+	flex-direction: column;
+`;
+
+const ContentBottomMenuShareIcon = styled.div`
+	width: fit-content;
+	height: fit-content;
+	font-size: 30px;
+	&:hover {
+		& > div {
+			visibility: visible;
+			opacity: 0.9;
+		}
+	}
+`;
+
+const ContentBottomMenuToolTip = styled.div`
+	position: absolute;
+	text-align: center;
+	visibility: hidden;
+	text-shadow: 1px 1px #ffa8a8;
+	color: #fff5f5;
+	font-size: 1.1rem;
+	top: -25px;
+	opacity: 0;
+	left: -17px;
+	width: 4rem;
+	height: 1.4rem;
+	transition: all 0.2s ease-in;
+`;
+
+const ContentBottomMenuToolTipSecond = styled.div`
+	position: absolute;
+	text-align: center;
+	visibility: hidden;
+	color: black;
+	font-size: 1.1rem;
+	top: -25px;
+	opacity: 0;
+	left: -17px;
+	width: 4rem;
+	height: 1.4rem;
+	transition: all 0.2s ease-in;
+`;
+
+const ContentBottomMenusCount = styled.div`
+	text-align: center;
+	font-size: 15px;
+`;
+
+//이전글, 다음글
+const ContentBottomBottomBlock = styled.div`
+	display: flex;
+	width: 100%;
+	justify-content: space-between;
+`;
+
+const ContentBottomBottomBefore = styled.div`
+	display: inline-block;
+	background-color: black;
+	color: white;
+	border-radius: 3px;
+	height: 20px;
+	width: 60px;
+	text-align: center;
+	padding-top: 1px;
+	font-size: 1.1rem;
+`;
+
+const ContentBottomBottomLeftTitle = styled.span`
+	font-size: 0.9rem;
+	margin-left: 3px;
+`;
+
+const ContentBottomBottomRightTitle = styled.span`
+	font-size: 0.9rem;
+	margin-right: 3px;
+`;
+
+const ContentBottomBottomAfter = styled.div`
+	display: inline-block;
+	background-color: black;
+	color: white;
+	border-radius: 3px;
+	height: 20px;
+	width: 60px;
+	text-align: center;
+	padding-top: 1px;
+	font-size: 1.1rem;
+`;
 
 // 전체 댓글 내용 표시
 
@@ -145,6 +298,10 @@ const ReplyContentTopPosition = styled.div`
 	margin-bottom: 5px;
 `;
 
+const ReplyContentTopBlock = styled.div`
+	width: 71%;
+`;
+
 const ReplyContentName = styled.span`
 	font-weight: 600;
 	font-size: 0.8rem;
@@ -156,7 +313,7 @@ const ReplyIpAddress = styled.span`
 	padding-top: 0.05rem;
 	font-weight: 300;
 	color: rgba(0, 0, 0, 0.3);
-	padding-left: 5px;
+	padding-left: 2px;
 `;
 
 const Replytime = styled.span`
@@ -165,6 +322,29 @@ const Replytime = styled.span`
 	display: inline-block;
 	color: rgba(0, 0, 0, 0.3);
 	padding-left: 5px;
+`;
+
+const ReplyButtonBlock = styled.div`
+	display: flex;
+	justify-content: flex-end;
+	width: 29%;
+	@media (max-width: 767px) {
+		width: 28%;
+	}
+`;
+
+const ReplyButtons = styled.a`
+	display: flex;
+	align-content: center;
+	border: none;
+	background-color: transparent;
+	font-weight: 300;
+	font-size: 0.8rem;
+	opacity: 0.4;
+	cursor: pointer;
+	&:hover {
+		opacity: 1;
+	}
 `;
 
 const ReplyContent = styled.div`
@@ -187,6 +367,8 @@ const ReplyBottom = styled.div`
 const ReplyInputPosition = styled.div`
 	display: flex;
 	flex-direction: column;
+	position: relative;
+	width: 100%;
 `;
 
 const ReplyInputTopBlock = styled.div`
@@ -195,7 +377,7 @@ const ReplyInputTopBlock = styled.div`
 `;
 
 const ReplyInputName = styled.input`
-	height: 1.2rem;
+	height: 1.3rem;
 	width: 185px;
 	margin-bottom: 0.5rem;
 	font-size: 0.9rem;
@@ -204,62 +386,69 @@ const ReplyInputName = styled.input`
 
 const ReplyInputPassword = styled.input`
 	margin-left: 5px;
-	height: 1.2rem;
+	height: 1.3rem;
 	width: 100px;
 	font-size: 0.9rem;
 	border: 1px solid rgba(0, 0, 0, 0.3);
 `;
 
-const ReplyButtonBox = styled.div`
+const ReplyInputButtonBlock = styled.div`
 	width: 100%;
 	display: flex;
 	justify-content: flex-end;
 `;
 
-const ReplyEdit = styled.button`
-	height: 1.2rem;
+const ReplyInputSubmit = styled.button`
+	height: 1.3rem;
 	border: 1px solid rgba(0, 0, 0, 0.3);
 	border-radius: 2px;
 	font-weight: 300;
 	font-size: 0.8rem;
+	padding: 1px 5px;
 	cursor: pointer;
-	&:active {
+	&:hover {
 		background-color: rgba(0, 0, 0, 0.1);
 	}
 `;
 
-const ReplyInputContent = styled.div`
-	width: 100%;
+const ReplyInputContent = styled.textarea`
+	width: inherit;
 	padding: 5px;
 	border: 1px solid rgba(0, 0, 0, 0.3);
 	min-height: 4.5rem;
 	font-size: 1rem;
 	line-height: 1.2rem;
 	letter-spacing: 0.1rem;
-	resize: auto;
+	resize: vertical;
+	&:hover {
+		& + div {
+			opacity: 0.9;
+			display: flex;
+		}
+	}
+`;
+
+const ReplyToolTip = styled.div`
+	opacity: 0;
+	display: none;
+	position: absolute;
+	width: 230px;
+	color: white;
+	justify-content: flex-end;
+	background-color: rgba(0, 0, 0, 0.78);
+	border-radius: 4px;
+	height: 1.4rem;
+	line-height: 1.2rem;
+	margin-top: 5px;
+	transition: all 0.2s ease-in;
+	bottom: -25px;
+	right: 0%;
 `;
 
 export default function Detail() {
-	return (
-		<MainPosition>
-			<MainBlock>
-				<Title>
-					<span>COVID 19, can we get back daily life oneday?</span>
-				</Title>
-				<ContentBlock>
-					<Content>
-						<BtnBlock>
-							<Btn>
-								<VscEdit style={{ fontSize: "0.7rem" }} />
-								<span style={{ paddingLeft: "2px" }}>수정</span>
-							</Btn>
-							<Btn>
-								<VscChromeClose style={{ fontSize: "0.7rem" }} />
-								<span style={{ paddingLeft: "2px" }}>삭제</span>
-							</Btn>
-						</BtnBlock>
-						<ContentImg src={covid} />
-						<p>
+	const [ContentData, setContentData] = useState({
+		title: "COVID 19, can we get back daily life oneday?",
+		content: `<p>
 							Agency chief Tedros Adhanom Ghebreyesus told journalists that
 							WHO’s Advisory Committee on Vaccine Safety has been reviewing
 							available data on the vaccine and will meet with the European
@@ -297,63 +486,204 @@ export default function Detail() {
 							world, from Myanmar to Yemen and Tigray in Ethiopia, where
 							millions of people have been denied access to essential health
 							services, and where health facilities have been destroyed and
-							health workers have been attacked and intimidated. This
-						</p>
-					</Content>
-					<ContentBottom></ContentBottom>
-				</ContentBlock>
+							health workers have been attacked and intimidated.
+						</p>`,
+		img: { covid },
+	});
 
-				<ReplyBlock>
-					<RepliesBlock>
-						<ReplyHeader>
-							<div>전체 댓글</div>
-						</ReplyHeader>
-						<ReplyBody>
-							<ReplyContentBlock>
-								<ReplyContentTopPosition>
-									<ReplyContentName>10글자닉네임예시용 </ReplyContentName>
-									<ReplyIpAddress>(*.223.442)</ReplyIpAddress>
-									<Replytime>
-										{new Date(2021, 2, 17, 11).toLocaleDateString()}
-									</Replytime>
-								</ReplyContentTopPosition>
-								<ReplyContent>
-									코로나가 빨리 종식 되기를 기원합니다.
-								</ReplyContent>
-							</ReplyContentBlock>
-							<ReplyContentBlock>
-								<ReplyContentTopPosition>
-									<ReplyContentName>nickisWhattt </ReplyContentName>
-									<ReplyIpAddress>(*.112.122)</ReplyIpAddress>
-									<Replytime>
-										{new Date(2021, 2, 17).toLocaleDateString()}
-									</Replytime>
-								</ReplyContentTopPosition>
-								<ReplyContent>
-									Corona Virus is bad, sky is blue, I feel excited, so keep
-									coding.
-								</ReplyContent>
-							</ReplyContentBlock>
-						</ReplyBody>
-						<ReplyBottom />
-					</RepliesBlock>
-					<ReplyInputPosition>
-						<ReplyInputTopBlock>
-							<ReplyInputName maxLength="10" placeholder="작성자 이름" />
-							<ReplyInputPassword maxLength="6" placeholder="비밀번호 입력" />
-							<ReplyButtonBox>
-								<ReplyEdit>작성</ReplyEdit>
-							</ReplyButtonBox>
-						</ReplyInputTopBlock>
+	const onRemove = () => {
+		if (window.confirm("정말 삭제합니까?")) {
+			alert("삭제되었습니다.");
+		} else {
+			alert("취소합니다.");
+		}
+	};
 
-						<ReplyInputContent
-							placeholder="댓글 내용을 작성해주세요."
-							contentEditable
-						/>
-					</ReplyInputPosition>
-				</ReplyBlock>
-			</MainBlock>
-		</MainPosition>
+	const { title, content, img } = ContentData;
+
+	const [ReplyData, setReplyData] = useState([]);
+
+	const [ReplyInput, setReplyInput] = useState({
+		name: "",
+		ReplyPassword: "",
+		address: "",
+		date: "",
+		ReplyContent: "",
+	});
+
+	const onInput = (e) => {
+		const { name, value } = e.target;
+		setReplyInput({
+			[name]: value,
+		});
+		console.log(ReplyInput);
+	};
+
+	return (
+		<>
+			<MainPosition>
+				<MainBlock>
+					<Title>
+						<span>{title}</span>
+					</Title>
+					<ContentBlock>
+						<Content>
+							<BtnBlock>
+								<BtnEdit to="/issue/1/edit">
+									<VscEdit style={{ fontSize: "0.7rem" }} />
+									<span style={{ paddingLeft: "2px" }}>수정</span>
+								</BtnEdit>
+								<BtnDelete onClick={onRemove}>
+									<VscChromeClose style={{ fontSize: "0.7rem" }} />
+									<span style={{ paddingLeft: "2px" }}>삭제</span>
+								</BtnDelete>
+							</BtnBlock>
+							<ContentImg src={covid} alt="covid image" />
+							{ReactHtmlParser(content)}
+						</Content>
+						<ContentBottomPosition>
+							<ContentBottomBlock>
+								<ContentBottomMenus>
+									<ContentBottomMenuLike>
+										<ContentBottomMenuLikeHeart>
+											<VscHeart
+												style={{ fontSize: "30px", cursor: "pointer" }}
+											/>
+											<ContentBottomMenuToolTip>
+												좋아요
+											</ContentBottomMenuToolTip>
+										</ContentBottomMenuLikeHeart>
+										<ContentBottomMenusCount>0</ContentBottomMenusCount>
+									</ContentBottomMenuLike>
+									<ContentBottomMenuShare>
+										<ContentBottomMenuShareIcon>
+											<VscDebugStepOut
+												style={{ fontSize: "30px", cursor: "pointer" }}
+											/>
+											<ContentBottomMenuToolTipSecond>
+												공유하기
+											</ContentBottomMenuToolTipSecond>
+										</ContentBottomMenuShareIcon>
+										<ContentBottomMenusCount>0</ContentBottomMenusCount>
+									</ContentBottomMenuShare>
+								</ContentBottomMenus>
+							</ContentBottomBlock>
+							<ContentBottomBottomBlock>
+								<div>
+									<Link to={() => `/issue/0`}>
+										<ContentBottomBottomBefore>
+											◀이전글
+										</ContentBottomBottomBefore>
+										<ContentBottomBottomLeftTitle>
+											: 이전글 제목
+										</ContentBottomBottomLeftTitle>
+									</Link>
+								</div>
+								<div>
+									<Link to={`/issue/2`}>
+										<ContentBottomBottomRightTitle>
+											다음글 제목 :
+										</ContentBottomBottomRightTitle>
+										<ContentBottomBottomAfter>다음글▶</ContentBottomBottomAfter>
+									</Link>
+								</div>
+							</ContentBottomBottomBlock>
+						</ContentBottomPosition>
+					</ContentBlock>
+					<ReplyBlock>
+						<RepliesBlock>
+							<ReplyHeader>
+								<div>전체 댓글</div>
+							</ReplyHeader>
+							<ReplyBody>
+								<ReplyContentBlock>
+									<ReplyContentTopPosition>
+										<ReplyContentTopBlock>
+											<ReplyContentName>10글자닉네임예시용</ReplyContentName>
+											<ReplyIpAddress>(*.442)</ReplyIpAddress>
+											<Replytime>
+												{new Date(2021, 2, 17, 11).toLocaleDateString()}
+											</Replytime>
+										</ReplyContentTopBlock>
+										<ReplyButtonBlock>
+											<ReplyButtons>
+												<VscEdit style={{ fontSize: "0.7rem" }} />
+												<span style={{ paddingLeft: "1px" }}>수정</span>
+											</ReplyButtons>
+											<ReplyButtons>
+												<VscChromeClose
+													style={{ paddingLeft: "3px", fontSize: "0.8rem" }}
+												/>
+												<span style={{ paddingLeft: "1px" }}>삭제</span>
+											</ReplyButtons>
+										</ReplyButtonBlock>
+									</ReplyContentTopPosition>
+									<ReplyContent>
+										코로나가 빨리 종식 되기를 기원합니다.
+									</ReplyContent>
+								</ReplyContentBlock>
+								<ReplyContentBlock>
+									<ReplyContentTopPosition>
+										<ReplyContentTopBlock>
+											<ReplyContentName>nickisWhattt</ReplyContentName>
+											<ReplyIpAddress>(*.442)</ReplyIpAddress>
+											<Replytime>
+												{new Date(2021, 2, 17, 11).toLocaleDateString()}
+											</Replytime>
+										</ReplyContentTopBlock>
+										<ReplyButtonBlock>
+											<ReplyButtons>
+												<VscEdit style={{ fontSize: "0.7rem" }} />
+												<span style={{ paddingLeft: "1px" }}>수정</span>
+											</ReplyButtons>
+											<ReplyButtons>
+												<VscChromeClose
+													style={{ paddingLeft: "3px", fontSize: "0.8rem" }}
+												/>
+												<span style={{ paddingLeft: "1px" }}>삭제</span>
+											</ReplyButtons>
+										</ReplyButtonBlock>
+									</ReplyContentTopPosition>
+									<ReplyContent>
+										Corona Virus is bad, sky is blue, I feel excited, so keep
+										coding.
+									</ReplyContent>
+								</ReplyContentBlock>
+							</ReplyBody>
+							<ReplyBottom />
+						</RepliesBlock>
+						<ReplyInputPosition>
+							<ReplyInputTopBlock>
+								<ReplyInputName
+									name="name"
+									onInput={onInput}
+									maxLength="10"
+									placeholder="작성자 이름"
+								/>
+								<ReplyInputPassword
+									onInput={onInput}
+									name="ReplyPassword"
+									maxLength="6"
+									placeholder="비밀번호 입력"
+								/>
+								<ReplyInputButtonBlock>
+									<ReplyInputSubmit>작성</ReplyInputSubmit>
+								</ReplyInputButtonBlock>
+							</ReplyInputTopBlock>
+							<ReplyInputContent
+								name="ReplyContent"
+								onInput={onInput}
+								placeholder="댓글을 작성해주세요."
+							/>
+							<ReplyToolTip>
+								댓글창 사이즈를 변경 할 수 있어요. <VscArrowSmallUp />
+							</ReplyToolTip>
+						</ReplyInputPosition>
+					</ReplyBlock>
+				</MainBlock>
+			</MainPosition>
+			<Issue />
+		</>
 	);
 }
 

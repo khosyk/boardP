@@ -11,6 +11,7 @@ import Movie from "../pages/Movie";
 import Header from "./Header";
 import Board from "../pages/Board";
 import Detail from "../pages/Detail";
+import Edit from "../pages/Edit";
 
 export default function Router() {
 	return (
@@ -28,6 +29,7 @@ export default function Router() {
 
 				<Route path="/issue/:id" component={Detail} />
 			</Switch>
+			<Route path="/edit" component={Edit} />
 		</Rotuer>
 	);
 }
