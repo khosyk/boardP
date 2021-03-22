@@ -41,7 +41,7 @@ const MainPosition = styled.div`
 		flex-direction: row;
 		width: 80%;
 		flex-wrap: wrap;
-		justify-content: space-evenly;
+		justify-content: space-around;
 		align-content: flex-start;
 	}
 `;
@@ -67,6 +67,9 @@ const SidePosition = styled.div`
 const ArticleBlock = styled.div`
 	width: 100%;
 	border-radius: 2px;
+	margin-right: 20px;
+
+	min-width: 280px;
 	@media (max-width: 768px) {
 		margin-bottom: 2rem;
 	}

@@ -26,7 +26,9 @@ const GlobalStyles = createGlobalStyle`
       font-family: "NanumBarunpenR";
 	    letter-spacing: 0.5px;
     }
-    
+    textarea{
+      font-family: "NanumBarunpenR";
+    }
 `;
 
 export default GlobalStyles;

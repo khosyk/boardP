@@ -65,8 +65,6 @@ const TTools = styled.tr`
 const TSearch = styled.td`
 	display: flex;
 	align-content: center;
-	@media (max-width: 960px) {
-	}
 `;
 
 const SearchText = styled.input`
