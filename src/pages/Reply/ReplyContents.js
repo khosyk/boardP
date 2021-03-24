@@ -5,8 +5,8 @@ import { VscEdit, VscChromeClose } from "react-icons/vsc";
 // 전체 댓글 내용 표시
 
 const RepliesPosition = styled.div`
-	margin-top: 1rem;
-	margin-bottom: 1rem;
+	margin-top: 0.5rem;
+	margin-bottom: 0.5rem;
 `;
 
 //댓글들 css 댓글, 버튼
@@ -78,38 +78,32 @@ const ReplyButtons = styled.a`
 `;
 
 const ReplyContentbox = styled.div`
-	font-size: 0.8rem;
-`;
-
-const ReplyBottom = styled.div`
-	margin-left: -0.5rem;
-	padding-top: 0.5rem;
-	padding-left: 0.5rem;
-	width: 102%;
-	height: 1rem;
 	font-size: 0.9rem;
-	font-weight: 300;
-	background-color: rgba(0, 0, 0, 0.03);
+	line-height: 1.15rem;
+	word-break: break-word;
+	text-align: justify;
 `;
 
-export default function ReplyContents({ ReplyData }) {
-	const { name, ReplyPassword, address, date, ReplyContent, id } = ReplyData;
-
+export default function ReplyContents({ ReplyData, handleRemove }) {
+	const {
+		userName,
+		replyPassword,
+		address,
+		date,
+		replyContent,
+		id,
+	} = ReplyData;
 	return (
 		<RepliesPosition id={id}>
 			<ReplyContentBlock>
 				<ReplyContentTopPosition>
 					<ReplyContentTopBlock>
-						<ReplyContentName>{name}</ReplyContentName>
-						<ReplyIpAddress></ReplyIpAddress>
-						<Replytime></Replytime>
+						<ReplyContentName>{userName}</ReplyContentName>
+						<ReplyIpAddress>(*.{address})</ReplyIpAddress>
+						<Replytime>{date}</Replytime>
 					</ReplyContentTopBlock>
 					<ReplyButtonBlock>
-						<ReplyButtons>
-							<VscEdit style={{ fontSize: "0.7rem" }} />
-							<span style={{ paddingLeft: "1px" }}>수정</span>
-						</ReplyButtons>
-						<ReplyButtons>
+						<ReplyButtons onClick={() => handleRemove(id)}>
 							<VscChromeClose
 								style={{ paddingLeft: "3px", fontSize: "0.8rem" }}
 							/>
@@ -117,36 +111,8 @@ export default function ReplyContents({ ReplyData }) {
 						</ReplyButtons>
 					</ReplyButtonBlock>
 				</ReplyContentTopPosition>
-				<ReplyContentbox>{ReplyContent}</ReplyContentbox>
+				<ReplyContentbox>{replyContent}</ReplyContentbox>
 			</ReplyContentBlock>
-			{/* <ReplyContentBlock>
-					<ReplyContentTopPosition>
-						<ReplyContentTopBlock>
-							<ReplyContentName>nickisWhattt</ReplyContentName>
-							<ReplyIpAddress>(*.442)</ReplyIpAddress>
-							<Replytime>
-								{new Date(2021, 2, 17, 11).toLocaleDateString()}
-							</Replytime>
-						</ReplyContentTopBlock>
-						<ReplyButtonBlock>
-							<ReplyButtons>
-								<VscEdit style={{ fontSize: "0.7rem" }} />
-								<span style={{ paddingLeft: "1px" }}>수정</span>
-							</ReplyButtons>
-							<ReplyButtons>
-								<VscChromeClose
-									style={{ paddingLeft: "3px", fontSize: "0.8rem" }}
-								/>
-								<span style={{ paddingLeft: "1px" }}>삭제</span>
-							</ReplyButtons>
-						</ReplyButtonBlock>
-					</ReplyContentTopPosition>
-					<ReplyContentbox>
-						Corona Virus is bad, sky is blue, I feel excited, so keep coding.
-					</ReplyContentbox>
-				</ReplyContentBlock> */}
-
-			<ReplyBottom />
 		</RepliesPosition>
 	);
 }

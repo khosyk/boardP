@@ -9,6 +9,13 @@ import {
 } from "react-icons/vsc";
 import ReplyContents from "./ReplyContents";
 
+const ReplyBlock = styled.div`
+	width: 100%;
+	margin-top: 10px;
+	padding: 0.5rem;
+	border-top: 1px solid #adb5bd;
+`;
+
 // Reply header body
 
 const ReplyHeader = styled.div`
@@ -28,14 +35,19 @@ const ReplyBody = styled.div`
 	margin-bottom: 1rem;
 `;
 
-//댓글 입력창 표시
-
-const ReplyBlock = styled.div`
-	width: 100%;
-	margin-top: 10px;
-	padding: 0.5rem;
-	border-top: 1px solid #adb5bd;
+const ReplyBottom = styled.div`
+	margin-left: -0.5rem;
+	padding-top: 0.5rem;
+	padding-left: 0.5rem;
+	width: 102%;
+	height: 1rem;
+	font-size: 0.9rem;
+	font-weight: 300;
+	background-color: rgba(0, 0, 0, 0.03);
+	margin-bottom: 20px;
 `;
+
+//댓글 입력창 표시
 
 const ReplyInputPosition = styled.div`
 	display: flex;
@@ -123,11 +135,12 @@ export default function Reply({
 	createReply,
 	ReplyData,
 	count,
-})
-{
-  
-	
-  return (
+	ReplyInput,
+	handleRemove,
+}) {
+	const { userName, replyPassword, replyContent } = ReplyInput;
+
+	return (
 		<>
 			<ReplyBlock>
 				<ReplyHeader>
@@ -135,31 +148,40 @@ export default function Reply({
 				</ReplyHeader>
 				<ReplyBody>
 					{ReplyData.map((row) => (
-						<ReplyContents key={row.id} ReplyData={ReplyData} />
+						<ReplyContents
+							key={row.id}
+							ReplyData={row}
+							handleRemove={handleRemove}
+						/>
 					))}
 				</ReplyBody>
+
+				<ReplyBottom />
 				<ReplyInputPosition>
 					<ReplyInputTopBlock>
 						<ReplyInputName
-							name="name"
+							name="userName"
 							onInput={handleReplyInput}
 							maxLength="10"
 							placeholder="작성자 이름"
+							value={userName}
 						/>
 						<ReplyInputPassword
 							onInput={handleReplyInput}
-							name="ReplyPassword"
+							name="replyPassword"
 							maxLength="6"
 							placeholder="비밀번호 입력"
+							value={replyPassword}
 						/>
 						<ReplyInputButtonBlock>
 							<ReplyInputSubmit onClick={createReply}>작성</ReplyInputSubmit>
 						</ReplyInputButtonBlock>
 					</ReplyInputTopBlock>
 					<ReplyInputContent
-						name="ReplyContent"
+						name="replyContent"
 						onInput={handleReplyInput}
 						placeholder="댓글을 작성해주세요."
+						value={replyContent}
 					/>
 					<ReplyToolTip>
 						댓글창 사이즈를 변경 할 수 있어요. <VscArrowSmallUp />

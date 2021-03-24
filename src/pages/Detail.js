@@ -288,6 +288,8 @@ export default function Detail() {
 		img: { covid },
 	});
 
+	const { title, content, img } = ContentData;
+
 	const onRemove = () => {
 		if (window.confirm("정말 삭제합니까?")) {
 			alert("삭제되었습니다.");
@@ -328,15 +330,18 @@ export default function Detail() {
 
 	//reply Function
 
+	// Input State
+
 	const [ReplyInput, setReplyInput] = useState({
-		name: "",
-		ReplyPassword: "",
-		address: "",
+		userName: "",
+		replyPassword: "",
+		address: Math.floor(Math.random() * (999 - 100 + 1) + 100),
 		date: new Date(2021, 2, 17, 11).toLocaleDateString(),
-		ReplyContent: "",
+		replyContent: "",
 		id: 0,
 	});
-	const { id } = ReplyInput;
+
+	const { id, userName, replyPassword, replyContent } = ReplyInput;
 
 	const handleReplyInput = (e) => {
 		const { name, value } = e.target;
@@ -344,16 +349,36 @@ export default function Detail() {
 			...ReplyInput,
 			[name]: value,
 		});
-
-		console.log(ReplyInput, "t1");
 	};
-	const { title, content, img } = ContentData;
+
+	//ReplyData state
 
 	const [ReplyData, setReplyData] = useState([]);
 
 	const createReply = () => {
-		setReplyData(ReplyData.concat({ ...ReplyInput }));
-		setReplyInput({ id: id + 1 });
+		if (userName !== "" && replyPassword !== "" && replyContent !== "") {
+			setReplyData(ReplyData.concat({ ...ReplyInput }));
+			setReplyInput({
+				userName: "",
+				replyPassword: "",
+				address: Math.floor(Math.random() * (999 - 100 + 1) + 100),
+				date: new Date(2021, 2, 17, 11).toLocaleDateString(),
+				replyContent: "",
+				id: id + 1,
+			});
+		} else {
+			alert("작성자명, 비밀번호, 댓글을 입력해주세요.");
+		}
+	};
+
+	const handleRemove = (id) => {
+		if (window.confirm("정말 삭제합니까?")) {
+			alert("삭제 되었습니다.");
+			setReplyData(ReplyData.filter((ReplyData) => ReplyData.id !== id));
+			console.log(id, "t1");
+		} else {
+			alert("취소합니다.");
+		}
 	};
 
 	return (
@@ -431,10 +456,12 @@ export default function Detail() {
 						</ContentBottomPosition>
 					</ContentBlock>
 					<Reply
-						count={id}
+						count={ReplyData.length}
 						handleReplyInput={handleReplyInput}
 						createReply={createReply}
 						ReplyData={ReplyData}
+						ReplyInput={ReplyInput}
+						handleRemove={handleRemove}
 					/>
 				</MainBlock>
 			</MainPosition>
