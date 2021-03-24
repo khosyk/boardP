@@ -74,3 +74,9 @@ export default withRouter(({ location: { pathname } }) => (
 		<Border />
 	</>
 ));
+
+{/*withRouter(({ location: { pathname } }) => (
+	<>
+	
+	</>
+));*/}

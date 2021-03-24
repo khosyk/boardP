@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import covid from "../covid.png";
 import styled from "styled-components";
-import { Link, Redirect } from "react-router-dom";
+import {Route, Link, withRouter, Switch } from "react-router-dom";
 import ReactHtmlParser from "react-html-parser";
+import Edit from './Edit';
 import {
 	VscDebugStepOut,
 	VscHeart,
@@ -241,9 +242,10 @@ const ContentBottomBottomAfter = styled.div`
 	font-size: 1.1rem;
 `;
 
-export default function Detail() {
+export default withRouter(({ location: { pathname } }) => {
 	// content data state, function
-	const [ContentData, setContentData] = useState({
+	const [contentData, setContentData] = useState({
+		contentId:1,
 		title: "COVID 19, can we get back daily life oneday?",
 		content: `<p>
 							Agency chief Tedros Adhanom Ghebreyesus told journalists that
@@ -288,7 +290,7 @@ export default function Detail() {
 		img: { covid },
 	});
 
-	const { title, content, img } = ContentData;
+	const {contentId, title, content, img } = contentData;
 
 	const onRemove = () => {
 		if (window.confirm("정말 삭제합니까?")) {
@@ -320,7 +322,10 @@ export default function Detail() {
 		}
 	};
 
+	const currentAddress = window.location.href;
+
 	const onShare = () => {
+		window.prompt('아래 주소를 복사해서 공유해주세요.',currentAddress);
 		if (shareActive === true) {
 			setLikeShare({ ...LikeShare, share: share + 1, shareActive: false });
 		} else {
@@ -381,6 +386,18 @@ export default function Detail() {
 		}
 	};
 
+	
+//edit the content
+	
+	const handleEdit = (id) => {
+		if (contentId === id) {
+			setContentData(
+				
+			)
+		}
+	}
+
+
 	return (
 		<>
 			<MainPosition>
@@ -391,7 +408,7 @@ export default function Detail() {
 					<ContentBlock>
 						<Content>
 							<BtnBlock>
-								<BtnEdit to="/issue/1/edit">
+								<BtnEdit to={`/issue/${1}/edit`}>
 									<VscEdit style={{ fontSize: "0.7rem" }} />
 									<span style={{ paddingLeft: "2px" }}>수정</span>
 								</BtnEdit>
@@ -426,7 +443,7 @@ export default function Detail() {
 											style={{ fontSize: "30px", cursor: "pointer" }}
 											onClick={onShare}
 										/>
-										<ContentBottomMenuToolTipSecond>
+										<ContentBottomMenuToolTipSecond >
 											공유하기
 										</ContentBottomMenuToolTipSecond>
 									</ContentBottomMenuShareIcon>
@@ -464,11 +481,14 @@ export default function Detail() {
 						handleRemove={handleRemove}
 					/>
 				</MainBlock>
+				<Route path="/issue/:id/edit" component={Edit} >
+					<Edit contentData={contentData}/>
+				</Route>
 			</MainPosition>
 		</>
 	);
 }
-
+);
 ///content bottom 추가
 
 // content reply button 추가 (수정,삭제)

@@ -49,58 +49,12 @@ const BrdBtn = styled.button`
 	cursor: pointer;
 `;
 
-const Preview = styled.div`
-	width: 70%;
-	min-height: 200px;
-	border: 1px solid #757e86;
-	margin-top: 30px;
-	margin-bottom: 50px;
-`;
-
-const PreviewBlock = styled.div`
-	width: 100%;
-	min-height: 200px;
-`;
-
-const BtnBlock = styled.div`
-	display: flex;
-	justify-content: flex-end;
-	position: relative;
-	bottom: 0px;
-	width: 100%;
-`;
-
-const Delete = styled.button`
-	position: relative;
-	font-family: "NanumBarunpenR";
-	border: none;
-	padding: 3px 15px;
-	font-weight: 300;
-	font-size: 0.8rem;
-	cursor: pointer;
-	z-index: 1;
-`;
-
-const Update = styled.button`
-	position: relative;
-	font-family: "NanumBarunpenR";
-	border: none;
-	padding: 3px 15px;
-	font-weight: 300;
-	font-size: 0.8rem;
-	cursor: pointer;
-	z-index: 1;
-`;
-
-export default function Edit() {
+export default function Edit({ contentData }) {
+	console.log(contentData, 't1');
 	const [input, setInput] = useState({
 		title: "",
 		content: "",
-		id: 0,
-		active: true,
-	});
-
-	const { id } = input;
+			});
 
 	const [viewContent, setViewContent] = useState([]);
 
@@ -192,49 +146,10 @@ export default function Edit() {
 			</CKWrapper>
 			<BrdBtnBlock>
 				<BrdBtn
-					onClick={(e) => {
-						e.preventDefault();
-						setViewContent(viewContent.concat({ ...input }));
-						setInput({ id: id + 1 });
-					}}>
+					onClick=''>
 					저장
 				</BrdBtn>
 			</BrdBtnBlock>
-			{viewContent.map((viewContent) => (
-				<Preview key={viewContent.id}>
-					<PreviewBlock>
-						<h2
-							style={{
-								padding: "10px",
-								fontSize: "1.2rem",
-								borderBottom: "1px solid #757e86",
-							}}>
-							{viewContent.id} | 제목:{viewContent.title}
-						</h2>
-						<br />
-						<div style={{ margin: "10px", fontSize: "1rem" }}>
-							{ReactHtmlParser(viewContent.content)}
-						</div>
-					</PreviewBlock>
-					<BtnBlock>
-						<Update
-							onClick={(e) => {
-								e.preventDefault();
-								callUpdate(viewContent.id);
-							}}>
-							수정
-						</Update>
-						<Delete
-							onClick={(e) => {
-								e.preventDefault();
-								onRemove(viewContent.id);
-								console.log(viewContent.id);
-							}}>
-							삭제
-						</Delete>
-					</BtnBlock>
-				</Preview>
-			))}
 		</BrdBox>
 	);
 }

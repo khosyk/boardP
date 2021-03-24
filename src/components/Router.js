@@ -22,14 +22,12 @@ export default function Router() {
 				<Route path="/issue" exact component={Issue} />
 				<Route path="/game" component={Game} />
 				<Route path="/movie" component={Movie} />
-
 				<Route path="/board">
 					<Board />
 				</Route>
-
-				<Route path="/issue/:id" component={Detail} />
+				<Route path="/issue/:id" exact component={Detail} />
+			<Route path="/issue/:id/edit" component={Edit} />
 			</Switch>
-			<Route path="/edit" component={Edit} />
 		</Rotuer>
 	);
 }
