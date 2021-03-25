@@ -7,7 +7,7 @@ const Tlist = styled.tr`
 	align-items: center;
 	justify-content: space-between;
 	margin: 0px 5px;
-	padding: 5px 25px;
+	padding: 5px 10px;
 	line-height: 1.1rem;
 	border-bottom: 1px solid rgba(1, 1, 1, 0.3);
 `;
@@ -48,6 +48,15 @@ const TDate = styled.td`
 `;
 
 export default function List({ id, review, title }) {
+	var date = new Date();
+        
+	// Format day/month/year to two digits
+	var formattedDate = ('0' + date.getDate()).slice(-2);
+	var formattedMonth = ('0' + (date.getMonth() + 1)).slice(-2);
+	var formattedYear = date.getFullYear().toString().substr(2,2);
+	
+	// Combine and format date string
+	var dateString = formattedYear + '/' + formattedMonth + '/' + formattedDate ;
 	return (
 		<Tlist>
 			<TNumber>{id}</TNumber>
@@ -59,7 +68,7 @@ export default function List({ id, review, title }) {
 					<Link to={`/issue/${id}`}>{review}</Link>
 				</Reply>
 			</TTitle>
-			<TDate>{new Date().toLocaleDateString()}</TDate>
+			<TDate>{dateString}</TDate>
 		</Tlist>
 	);
 }

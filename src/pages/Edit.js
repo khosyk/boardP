@@ -4,6 +4,7 @@ import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ReactHtmlParser from "react-html-parser";
 import "./Ck.css";
+import Status from "../modules/Status";
 
 const BrdBox = styled.form`
 	display: flex;
@@ -49,13 +50,15 @@ const BrdBtn = styled.button`
 	cursor: pointer;
 `;
 
-export default function Edit({ contentData }) {
-	console.log(contentData, 't1');
+export default function Edit() {
+	
 	const [input, setInput] = useState({
-		title: "",
+		title: "COVID 19, can we get back daily life oneday?",
 		content: "",
 			});
 
+	const {title,content} = input
+	
 	const [viewContent, setViewContent] = useState([]);
 
 	const getValue = (e) => {
@@ -68,30 +71,6 @@ export default function Edit({ contentData }) {
 
 	//Remove
 
-	const onRemove = (id) => {
-		if (window.confirm("정말 삭제합니까?")) {
-			alert("삭제 되었습니다.");
-			setViewContent(
-				viewContent.filter((viewContent) => viewContent.id !== id)
-			);
-		} else {
-			alert("취소합니다.");
-		}
-	};
-
-	///update functions
-
-	const callUpdate = (id) => {
-		setViewContent(
-			viewContent.map(
-				(viewContent) =>
-					viewContent.id === id
-						? { ...viewContent, active: !viewContent.active }
-						: viewContent
-				//content: clinput value; input display:true none false yes
-			)
-		);
-	};
 
 	// const onUpdate = (id) => {
 	// 	setViewContent(
@@ -118,12 +97,51 @@ export default function Edit({ contentData }) {
 				type="text"
 				onChange={getValue}
 				placeholder="글 제목을 입력해주세요."
-				value={viewContent.title}
+				value={title}
 			/>
 			<CKWrapper>
 				<CKEditor
 					editor={ClassicEditor}
-					data="<p>내용을 작성해주세요.</p>"
+					data=" <p>
+					Agency chief Tedros Adhanom Ghebreyesus told journalists that
+					WHO’s Advisory Committee on Vaccine Safety has been reviewing
+					available data on the vaccine and will meet with the European
+					Medicines Agency (EMA) on Tuesday. Germany, France, Italy and
+					Spain have become the latest countries to temporarily halt use of
+					the shot, following reports of blood clots in people who received
+					the vaccine from two batches produced in Europe.
+				</p>
+				<br />
+				<p>
+					“This does not necessarily mean these events are linked to
+					vaccination, but it’s routine practice to investigate them, and it
+					shows that the surveillance system works and that effective
+					controls are in place”, Tedros said. Dr. Mariângela Simão, a WHO
+					Assistant Secretary-General, said the agency is working very
+					closely with the EMA, and with national regulatory authorities in
+					Europe and other regions, in assessing the adverse effects of the
+					AstraZeneca vaccine and all other vaccines. WHO has not received
+					reports about “thrombo-embolic events” in other parts of the
+					world, she added. Tedros stressed that “the greatest threat” most
+					countries face now is lack of access to vaccines, saying he
+					receives calls from leaders worldwide “almost every day” asking
+					when their nations will receive doses through the COVAX
+					initiative.
+				</p>
+				<br />
+				<p>
+					Syrian war remembrance The ongoing conflict in Syria has brought
+					the country’s once highly-effective health system “to its knees”,
+					Tedros said in acknowledging the 10th anniversary of the crisis.
+					WHO and its partners continue to deliver services and supplies,
+					protect public health and support a network of more than 1,700
+					health facilities. Tedros pointed out that tragically, Syria is
+					not an isolated case. “Syria is one of many crises around the
+					world, from Myanmar to Yemen and Tigray in Ethiopia, where
+					millions of people have been denied access to essential health
+					services, and where health facilities have been destroyed and
+					health workers have been attacked and intimidated.
+				</p>"
 					onReady={(editor) => {
 						// You can store the "editor" and use when it is needed.
 						console.log("Editor is ready to use!", editor);

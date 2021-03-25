@@ -1,10 +1,6 @@
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components";
 import {
-	VscDebugStepOut,
-	VscHeart,
-	VscEdit,
-	VscChromeClose,
 	VscArrowSmallUp,
 } from "react-icons/vsc";
 import ReplyContents from "./ReplyContents";

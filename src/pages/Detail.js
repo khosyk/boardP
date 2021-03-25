@@ -291,7 +291,6 @@ export default withRouter(({ location: { pathname } }) => {
 	});
 
 	const {contentId, title, content, img } = contentData;
-
 	const onRemove = () => {
 		if (window.confirm("정말 삭제합니까?")) {
 			alert("삭제되었습니다.");
@@ -481,8 +480,8 @@ export default withRouter(({ location: { pathname } }) => {
 						handleRemove={handleRemove}
 					/>
 				</MainBlock>
-				<Route path="/issue/:id/edit" component={Edit} >
-					<Edit contentData={contentData}/>
+				<Route path="/issue/:id/edit" contentData={contentData} component={Edit} >
+					<Edit />
 				</Route>
 			</MainPosition>
 		</>

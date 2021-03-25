@@ -12,6 +12,8 @@ const HeaderBlock = styled("header")`
 	@media (max-width: 480px) {
 		padding-top: 20px;
 		padding-bottom: 10px;
+		padding:0px;
+		margin:5px;
 	}
 `;
 
@@ -46,6 +48,9 @@ const Item = styled("ul")`
 	font-weight: 600;
 	color: ${(props) => (props.selected ? "#343a40" : "black")};
 	border-bottom: ${(props) => (props.selected ? "#ff6b6b" : "white")} 2px solid;
+	@media(max-width:480px){
+		font-size:0.8rem;
+	}
 `;
 
 const Border = styled("div")`
@@ -60,13 +65,13 @@ export default withRouter(({ location: { pathname } }) => (
 				<Item selected={pathname === "/"}>
 					<Link to="/">HOME</Link>
 				</Item>
-				<Item selected={pathname === "/issue"}>
+				<Item selected={pathname.startsWith('/issue') }>
 					<Link to="/issue">ISSUE</Link>
 				</Item>
-				<Item selected={pathname === "/game"}>
+				<Item selected={pathname.startsWith('/game')}>
 					<Link to="/game">GAME</Link>
 				</Item>
-				<Item selected={pathname === "/movie"}>
+				<Item selected={pathname.startsWith('/movie')}>
 					<Link to="/movie">MOVIE</Link>
 				</Item>
 			</LinkList>

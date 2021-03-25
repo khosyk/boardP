@@ -3,21 +3,33 @@ import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { FiEdit2 } from "react-icons/fi";
 import List from "./List";
+import BannerImg from '../banner.png';
 
 const MainBlock = styled.div`
-	width: 75%;
-	margin: 0px 12.5%;
+	width: 90%;
+	margin-left:auto;
+	margin-right:auto;
 	background-color: rgba(255, 255, 255, 0.9);
 	height: 48rem;
 	box-sizing: border-box;
-	min-width: 500px;
 	margin-top: -0.5px;
 	margin-bottom: 10vh;
+	max-width:1060px;
 `;
 
-const Banner = styled.div`
+const BannerBlock = styled.div`
+	display:flex;
 	height: 100px;
-	background-color: green;
+	width:100%;
+	max-width: 1060px;
+	margin-bottom:5px;
+	overflow:hidden;
+	justify-content:center;
+`;
+
+const Banner = styled.img`
+margin-left:auto;
+margin-right:auto;
 `;
 
 const MainTable = styled.table`
@@ -38,7 +50,7 @@ const TheadContent = styled.tr`
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
-	margin: 0px 30px;
+	margin: 0px 15px;
 	padding-bottom: 5px;
 `;
 
@@ -58,13 +70,20 @@ const TFooter = styled.tfoot`
 const TTools = styled.tr`
 	display: flex;
 	justify-content: space-between;
-	margin: 0px 25px;
+	margin: 0px 5px;
 	margin-top: 10px;
+
+	@media(max-width:450px) {
+	margin:0px;
+	margin-top: 10px;
+	}
 `;
 
 const TSearch = styled.td`
 	display: flex;
 	align-content: center;
+	justify-content:flex-start;
+
 `;
 
 const SearchText = styled.input`
@@ -72,15 +91,21 @@ const SearchText = styled.input`
 	border-bottom: 1px solid black;
 	font-size: 0.7rem;
 	line-height: 1rem;
-	width: 120px;
+	width: 100px;
 	margin-left: 5px;
+	@media(max-width:450px) {
+	width:60px;
+	}
 `;
 
-const SearchBtn = styled.button`
+const SearchBtn = styled(Link)`
 	display: inline-block;
-	border: 1px solid #ced4da;
+	padding: 2px 5px;
 	border-radius: 2px;
 	font-weight: 300;
+	border: 1px solid #ced4da;
+	background-color: #f1f3f5;
+	color: #343a40;
 	font-size: 0.8rem;
 `;
 
@@ -103,7 +128,9 @@ const Next = styled(Link)`
 	margin-right: 10px;
 `;
 
-const PostBlock = styled.td``;
+const PostBlock = styled.td`
+margin-top:-1px;
+`;
 
 const Post = styled(Link)`
 	display: block;
@@ -139,7 +166,9 @@ export default function Issue() {
 
 	return (
 		<MainBlock>
-			<Banner>hello</Banner>
+			<BannerBlock>
+			<Banner alt='bannerImage' src={BannerImg} />
+			</BannerBlock>
 			<MainTable>
 				<Thead>
 					<TheadContent>
@@ -161,7 +190,7 @@ export default function Issue() {
 				<TFooter>
 					<TTools>
 						<TSearch>
-							<SearchBtn>검색</SearchBtn>{" "}
+							<SearchBtn to='/serach'>검색</SearchBtn>
 							<SearchText placeholder="검색어를 입력해주세요." />
 						</TSearch>
 						<Guides>
