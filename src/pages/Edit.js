@@ -1,10 +1,8 @@
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
-import ReactHtmlParser from "react-html-parser";
 import "./Ck.css";
-import Status from "../modules/Status";
 
 const BrdBox = styled.form`
 	display: flex;
@@ -51,14 +49,13 @@ const BrdBtn = styled.button`
 `;
 
 export default function Edit() {
-	
 	const [input, setInput] = useState({
 		title: "COVID 19, can we get back daily life oneday?",
 		content: "",
-			});
+	});
 
-	const {title,content} = input
-	
+	const { title, content } = input;
+
 	const [viewContent, setViewContent] = useState([]);
 
 	const getValue = (e) => {
@@ -70,7 +67,6 @@ export default function Edit() {
 	};
 
 	//Remove
-
 
 	// const onUpdate = (id) => {
 	// 	setViewContent(
@@ -163,10 +159,7 @@ export default function Edit() {
 				/>
 			</CKWrapper>
 			<BrdBtnBlock>
-				<BrdBtn
-					onClick=''>
-					저장
-				</BrdBtn>
+				<BrdBtn onClick="">저장</BrdBtn>
 			</BrdBtnBlock>
 		</BrdBox>
 	);
