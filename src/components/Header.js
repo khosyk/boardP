@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { Link, withRouter } from "react-router-dom";
-import uthis from "../uthis.png";
+import uthis from "../images/uthis.png";
 
 const HeaderBlock = styled("header")`
 	display: flex;
@@ -12,8 +12,8 @@ const HeaderBlock = styled("header")`
 	@media (max-width: 480px) {
 		padding-top: 20px;
 		padding-bottom: 10px;
-		padding:0px;
-		margin:5px;
+		padding: 0px;
+		margin: 5px;
 	}
 `;
 
@@ -48,8 +48,8 @@ const Item = styled("ul")`
 	font-weight: 600;
 	color: ${(props) => (props.selected ? "#343a40" : "black")};
 	border-bottom: ${(props) => (props.selected ? "#ff6b6b" : "white")} 2px solid;
-	@media(max-width:480px){
-		font-size:0.8rem;
+	@media (max-width: 480px) {
+		font-size: 0.8rem;
 	}
 `;
 
@@ -65,13 +65,13 @@ export default withRouter(({ location: { pathname } }) => (
 				<Item selected={pathname === "/"}>
 					<Link to="/">HOME</Link>
 				</Item>
-				<Item selected={pathname.startsWith('/issue') }>
+				<Item selected={pathname.startsWith("/issue")}>
 					<Link to="/issue">ISSUE</Link>
 				</Item>
-				<Item selected={pathname.startsWith('/game')}>
+				<Item selected={pathname.startsWith("/game")}>
 					<Link to="/game">GAME</Link>
 				</Item>
-				<Item selected={pathname.startsWith('/movie')}>
+				<Item selected={pathname.startsWith("/movie")}>
 					<Link to="/movie">MOVIE</Link>
 				</Item>
 			</LinkList>
@@ -80,8 +80,10 @@ export default withRouter(({ location: { pathname } }) => (
 	</>
 ));
 
-{/*withRouter(({ location: { pathname } }) => (
+{
+	/*withRouter(({ location: { pathname } }) => (
 	<>
 	
 	</>
-));*/}
+));*/
+}

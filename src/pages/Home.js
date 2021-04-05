@@ -1,11 +1,10 @@
 import React from "react";
 import styled from "styled-components";
-import { ImFire } from "react-icons/im";
 
 //images
-import covid from "../covid.png";
-import diablo from "../diablo2re.png";
-import parasite from "../parasite.png";
+import covid from "../images/covid.png";
+import diablo from "../images/diablo2re.png";
+import parasite from "../images/parasite.png";
 import { Link } from "react-router-dom";
 
 // 제작-> 경쟁과 협력, 커뮤니티 3대종파 이슈 게임 무비,

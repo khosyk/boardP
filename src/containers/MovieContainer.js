@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { FiEdit2 } from "react-icons/fi";
 import List from "../pages/List";
-import BannerImg from "../images/banner.png";
+import BannerImg from "../images/movieBanner.png";
 
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
@@ -35,10 +35,12 @@ const BannerBlock = styled.div`
 const Banner = styled.img`
 	margin-left: auto;
 	margin-right: auto;
+	border-bottom: 1px solid black;
 `;
 
 const MainTable = styled.table`
 	width: 100%;
+	height: 90%;
 `;
 
 //table head
@@ -61,6 +63,7 @@ const TheadContent = styled.tr`
 //table body
 
 const Tbody = styled.tbody`
+	height: 90%;
 	border-bottom: 1px solid rgba(1, 1, 1, 0.5);
 `;
 
@@ -147,7 +150,7 @@ const Post = styled(Link)`
 
 // issue 포스팅 누르면 /issue/1 -> 가라 포스팅 (수정,삭제버튼 링크) -> 수정링크 issue/1/modify /삭제링크 issue/1/delete
 
-class IssueContainer extends Component {
+class MovieContainer extends Component {
 	//data 요청 -> data에서 필요한거 뽑아내기 (여기서는 for,if문을 사용해서 title,id)
 	//얻은 데이터를 원하는 데이터형식으로 (여기선어레이) 저장 , const contents = [] 에 해당 데이터를 넣는다.
 	//해당데이터를 넣는기능은 이전에 리듀서(handleActions)에서 정의한 setList 기능을 mapDispatchToProps를 통해 얻어서 사용;
@@ -241,4 +244,4 @@ const mapDispatchToProps = (dispatch) =>
 		dispatch
 	);
 
-export default connect(mapStateToProps, mapDispatchToProps)(IssueContainer);
+export default connect(mapStateToProps, mapDispatchToProps)(MovieContainer);

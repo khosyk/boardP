@@ -1,8 +1,10 @@
 import { combineReducers } from "redux";
-import issue from "./issue";
+import board from "./boards";
+import detail from "./detail";
 
- const rootReducer = combineReducers({
-	issue,
- });
+const rootReducer = combineReducers({
+	board,
+	detail,
+});
 
-export default rootReducer
+export default rootReducer;
