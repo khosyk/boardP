@@ -15,10 +15,10 @@ export const createReply = createAction(CREATE_REPLY, (data) => data);
 export const deleteReply = createAction(DELETE_REPLY, (data) => data);
 
 export const initialState = {
-	contents: {
+	content: {
 		contentId: 1,
 		title: "",
-		content: "",
+		body: "",
 		userName: "",
 		img: "",
 	},
@@ -31,20 +31,21 @@ export const initialState = {
 	replies: [
 		{
 			id: 0,
-			userName: "helloworld",
+			name: "",
 			replyPassword: "",
 			address: Math.floor(Math.random() * (999 - 100 + 1) + 100),
 			date: new Date(2021, 2, 17, 11).toLocaleDateString(),
-			replyContent: "hello world! I am right here!!",
+			body: "",
 		},
 	],
 };
 
 const detail = handleActions(
 	{
-		[SET_DETAIL]: (state, { payload: contents }) => ({
+		[SET_DETAIL]: (state, { payload: content }) => ({
 			...state,
-			contents,
+			contentId: content.id,
+			content,
 		}),
 		[ON_LIKE]: (state) => ({
 			...state,
@@ -56,8 +57,11 @@ const detail = handleActions(
 		}),
 		[ON_SHARE]: (state) => ({
 			...state,
-			share: state.likeShare.share + 1,
-			shareActive: false,
+			likeShare: {
+				...state.likeShare,
+				share: state.likeShare.share + 1,
+				shareActive: false,
+			},
 		}),
 		[SET_REPLY]: (state, { payload: replies }) => ({
 			...state,

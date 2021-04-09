@@ -75,7 +75,7 @@ const ContentBlock = styled.div`
 	display: flex;
 	flex-direction: column;
 	font-size: 1rem;
-	min-height: 500px;
+	min-height: 230px;
 	border: none;
 `;
 
@@ -261,78 +261,66 @@ const ContentBottomBottomAfter = styled.div`
 	font-size: 1.1rem;
 `;
 
-class GameContainer extends Component {
+class DetailContainer extends Component {
+	id = this.props.match.params.id; //class 변수
 	async componentDidMount() {
-		const contentData = {
-			contentId: 1,
-			title: "COVID 19, can we get back daily life oneday?",
-			content: `<p>
-							Agency chief Tedros Adhanom Ghebreyesus told journalists that
-							WHO’s Advisory Committee on Vaccine Safety has been reviewing
-							available data on the vaccine and will meet with the European
-							Medicines Agency (EMA) on Tuesday. Germany, France, Italy and
-							Spain have become the latest countries to temporarily halt use of
-							the shot, following reports of blood clots in people who received
-							the vaccine from two batches produced in Europe.
-						</p>
-						<br />
-						<p>
-							“This does not necessarily mean these events are linked to
-							vaccination, but it’s routine practice to investigate them, and it
-							shows that the surveillance system works and that effective
-							controls are in place”, Tedros said. Dr. Mariângela Simão, a WHO
-							Assistant Secretary-General, said the agency is working very
-							closely with the EMA, and with national regulatory authorities in
-							Europe and other regions, in assessing the adverse effects of the
-							AstraZeneca vaccine and all other vaccines. WHO has not received
-							reports about “thrombo-embolic events” in other parts of the
-							world, she added. Tedros stressed that “the greatest threat” most
-							countries face now is lack of access to vaccines, saying he
-							receives calls from leaders worldwide “almost every day” asking
-							when their nations will receive doses through the COVAX
-							initiative.
-						</p>
-						<br />
-						<p>
-							Syrian war remembrance The ongoing conflict in Syria has brought
-							the country’s once highly-effective health system “to its knees”,
-							Tedros said in acknowledging the 10th anniversary of the crisis.
-							WHO and its partners continue to deliver services and supplies,
-							protect public health and support a network of more than 1,700
-							health facilities. Tedros pointed out that tragically, Syria is
-							not an isolated case. “Syria is one of many crises around the
-							world, from Myanmar to Yemen and Tigray in Ethiopia, where
-							millions of people have been denied access to essential health
-							services, and where health facilities have been destroyed and
-							health workers have been attacked and intimidated.
-						</p>`,
-			userName: "helloworld",
-			img: { covid },
-		};
+		try {
+			const result = await axios.get(
+				`https://jsonplaceholder.typicode.com/posts/${this.id}` // this = class
+			);
 
-		this.props.setDetail(contentData);
+			result.data.like = 1;
+			result.data.share = 1;
+			const { data } = result;
+
+			this.props.setDetail(data);
+
+			const replyResult = await axios.get(
+				" https://jsonplaceholder.typicode.com/posts/1/comments"
+			);
+			const { data: replyData } = replyResult;
+			this.props.setReply(replyData);
+		} catch (error) {
+			alert(`error :( :(${error})`);
+		}
 	}
 
 	render() {
-		const { likeShare, contents, replies } = this.props;
+		const { likeShare, content, replies } = this.props;
 
-		const onRemove = () => {
-			if (window.confirm("정말 삭제합니까?")) {
-				alert("삭제되었습니다.");
-			} else {
-				alert("취소합니다.");
-			}
+		
+
+		const onRemove = async () => {
+			try {
+				if (window.confirm("정말 삭제합니까?")) {
+					const url = "https://jsonplaceholder.typicode.com/posts/1/";
+					const replyRemove = await axios.delete(url); // delete는 파라미터가 url만 이씀
+
+					alert("삭제되었습니다.");
+				} else {
+					alert("취소합니다.");
+				}
+			} catch (error) {}
 		};
 
 		const likeButton = document.getElementsByClassName("like");
 
 		const onLike = () => {
 			if (likeShare.likeActive === true) {
+				const likeData = axios.put(
+					" https://jsonplaceholder.typicode.com/posts/1",
+					{
+						like: "likecountup",
+					}
+				);
+				console.log(likeData);
+
 				this.props.onLike();
-				console.log(likeShare.likeActive, likeShare.like);
+
 				likeButton[0].attributes.style.textContent =
 					"color: #ffa8a8; font-size: 30px; cursor: pointer; transition: all 0.5s ease-in";
 			} else {
+				alert("한명당 한번만 가능해요.");
 				return;
 			}
 		};
@@ -341,6 +329,10 @@ class GameContainer extends Component {
 			window.prompt("아래 주소를 복사해서 공유해주세요.", currentAddress);
 			if (likeShare.shareActive === true) {
 				console.log(this.props);
+				axios.put(" https://jsonplaceholder.typicode.com/posts/1", {
+					share: "sharecountup",
+				});
+				this.props.onShare();
 			} else {
 				return;
 			}
@@ -350,33 +342,51 @@ class GameContainer extends Component {
 
 		const currentAddress = window.location.href;
 
-		const ReplyInput = {
+		var replyInput = {
 			id: 0,
-			userName: "",
+			name: "",
 			replyPassword: "",
-			address: Math.floor(Math.random() * (999 - 100 + 1) + 100),
-			date: new Date(2021, 2, 17, 11).toLocaleDateString(),
-			replyContent: "",
+			body: "",
 		};
 
 		function handleReplyInput(e) {
 			const { name, value } = e.target;
-			ReplyInput.push({
+			replyInput = {
+				...replyInput,
 				[name]: value,
-			});
+			};
 		}
 
-		const { userName, replyPassword, replyContent } = this.props.replies;
+		async function createReply() {
+			const { name, replyPassword, body } = replyInput;
+			if (name !== "" && replyPassword !== "" && body !== "") {
+				try {
+					const { name, body } = replyInput;
 
-		function createReply() {
-			if (userName !== "" && replyPassword !== "" && replyContent !== "") {
+					const url = "https://jsonplaceholder.typicode.com/posts/1/comments";
+					const data = JSON.stringify({
+						name,
+						body,
+						userId: "",
+					});
+					const replyResult = await axios.post(url, data);
+					console.log(replyResult);
+				} catch (error) {
+					alert(`error:${error}`);
+				}
 			} else {
 				alert("작성자명, 비밀번호, 댓글을 입력해주세요.");
 			}
 		}
 
-		function handleRemove(id) {
+		async function handleRemove() {
 			if (window.confirm("정말 삭제합니까?")) {
+				try {
+					const url = "https://jsonplaceholder.typicode.com/posts/1/";
+					const replyRemove = await axios.delete(url); // delete는 파라미터가 url만 이씀
+				} catch (error) {
+					console.log(error);
+				}
 				alert("삭제 되었습니다.");
 			} else {
 				alert("취소합니다.");
@@ -388,12 +398,14 @@ class GameContainer extends Component {
 				<MainPosition>
 					<MainBlock>
 						<Title>
-							<span>{contents.title}</span>
+							<span>
+								{this.id} : {content.title}
+							</span>
 						</Title>
 						<ContentBlock>
 							<Content>
 								<BtnBlock>
-									<BtnEdit to={`/issue/${1}/edit`}>
+									<BtnEdit to={`/issue/${1}/edit`} >
 										<VscEdit style={{ fontSize: "0.7rem" }} />
 										<span style={{ paddingLeft: "2px" }}>수정</span>
 									</BtnEdit>
@@ -402,8 +414,12 @@ class GameContainer extends Component {
 										<span style={{ paddingLeft: "2px" }}>삭제</span>
 									</BtnDelete>
 								</BtnBlock>
-								<ContentImg src={covid} alt="covid image" />
-								{ReactHtmlParser(contents.content)}
+								{content.img ? (
+									<ContentImg src={content.img} alt={content.img} />
+								) : (
+									<br />
+								)}
+								{ReactHtmlParser(content.body)}
 							</Content>
 							<ContentBottomPosition>
 								<ContentBottomBlock>
@@ -469,14 +485,14 @@ class GameContainer extends Component {
 							count={replies.id}
 							handleReplyInput={handleReplyInput}
 							createReply={createReply}
+							ReplyInput={replyInput}
 							ReplyData={replies}
-							ReplyInput={ReplyInput}
 							handleRemove={handleRemove}
 						/>
 					</MainBlock>
 					<Route
 						path="/issue/:id/edit"
-						contentData={contents.contentData}
+						contentData={content.contentData}
 						component={Edit}>
 						<Edit />
 					</Route>
@@ -487,7 +503,7 @@ class GameContainer extends Component {
 }
 
 const mapStateToProps = (state) => ({
-	contents: state.detail.contents,
+	content: state.detail.content,
 	likeShare: state.detail.likeShare,
 	replies: state.detail.replies,
 });
@@ -508,7 +524,7 @@ const mapDispatchToProps = (dispatch) =>
 export default compose(
 	withRouter,
 	connect(mapStateToProps, mapDispatchToProps)
-)(GameContainer);
+)(DetailContainer);
 
 //   withRouter(({ location: { pathname } }) =>
 //   {

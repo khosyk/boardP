@@ -85,20 +85,13 @@ const ReplyContentbox = styled.div`
 `;
 
 export default function ReplyContents({ ReplyData, handleRemove }) {
-	const {
-		userName,
-		replyPassword,
-		address,
-		date,
-		replyContent,
-		id,
-	} = ReplyData;
+	const { name, replyPassword, address, date, body, id } = ReplyData;
 	return (
 		<RepliesPosition id={id}>
 			<ReplyContentBlock>
 				<ReplyContentTopPosition>
 					<ReplyContentTopBlock>
-						<ReplyContentName>{userName}</ReplyContentName>
+						<ReplyContentName>{name}</ReplyContentName>
 						<ReplyIpAddress>(*.{address})</ReplyIpAddress>
 						<Replytime>{date}</Replytime>
 					</ReplyContentTopBlock>
@@ -111,7 +104,7 @@ export default function ReplyContents({ ReplyData, handleRemove }) {
 						</ReplyButtons>
 					</ReplyButtonBlock>
 				</ReplyContentTopPosition>
-				<ReplyContentbox>{replyContent}</ReplyContentbox>
+				<ReplyContentbox>{body}</ReplyContentbox>
 			</ReplyContentBlock>
 		</RepliesPosition>
 	);

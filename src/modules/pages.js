@@ -1,6 +1,6 @@
 import { createAction, handleActions } from "redux-actions";
 
-const SET_LIST = "board/SET_LIST";
+const SET_LIST = "pages/SET_LIST";
 
 export const setList = createAction(SET_LIST, (data) => data);
 
@@ -15,15 +15,15 @@ const initialState = {
 			id: "",
 			title: "",
 			reviewTotal: "",
-      totalReview: "",
-      date:'',
+			totalReview: "",
+			date: "",
 		},
 	],
 };
 
-const board = handleActions(
+const pages = handleActions(
 	{
-		[SET_LIST]: (state, { payload:contents }) => ({
+		[SET_LIST]: (state, { payload: contents }) => ({
 			...state,
 			contents,
 		}),
@@ -31,4 +31,4 @@ const board = handleActions(
 	initialState
 );
 
-export default board;
+export default pages;

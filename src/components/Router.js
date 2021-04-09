@@ -22,8 +22,9 @@ export default function Router() {
 				<Route path="/issue" exact component={Issue} />
 				<Route path="/game" component={Game} />
 				<Route path="/movie" component={Movie} />
-				<Route path="/board" component={Board}/>
-				<Route path="/issue/:id" exact component={Detail} />
+				<Route path="/board" component={Board} />
+				<Route path="/issue/:id" exact component={Detail} />{" "}
+				{/* /:id -> 변수 */}
 				<Route path="/issue/:id/edit" component={Edit} />
 			</Switch>
 		</Rotuer>

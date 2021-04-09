@@ -7,7 +7,7 @@ import BannerImg from "../images/gameBanner.png";
 
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import { setList } from "../modules/boards";
+import { setList } from "../modules/pages";
 import axios from "axios";
 
 const MainBlock = styled.div`
@@ -232,8 +232,8 @@ class MovieContainer extends Component {
 }
 
 const mapStateToProps = (state) => ({
-	page: state.board.page,
-	contents: state.board.contents,
+	page: state.pages.page,
+	contents: state.pages.contents,
 });
 
 const mapDispatchToProps = (dispatch) =>

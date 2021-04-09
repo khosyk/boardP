@@ -3,7 +3,12 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@ckeditor/ckeditor5-basic-styles": "^27.0.0",
     "@ckeditor/ckeditor5-build-classic": "^26.0.0",
+    "@ckeditor/ckeditor5-editor-classic": "^27.0.0",
+    "@ckeditor/ckeditor5-essentials": "^27.0.0",
+    "@ckeditor/ckeditor5-heading": "^27.0.0",
+    "@ckeditor/ckeditor5-paragraph": "^27.0.0",
     "@ckeditor/ckeditor5-react": "^3.0.2",
     "@testing-library/jest-dom": "^5.11.9",
     "@testing-library/react": "^11.2.5",

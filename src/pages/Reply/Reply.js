@@ -1,8 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import {
-	VscArrowSmallUp,
-} from "react-icons/vsc";
+import { VscArrowSmallUp } from "react-icons/vsc";
 import ReplyContents from "./ReplyContents";
 
 const ReplyBlock = styled.div`
@@ -131,10 +129,10 @@ export default function Reply({
 	createReply,
 	ReplyData,
 	count,
-	ReplyInput,
 	handleRemove,
+	ReplyInput,
 }) {
-	const { userName, replyPassword, replyContent } = ReplyInput;
+	const { name, replyPassword, body } = ReplyData;
 
 	return (
 		<>
@@ -143,10 +141,10 @@ export default function Reply({
 					<div>전체 댓글 ({count > 0 ? count : 0})</div>
 				</ReplyHeader>
 				<ReplyBody>
-					{ReplyData.map((row) => (
+					{ReplyData.map((ReplyData) => (
 						<ReplyContents
-							key={row.id}
-							ReplyData={row}
+							key={ReplyData.id}
+							ReplyData={ReplyData}
 							handleRemove={handleRemove}
 						/>
 					))}
@@ -156,11 +154,11 @@ export default function Reply({
 				<ReplyInputPosition>
 					<ReplyInputTopBlock>
 						<ReplyInputName
-							name="userName"
+							name="name"
 							onInput={handleReplyInput}
 							maxLength="10"
 							placeholder="작성자 이름"
-							value={userName}
+							value={name}
 						/>
 						<ReplyInputPassword
 							onInput={handleReplyInput}
@@ -174,10 +172,10 @@ export default function Reply({
 						</ReplyInputButtonBlock>
 					</ReplyInputTopBlock>
 					<ReplyInputContent
-						name="replyContent"
+						name="body"
 						onInput={handleReplyInput}
 						placeholder="댓글을 작성해주세요."
-						value={replyContent}
+						value={body}
 					/>
 					<ReplyToolTip>
 						댓글창 사이즈를 변경 할 수 있어요. <VscArrowSmallUp />

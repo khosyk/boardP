@@ -33,7 +33,8 @@ const TContent = styled.span`
 	display: inline-block;
 	font-size: 0.9rem;
 	color: #212529;
-	height: 0.9rem;
+	height: 1.2rem;
+	padding-top: 0.1rem;
 	word-break: break-word;
 	overflow: hidden;
 	text-overflow: ellipsis;
