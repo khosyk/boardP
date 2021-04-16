@@ -1,14 +1,15 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import { FiEdit2 } from "react-icons/fi";
-import List from "../pages/List";
-import BannerImg from "../images/movieBanner.png";
-
-import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import { setList } from "../modules/pages";
+import { bindActionCreators } from "redux";
 import axios from "axios";
+
+import BannerImg from "../images/movieBanner.png";
+import { FiEdit2 } from "react-icons/fi";
+
+import List from "../pages/List";
+import { setList } from "../modules/pages";
 
 const MainBlock = styled.div`
 	width: 90%;

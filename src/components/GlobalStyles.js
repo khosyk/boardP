@@ -29,6 +29,9 @@ const GlobalStyles = createGlobalStyle`
     textarea{
       font-family: "NanumBarunpenR";
     }
+    button{
+      font-family:'NanumBarunpenR';
+    }
 `;
 
 export default GlobalStyles;
