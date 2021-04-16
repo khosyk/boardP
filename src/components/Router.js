@@ -12,6 +12,9 @@ import Header from "./Header";
 import Board from "../pages/Board";
 import Detail from "../pages/Detail";
 import Edit from "../pages/Edit";
+import Siginin from '../pages/SignIn';
+import Login from '../pages/Login';
+
 
 export default function Router() {
 	return (
@@ -19,6 +22,8 @@ export default function Router() {
 			<Header />
 			<Switch>
 				<Route path="/" exact component={Home} />
+				<Route path="/signIn" exact component={Siginin} />
+				<Route path='/login' exact component={Login}/>
 				<Route path="/issue" exact component={Issue} />
 				<Route path="/game" component={Game} />
 				<Route path="/movie" component={Movie} />
