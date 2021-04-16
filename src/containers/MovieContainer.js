@@ -16,7 +16,6 @@ const MainBlock = styled.div`
 	margin-left: auto;
 	margin-right: auto;
 	background-color: rgba(255, 255, 255, 0.9);
-	height: 48rem;
 	box-sizing: border-box;
 	margin-top: -0.5px;
 	margin-bottom: 10vh;

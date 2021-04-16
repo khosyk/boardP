@@ -145,8 +145,6 @@ export default function BoardContainer() {
 		e.preventDefault();
 		setViewContent(viewContent.concat({ ...input }));
 
-		console.log("Check Vale", id, content, title);
-
 		try {
       const url = "https://jsonplaceholder.typicode.com/posts";      
 
