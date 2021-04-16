@@ -266,13 +266,10 @@ class DetailContainer extends Component {
 	async componentDidMount() {
 		try {
 			const result = await axios.get(
-				`https://jsonplaceholder.typicode.com/posts/${this.id}` // this = class
+				`http://119.196.223.231:4000/posts/${this.id}` // this = class
 			);
-
-			result.data.like = 1;
-			result.data.share = 1;
 			const { data } = result;
-
+			console.log(data);
 			this.props.setDetail(data);
 
 			const replyResult = await axios.get(
@@ -287,8 +284,6 @@ class DetailContainer extends Component {
 
 	render() {
 		const { likeShare, content, replies } = this.props;
-
-		
 
 		const onRemove = async () => {
 			try {
@@ -401,11 +396,12 @@ class DetailContainer extends Component {
 							<span>
 								{this.id} : {content.title}
 							</span>
+							<span>{content.userId}</span>
 						</Title>
 						<ContentBlock>
 							<Content>
 								<BtnBlock>
-									<BtnEdit to={`/issue/${1}/edit`} >
+									<BtnEdit to={`/issue/${1}/edit`}>
 										<VscEdit style={{ fontSize: "0.7rem" }} />
 										<span style={{ paddingLeft: "2px" }}>수정</span>
 									</BtnEdit>

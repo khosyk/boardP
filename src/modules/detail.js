@@ -19,7 +19,7 @@ export const initialState = {
 		contentId: 1,
 		title: "",
 		body: "",
-		userName: "",
+		userId: "",
 		img: "",
 	},
 	likeShare: {
@@ -44,8 +44,8 @@ const detail = handleActions(
 	{
 		[SET_DETAIL]: (state, { payload: content }) => ({
 			...state,
-			contentId: content.id,
-			content,
+			contentId: content[0].id,
+			content: content[0],
 		}),
 		[ON_LIKE]: (state) => ({
 			...state,

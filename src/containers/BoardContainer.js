@@ -148,7 +148,7 @@ export default function BoardContainer() {
 		console.log("Check Vale", id, content, title);
 
 		try {
-			const url = "https://jsonplaceholder.typicode.com/posts";
+      const url = "https://jsonplaceholder.typicode.com/posts";      
 
 			const data = JSON.stringify({
 				title,
