@@ -252,10 +252,10 @@ function LoginContainer({user, setLogin})
 					{randomHello}		
 				</LoginHello>
 				<LoginIdBox>
-						<LoginIdInput ref={idRef} name='userId' onInput={getValue} value={userId} placeholder='아이디'/>
+						<LoginIdInput required ref={idRef} name='userId' onInput={getValue} value={userId} placeholder='아이디'/>
 				</LoginIdBox>
 				<LoginPWBox>
-						<LoginPWInput ref={passwordRef} name='password' onInput={getValue} value={password} placeholder='비밀번호'/>
+						<LoginPWInput required type='password' ref={passwordRef} name='password' onInput={getValue} value={password} placeholder='비밀번호'/>
 					</LoginPWBox>
 				<LoginButtonBlock>
 					<LoginBottomButton onClick={onClickLogin} >로그인</LoginBottomButton>

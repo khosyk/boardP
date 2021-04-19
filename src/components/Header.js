@@ -1,9 +1,9 @@
-import React,{useState} from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { Link, withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import { bindActionCreators, compose } from "redux";
-import { setLogin } from '../modules/login';
+import { logout } from "../modules/login";
 
 import uthis from "../images/uthis.png";
 
@@ -16,7 +16,7 @@ const HeaderBlock = styled("header")`
 	justify-content: center;
 	@media (max-width: 480px) {
 		padding: 0px;
-		padding-top:5px;
+		padding-top: 5px;
 		margin: 5px 30px;
 	}
 `;
@@ -61,82 +61,80 @@ const Border = styled("div")`
 	border-top: rgba(0, 0, 0, 0.3) groove 1.5px;
 `;
 
-
 // menus
-
 
 // mobile Menus
 
 const VisibleButton = styled.div`
-	width:25px;
-	height:25px;
-	position:absolute;
-	top:8px;
-	left:16px;
-	display:none;
-	visibility:hidden;
+	width: 25px;
+	height: 25px;
+	position: absolute;
+	top: 8px;
+	left: 16px;
+	display: none;
+	visibility: hidden;
 	@media (max-width: 480px) {
-	display:block;
-	visibility:visible;
-}
+		display: block;
+		visibility: visible;
+	}
 `;
 
 const VisibleMenus = styled.div`
-	position:absolute;
-	width:100%;
-	top:0px;
-	height:135px;
-	background-color:rgba(0,0,0,0.8);
-	display:none;
-	align-items:center;
-	flex-direction:column;
-	z-index:999;
+	position: absolute;
+	width: 100%;
+	top: 0px;
+	height: 135px;
+	background-color: rgba(0, 0, 0, 0.8);
+	display: none;
+	align-items: center;
+	flex-direction: column;
+	z-index: 999;
 	@media (max-width: 480px) {
-	display:flex;
-	visibility:visible;
-}
+		display: flex;
+		visibility: visible;
+	}
 `;
 
 const LoginCloseButton = styled.div`
-	position:relative;
-	display:flex;
-	justify-content:flex-end;
-	top:7px;
-	right:10px;
-	width:100%;
+	position: relative;
+	display: flex;
+	justify-content: flex-end;
+	top: 7px;
+	right: 10px;
+	width: 100%;
 `;
 
 const LoginBlock = styled.div`
-	background-color:rgba(255,255,255,0.9);
-	border:1px solid rgba(255,255,255,1);
-	border-radius:3px;
-	width:60%;
-	height:60%;
-	display:flex;
-	flex-direction:column;
-`
+	background-color: rgba(255, 255, 255, 0.9);
+	border: 1px solid rgba(255, 255, 255, 1);
+	border-radius: 3px;
+	width: 60%;
+	height: 60%;
+	display: flex;
+	flex-direction: column;
+`;
 
 const LoginIdBox = styled.div`
 	margin-top: 10px;
 `;
 
 const LoginIdSpan = styled.span`
-	font-size:0.8rem;
-	display:inline-block;
-	margin-left:25px;
-	width:20px;
+	font-size: 0.8rem;
+	display: inline-block;
+	margin-left: 25px;
+	width: 20px;
 `;
 
 const LoginIdInput = styled.input`
-	border:none;
-	margin-left:5px;
-	width:100px;
-	height:1rem;
-	font-size:0.8rem;
-	border-radius:2px;
-	&:focus{
-	outline: none !important;
-    border:1px solid rgba(0,0,0,0.5);
+	border: none;
+	margin-left: 5px;
+	width: 100px;
+	height: 1rem;
+	font-size: 0.8rem;
+	border-radius: 2px;
+	&:focus {
+		outline: none !important;
+		border: 1px solid rgba(0, 0, 0, 0.5);
 	}
 `;
 
@@ -145,134 +143,168 @@ const LoginPWBox = styled.div`
 `;
 
 const LoginPwSpan = styled.span`
-	display:inline-block;
-	font-size:0.8rem;
-	margin-left:25px;
-	width:20px;
+	display: inline-block;
+	font-size: 0.8rem;
+	margin-left: 25px;
+	width: 20px;
 `;
 
 const LoginPWInput = styled.input`
-	border:none;
-	margin-left:5px;
-	width:100px;
-	height:1rem;
-	font-size:0.8rem;
-	border-radius:2px;
-	&:focus{
-	outline: none !important;
-    border:1px solid rgba(0,0,0,0.5);
+	border: none;
+	margin-left: 5px;
+	width: 100px;
+	height: 1rem;
+	font-size: 0.8rem;
+	border-radius: 2px;
+	&:focus {
+		outline: none !important;
+		border: 1px solid rgba(0, 0, 0, 0.5);
 	}
 `;
 
 const LoginButtonBlock = styled.div`
-	margin-top:5px;
-	margin-left:55px;
+	margin-top: 5px;
+	margin-left: 55px;
 `;
 
 const LoginButton = styled(Link)`
-	border:1px solid rgba(0,0,0,0.5);
-	padding:0px 5px;
+	border: 1px solid rgba(0, 0, 0, 0.5);
+	padding: 0px 5px;
 	border-radius: 2px;
-	background-color:white;
-	font-size:0.7rem;
+	background-color: white;
+	font-size: 0.7rem;
 `;
 
 const LoginButtonMenu = styled(Link)`
-	font-size:0.7rem;
-	margin-left:10px;
+	font-size: 0.7rem;
+	margin-left: 10px;
 `;
 
-
 const LoginBottomBlock = styled.div`
-	background-color:rgba(255,255,255,0.9);
-	border-radius:3px;
-	margin-top:5px;
-	width:70%;
-	padding-bottom:2px;
-`
+	background-color: rgba(255, 255, 255, 0.9);
+	border-radius: 3px;
+	margin-top: 5px;
+	width: 70%;
+	padding-bottom: 2px;
+`;
 
 const LoginBottomMenu = styled(Link)`
-	font-size:0.7rem;
-	margin-left:10px;
-	&:active:hover{
-	color:red;
-	background-color:rgba(255,255,255,0.9);
+	font-size: 0.7rem;
+	margin-left: 10px;
+	&:active:hover {
+		color: red;
+		background-color: rgba(255, 255, 255, 0.9);
 	}
 `;
 
 // PC Version Menus
 
 const HeaderTopBlock = styled.div`
-	width:100%;
-	display:flex;
-	justify-content:flex-end;
+	width: 100%;
+	display: flex;
+	justify-content: flex-end;
 	@media (max-width: 480px) {
-	display:none;
-	visibility:hidden;
-}
+		display: none;
+		visibility: hidden;
+	}
 `;
 
 const HeaderTopList = styled.li`
 	margin-top: 10px;
 	display: flex;
-	justify-content: space-between;
-	width:100px;
-	margin-right:20px;
+	justify-content: space-around;
+	width: 180px;
+	margin-right: 20px;
 `;
 
 const HeaderTopMenus = styled.ul`
-	font-size: 12px;
+	font-size: 13px;
 	font-weight: 600;
-	color: ${(props) => (props.selected ? "#343a40" : "black")};
-	border-bottom: ${(props) => (props.selected ? "#ff6b6b" : "white")} 2px solid;
-	&:active{
-		color:red;
+`;
+
+const HeaderTopSignin = styled.span`
+	cursor: pointer;
+	&:hover {
+		text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+	}
+	&:active {
+		color: red;
 	}
 `;
 
+const HeaderTopUserBlock = styled.span``;
+
+const HeaderTopUser = styled.span``;
+
+const HeaderTopLogout = styled.a`
+	margin-left: 20px;
+	cursor: pointer;
+	&:hover {
+		text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+	}
+	&:active {
+		color: red;
+	}
+`;
 
 const Header = ({ location: { pathname }, user }) => {
-
-	const [visibleMenu, setVisibleMenu] = useState(false)
+	const [visibleMenu, setVisibleMenu] = useState(false);
 	return (
 		<>
 			<Main src={uthis} />
-			 <VisibleButton onClick={() => setVisibleMenu(!visibleMenu)}>
-				<BiMenu style={{fontSize:'1rem', color:' rgba(0, 0, 0, 0.7)'}}/>
+			<VisibleButton onClick={() => setVisibleMenu(!visibleMenu)}>
+				<BiMenu style={{ fontSize: "1rem", color: " rgba(0, 0, 0, 0.7)" }} />
 			</VisibleButton>
-			{visibleMenu ?
+			{visibleMenu ? (
 				<VisibleMenus>
 					<LoginCloseButton>
-						<BiXCircle onClick={() => setVisibleMenu(!visibleMenu)} style={{fontSize:'1rem',color:'rgba(255,255,255,0.8)'}}/>
+						<BiXCircle
+							onClick={() => setVisibleMenu(!visibleMenu)}
+							style={{ fontSize: "1rem", color: "rgba(255,255,255,0.8)" }}
+						/>
 					</LoginCloseButton>
 					<LoginBlock>
 						<LoginIdBox>
-							<LoginIdSpan>I D:</LoginIdSpan> <LoginIdInput/>
+							<LoginIdSpan>I D:</LoginIdSpan> <LoginIdInput />
 						</LoginIdBox>
 						<LoginPWBox>
-							<LoginPwSpan>PW:</LoginPwSpan> <LoginPWInput/>
+							<LoginPwSpan>PW:</LoginPwSpan> <LoginPWInput />
 						</LoginPWBox>
 						<LoginButtonBlock>
-							<LoginButton to='/login'>로그인</LoginButton>
-							<LoginButtonMenu to='/signIn'>회원가입</LoginButtonMenu>
+							<LoginButton to="/login">로그인</LoginButton>
+							<LoginButtonMenu to="/signIn">회원가입</LoginButtonMenu>
 						</LoginButtonBlock>
 					</LoginBlock>
 					<LoginBottomBlock>
-						<LoginBottomMenu to='/find'>
-							아이디를 잊으셨나요?
-						</LoginBottomMenu>
-						<LoginBottomMenu to='/find'>
-							패스워드를 잊으셨나요?
-						</LoginBottomMenu>
+						<LoginBottomMenu to="/find">아이디를 잊으셨나요?</LoginBottomMenu>
+						<LoginBottomMenu to="/find">패스워드를 잊으셨나요?</LoginBottomMenu>
 					</LoginBottomBlock>
-				</VisibleMenus> :''}
+				</VisibleMenus>
+			) : (
+				""
+			)}
 			<HeaderTopBlock>
 				<HeaderTopList>
 					<HeaderTopMenus>
-						{user.userActive ? <span>{user.userId} 님</span>: <Link to='/login'>로그인</Link> }
+						{user.userActive ? (
+							<HeaderTopUserBlock>
+								<HeaderTopUser>{user.userId} 님</HeaderTopUser>
+                <HeaderTopLogout onClick={() =>
+                {
+                  logout();
+                  console.log(user);
+                }}>
+									로그아웃
+								</HeaderTopLogout>
+							</HeaderTopUserBlock>
+						) : (
+							<Link to="/login">로그인</Link>
+						)}
 					</HeaderTopMenus>
 					<HeaderTopMenus>
-						<Link to='/signIn'>회원가입</Link>
+						<HeaderTopSignin>
+							<Link to="/signIn">회원가입</Link>
+						</HeaderTopSignin>
 					</HeaderTopMenus>
 				</HeaderTopList>
 			</HeaderTopBlock>
@@ -294,24 +326,23 @@ const Header = ({ location: { pathname }, user }) => {
 				</LinkList>
 			</HeaderBlock>
 			<Border />
-		</>);
-}
-
-
+		</>
+	);
+};
 
 const mapStateToProps = (state) => ({
-	user: state.login.user
+	user: state.login.user,
 });
 
 const mapDispatchToProps = (dispatch) =>
 	bindActionCreators(
 		{
-			setLogin
+			logout,
 		},
 		dispatch
 	);
 
-	export default compose(
-		withRouter,
-		connect(mapStateToProps, mapDispatchToProps)
-	)(Header);
+export default compose(
+	withRouter,
+	connect(mapStateToProps, mapDispatchToProps)
+)(Header);

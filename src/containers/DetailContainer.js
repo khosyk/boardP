@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import styled from "styled-components";
-import { Route, Link, withRouter } from "react-router-dom";
+import { Route, Link, withRouter, useHistory } from "react-router-dom";
 import ReactHtmlParser from "react-html-parser";
 import { bindActionCreators, compose } from "redux";
 import { connect } from "react-redux";
@@ -269,11 +269,10 @@ class DetailContainer extends Component {
 				`http://119.196.223.231:4000/posts/${this.id}` // this = class
 			);
 			const { data } = result;
-			console.log(data);
 			this.props.setDetail(data);
 
 			const replyResult = await axios.get(
-				" https://jsonplaceholder.typicode.com/posts/1/comments"
+				`https://jsonplaceholder.typicode.com/posts/${this.id}/comments`
 			);
 			const { data: replyData } = replyResult;
 			this.props.setReply(replyData);
@@ -288,22 +287,24 @@ class DetailContainer extends Component {
 		const onRemove = async () => {
 			try {
 				if (window.confirm("정말 삭제합니까?")) {
-					const url = "https://jsonplaceholder.typicode.com/posts/1/";
-					const replyRemove = await axios.delete(url); // delete는 파라미터가 url만 이씀
-
+					const url = `http://119.196.223.231:4000/posts/${this.id}/`;
+					await axios.delete(url); // delete는 파라미터가 url만 이씀
 					alert("삭제되었습니다.");
+					window.history.back();
 				} else {
 					alert("취소합니다.");
 				}
-			} catch (error) {}
+			} catch (error) {
+				alert(`error :( :(${error})`);
+			}
 		};
 
 		const likeButton = document.getElementsByClassName("like");
-		
+
 		const onLike = () => {
 			if (likeShare.likeActive === true) {
 				const likeData = axios.put(
-					" https://jsonplaceholder.typicode.com/posts/1",
+					`https://jsonplaceholder.typicode.com/posts/${this.id}`,
 					{
 						like: "likecountup",
 					}
@@ -324,7 +325,7 @@ class DetailContainer extends Component {
 			window.prompt("아래 주소를 복사해서 공유해주세요.", currentAddress);
 			if (likeShare.shareActive === true) {
 				console.log(this.props);
-				axios.put(" https://jsonplaceholder.typicode.com/posts/1", {
+				axios.put(`https://jsonplaceholder.typicode.com/posts/${this.id}`, {
 					share: "sharecountup",
 				});
 				this.props.onShare();

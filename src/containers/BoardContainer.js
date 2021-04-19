@@ -28,7 +28,11 @@ const BrdToolbar = styled.div`
 `;
 
 const BrdImageUpload = styled.label`
+	display: flex;
+	height: 50px;
+	margin: 5px 0px;
 	border: 1px solid black;
+	cursor: pointer;
 `;
 
 const BrdBtnBlock = styled.div`
@@ -146,7 +150,7 @@ export default function BoardContainer() {
 		setViewContent(viewContent.concat({ ...input }));
 
 		try {
-      const url = "https://jsonplaceholder.typicode.com/posts";      
+			const url = "https://jsonplaceholder.typicode.com/posts";
 
 			const data = JSON.stringify({
 				title,
@@ -200,7 +204,7 @@ export default function BoardContainer() {
 				value={viewContent.title}
 			/>
 			<BrdToolbar>
-				<BrdImageUpload for="input-file"> 이미지 업로드 </BrdImageUpload>
+				<BrdImageUpload htmlFor="input-file"> 이미지 업로드 </BrdImageUpload>
 				<input
 					id="input-file"
 					type="file"
