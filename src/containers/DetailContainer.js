@@ -299,7 +299,7 @@ class DetailContainer extends Component {
 		};
 
 		const likeButton = document.getElementsByClassName("like");
-
+		
 		const onLike = () => {
 			if (likeShare.likeActive === true) {
 				const likeData = axios.put(

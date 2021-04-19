@@ -1,8 +1,6 @@
 import React, { useRef, useState } from "react";
-import { Link, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import styled from "styled-components";
-import { connect, useStore } from "react-redux";
-import { bindActionCreators } from "redux";
 import axios from "axios";
 import { FcGoogle } from "react-icons/fc";
 import { RiKakaoTalkFill } from "react-icons/ri";

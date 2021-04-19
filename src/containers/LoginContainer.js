@@ -1,11 +1,12 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useMemo, useRef, useState } from "react";
+import { Link, useHistory } from "react-router-dom";
 import styled from "styled-components";
-import { connect, useStore } from "react-redux";
+import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import axios from "axios";
 import { FcGoogle } from "react-icons/fc";
-import {RiKakaoTalkFill} from 'react-icons/ri'
+import { RiKakaoTalkFill } from 'react-icons/ri';
+import { setLogin } from '../modules/login';
 const MainPosition = styled.div`
 	display: flex;
 	flex-direction: column;
@@ -46,7 +47,7 @@ const LoginBlock = styled.div`
 
 const LoginLogin = styled.div`
 	font-size:1.5rem;
-	margin-top:80px;
+	margin-top:90px;
 	font-weight:600;
 `
 
@@ -102,11 +103,12 @@ const LoginButtonBlock = styled.div`
 	justify-content:center;
 `;
 
-const LoginBottomButton = styled(Link)`
+const LoginBottomButton = styled.a`
 	font-size:1rem;
 	border:1px solid grey;
 	border-radius:2px;
 	padding: 5px 20px;
+	cursor:pointer;
 	&:active{
 	color:red;
 	background-color:rgba(0,0,0,0.01);
@@ -176,16 +178,68 @@ const LoginFootKakao = styled(RiKakaoTalkFill)`
 
 
 
-function LoginContainer()
+function LoginContainer({user, setLogin})
 {
 	
-	const randomHello = () => {
+// 1. 회원가입이 되어있는가? -> y 2. 회원 확인  -> y 3. 로그인 정보 확인 -> y 4. 페이지 이동 (다른페이지에서도 유지)
+
+	const randomHello = useMemo(() => {
 		var a = ['와줘서 고마워요. ;)', '오늘도 좋은 하루! :)', '봐도 봐도 좋네 :D', '헬로 월드 ;)'];
 		var b = Math.floor(Math.random() * 4);
 		
 		return a[b]
-	}
+	},[]);
 
+
+	const [input, setInput] = useState({
+		userId: "",
+		password: "",
+	});
+
+	const { userId, password } = input;
+
+	const getValue = (e) => {
+		const { name, value } = e.target;
+		setInput({
+			...input,
+			[name]: value,
+		});
+	};
+
+	const example = [
+		{
+			userId: "test1",
+			password:'test2'
+		}
+	];
+
+	
+	const idRef = useRef(null);
+	const passwordRef = useRef(null);
+	const history = useHistory();
+
+	const onClickLogin = (e) => {
+		e.preventDefault();
+		if (userId === '' || password === '') {
+			alert('아이디, 비밀번호를 입력해주세요.');
+			idRef.current.focus();
+		} else {
+			for (let i = 0; i < example.length; i++){
+				if (example[i].userId !== userId) {
+					alert('아이디를 확인해주세요.')
+					idRef.current.focus();
+					return false;
+				} else if( example[i].password !== password) {
+					alert('비밀번호를 확인해주세요.')
+					passwordRef.current.focus();
+					return false;
+				} else {
+					setLogin(userId);
+					console.log(user,'t2');
+				}
+			}
+		}
+	}
 
     return (
     <MainPosition>
@@ -195,16 +249,16 @@ function LoginContainer()
 					로그인
 				</LoginLogin>
 				<LoginHello>
-					{randomHello()}		
+					{randomHello}		
 				</LoginHello>
 				<LoginIdBox>
-					<LoginIdInput placeholder='아이디'/>
+						<LoginIdInput ref={idRef} name='userId' onInput={getValue} value={userId} placeholder='아이디'/>
 				</LoginIdBox>
 				<LoginPWBox>
-					<LoginPWInput placeholder='비밀번호'/>
+						<LoginPWInput ref={passwordRef} name='password' onInput={getValue} value={password} placeholder='비밀번호'/>
 					</LoginPWBox>
 				<LoginButtonBlock>
-					<LoginBottomButton to='/'>로그인</LoginBottomButton>
+					<LoginBottomButton onClick={onClickLogin} >로그인</LoginBottomButton>
 					<LoginBottomLink to='/signIn'>회원가입</LoginBottomLink>
 					<LoginBottomFind to='/find'>비밀번호 찾기</LoginBottomFind>
 					</LoginButtonBlock>
@@ -221,4 +275,13 @@ function LoginContainer()
     </MainPosition>)
 }
 
-export default LoginContainer;
+const mapStateToProps = (state) => ({
+	user: state.login.user
+});
+
+const mapDispatchToProps = (dispatch) =>
+	bindActionCreators({
+		setLogin
+	}, dispatch);
+
+export default connect(mapStateToProps,mapDispatchToProps)(LoginContainer);

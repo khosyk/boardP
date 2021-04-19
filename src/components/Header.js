@@ -1,10 +1,13 @@
 import React,{useState} from "react";
 import styled from "styled-components";
 import { Link, withRouter } from "react-router-dom";
+import { connect } from "react-redux";
+import { bindActionCreators, compose } from "redux";
+import { setLogin } from '../modules/login';
+
 import uthis from "../images/uthis.png";
-import { BiMenu,BiXCircle } from "react-icons/bi";
 
-
+import { BiMenu, BiXCircle } from "react-icons/bi";
 
 const HeaderBlock = styled("header")`
 	display: flex;
@@ -228,9 +231,9 @@ const HeaderTopMenus = styled.ul`
 `;
 
 
-export default withRouter(({ location: { pathname } }) => {
+const Header = ({ location: { pathname }, user }) => {
+
 	const [visibleMenu, setVisibleMenu] = useState(false)
-	
 	return (
 		<>
 			<Main src={uthis} />
@@ -250,7 +253,7 @@ export default withRouter(({ location: { pathname } }) => {
 							<LoginPwSpan>PW:</LoginPwSpan> <LoginPWInput/>
 						</LoginPWBox>
 						<LoginButtonBlock>
-							<LoginButton to='/issue'>로그인</LoginButton>
+							<LoginButton to='/login'>로그인</LoginButton>
 							<LoginButtonMenu to='/signIn'>회원가입</LoginButtonMenu>
 						</LoginButtonBlock>
 					</LoginBlock>
@@ -266,10 +269,10 @@ export default withRouter(({ location: { pathname } }) => {
 			<HeaderTopBlock>
 				<HeaderTopList>
 					<HeaderTopMenus>
-						<Link to='/signIn'>회원가입</Link>
+						{user.userActive ? <span>{user.userId} 님</span>: <Link to='/login'>로그인</Link> }
 					</HeaderTopMenus>
 					<HeaderTopMenus>
-						<Link to='/login'>로그인</Link>
+						<Link to='/signIn'>회원가입</Link>
 					</HeaderTopMenus>
 				</HeaderTopList>
 			</HeaderTopBlock>
@@ -293,12 +296,22 @@ export default withRouter(({ location: { pathname } }) => {
 			<Border />
 		</>);
 }
-);
 
-{
-	/*withRouter(({ location: { pathname } }) => (
-	<>
-	
-	</>
-));*/
-}
+
+
+const mapStateToProps = (state) => ({
+	user: state.login.user
+});
+
+const mapDispatchToProps = (dispatch) =>
+	bindActionCreators(
+		{
+			setLogin
+		},
+		dispatch
+	);
+
+	export default compose(
+		withRouter,
+		connect(mapStateToProps, mapDispatchToProps)
+	)(Header);
