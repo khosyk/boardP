@@ -150,7 +150,7 @@ export default function BoardContainer() {
 		setViewContent(viewContent.concat({ ...input }));
 
 		try {
-			const url = "https://jsonplaceholder.typicode.com/posts";
+			const url = "http://119.196.223.231:4000/posts";
 
 			const data = JSON.stringify({
 				title,

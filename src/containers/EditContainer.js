@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 
 const BrdBox = styled.form`
@@ -10,7 +10,7 @@ const BrdBox = styled.form`
 
 const BrdTitle = styled.input`
 	margin-top: 3%;
-	width: 70%;
+	width: 80%;
 	height: 30px;
 	font-size: 1rem;
 	border: none;
@@ -23,14 +23,14 @@ const BrdTitle = styled.input`
 const TextareaBlock = styled.div`
 	margin-top: 10px;
 	font-size: 1rem;
-	width: 70%;
+	width: 80%;
 	border: none;
 	border-radius: 2px;
 	text-indent: 2px;
 `;
 
 const TextArea = styled.textarea`
-	min-height: 400px;
+	min-height: 600px;
 	width: 100%;
 	resize: vertical;
 	position: relative;
@@ -75,15 +75,16 @@ const BrdBtn = styled.button`
 	cursor: pointer;
 `;
 
+
 export default function Edit() {
+	
 	const dataLoad = async () => {
 		try {
-			const url = "https://jsonplaceholder.typicode.com/posts/1";
+			const url = `http://119.196.223.231:4000/posts/1`;
 			const result = await axios.get(url);
 			console.log(result);
 		} catch (error) {}
 	};
-	console.log(window);
 	dataLoad();
 
 	const [input, setInput] = useState({
