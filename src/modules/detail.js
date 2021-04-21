@@ -28,16 +28,7 @@ export const initialState = {
 		likeActive: true,
 		shareActive: true,
 	},
-	replies: [
-		{
-			id: 0,
-			name: "",
-			replyPassword: "",
-			address: Math.floor(Math.random() * (999 - 100 + 1) + 100),
-			date: new Date(2021, 2, 17, 11).toLocaleDateString(),
-			body: "",
-		},
-	],
+	replies: [],
 };
 
 const detail = handleActions(
@@ -66,12 +57,6 @@ const detail = handleActions(
 		[SET_REPLY]: (state, { payload: replies }) => ({
 			...state,
 			replies,
-		}),
-		[CREATE_REPLY]: (state) => ({
-			...state,
-		}),
-		[DELETE_REPLY]: (state) => ({
-			...state,
 		}),
 	},
 	initialState

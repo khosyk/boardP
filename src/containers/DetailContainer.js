@@ -67,8 +67,6 @@ const Title = styled.div`
 	padding: 1rem;
 	line-height: 1.2rem;
 	text-align: center;
-	@media (max-width: 767px) {
-	}
 `;
 
 const ContentBlock = styled.div`
@@ -263,6 +261,7 @@ const ContentBottomBottomAfter = styled.div`
 
 class DetailContainer extends Component {
 	id = this.props.match.params.id; //class 변수
+
 	async componentDidMount() {
 		try {
 			const result = await axios.get(
@@ -271,13 +270,11 @@ class DetailContainer extends Component {
 			const { data } = result;
 			this.props.setDetail(data);
 
-			const replyResult = await axios.get(
-				`https://jsonplaceholder.typicode.com/posts/${this.id}/comments`
-			);
-			const { data: replyData } = replyResult;
+			var replyData = JSON.parse(data[0].replies); //JSON.parse를 통해 JSON을 기존 배열 객체 로 바꿔준다.
+			console.log(replyData);
 			this.props.setReply(replyData);
 		} catch (error) {
-			alert(`error :( :(${error})`);
+			alert(`error :( ${error})`);
 		}
 	}
 
@@ -286,6 +283,7 @@ class DetailContainer extends Component {
 
 		const onRemove = async () => {
 			try {
+				console.log("this.id", this.id);
 				if (window.confirm("정말 삭제합니까?")) {
 					const url = `http://119.196.223.231:4000/posts/${this.id}/`;
 					await axios.delete(url); // delete는 파라미터가 url만 이씀
@@ -304,7 +302,7 @@ class DetailContainer extends Component {
 		const onLike = () => {
 			if (likeShare.likeActive === true) {
 				const likeData = axios.put(
-					`https://jsonplaceholder.typicode.com/posts/${this.id}`,
+					`http://119.196.223.231:4000/posts/${this.id}/`,
 					{
 						like: "likecountup",
 					}
@@ -325,7 +323,7 @@ class DetailContainer extends Component {
 			window.prompt("아래 주소를 복사해서 공유해주세요.", currentAddress);
 			if (likeShare.shareActive === true) {
 				console.log(this.props);
-				axios.put(`https://jsonplaceholder.typicode.com/posts/${this.id}`, {
+				axios.put(`http://119.196.223.231:4000/posts/${this.id}/`, {
 					share: "sharecountup",
 				});
 				this.props.onShare();
@@ -353,41 +351,56 @@ class DetailContainer extends Component {
 			};
 		}
 
-		async function createReply() {
-			const { name, replyPassword, body } = replyInput;
+		const { name, replyPassword, body } = replyInput;
+
+		const createReply = async () => {
 			if (name !== "" && replyPassword !== "" && body !== "") {
 				try {
 					const { name, body } = replyInput;
-
-					const url = "https://jsonplaceholder.typicode.com/posts/1/comments";
+					const url = `http://119.196.223.231:4000/posts/${this.id}/comments`;
 					const data = JSON.stringify({
 						name,
 						body,
-						userId: "",
+						password: replyPassword,
 					});
-					const replyResult = await axios.post(url, data);
-					console.log(replyResult);
+
+					const headers = { "Content-Type": "application/json" }; //content-type을 선언해서 JSON을 기본 데이터 타입으로 사용!
+
+					const replyResult = await axios.post(url, data, { headers });
+					const {
+						data: { ok, err },
+					} = replyResult;
+
+					if (!ok) {
+						alert(`error: ${err}`);
+						return false;
+					}
 				} catch (error) {
 					alert(`error:${error}`);
 				}
 			} else {
 				alert("작성자명, 비밀번호, 댓글을 입력해주세요.");
 			}
-		}
+		};
 
-		async function handleRemove() {
+		const handleRemove = async (e) => {
 			if (window.confirm("정말 삭제합니까?")) {
-				try {
-					const url = "https://jsonplaceholder.typicode.com/posts/1/";
-					const replyRemove = await axios.delete(url); // delete는 파라미터가 url만 이씀
-				} catch (error) {
-					console.log(error);
+				let test = prompt("비밀번호를 입력해주세요.", replyPassword);
+				if (test === replies[e - 1].password) {
+					try {
+						const url = `http://119.196.223.231:4000/posts/${this.id}/comments/`;
+						await axios.delete(url); // delete는 파라미터가 url만 이씀
+					} catch (error) {
+						console.log(error);
+					}
+					alert("삭제 되었습니다.");
+				} else {
+					alert("비밀번호가 다릅니다.");
 				}
-				alert("삭제 되었습니다.");
 			} else {
 				alert("취소합니다.");
 			}
-		}
+		};
 
 		return (
 			<>

@@ -13,7 +13,6 @@ const BrdTitle = styled.input`
 	width: 80%;
 	height: 30px;
 	font-size: 1rem;
-	border: none;
 	border-radius: 2px;
 	text-indent: 2px;
 	font-family: "NanumBarunpenR";

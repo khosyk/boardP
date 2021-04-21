@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { VscEdit, VscChromeClose } from "react-icons/vsc";
+import Reply from "./Reply";
 
 // 전체 댓글 내용 표시
 
@@ -85,7 +86,8 @@ const ReplyContentbox = styled.div`
 `;
 
 export default function ReplyContents({ ReplyData, handleRemove }) {
-	const { name, replyPassword, address, date, body, id } = ReplyData;
+  const { name, address, date, body, id } = ReplyData;
+ 
 	return (
 		<RepliesPosition id={id}>
 			<ReplyContentBlock>
