@@ -8,8 +8,8 @@ const CREATE_REPLY = "detail/CREATE_REPLY";
 const DELETE_REPLY = "detail/DELETE_REPLY";
 
 export const setDetail = createAction(SET_DETAIL, (data) => data);
-export const onLike = createAction(ON_LIKE);
-export const onShare = createAction(ON_SHARE);
+export const onLike = createAction(ON_LIKE, (data) => data);
+export const onShare = createAction(ON_SHARE, (data) => data);
 export const setReply = createAction(SET_REPLY, (data) => data);
 export const createReply = createAction(CREATE_REPLY, (data) => data);
 export const deleteReply = createAction(DELETE_REPLY, (data) => data);
@@ -38,19 +38,19 @@ const detail = handleActions(
 			contentId: content[0].id,
 			content: content[0],
 		}),
-		[ON_LIKE]: (state) => ({
+		[ON_LIKE]: (state, { payload: like }) => ({
 			...state,
 			likeShare: {
 				...state.likeShare,
-				like: state.likeShare.like + 1,
+				like,
 				likeActive: false,
 			},
 		}),
-		[ON_SHARE]: (state) => ({
+		[ON_SHARE]: (state, { payload: share }) => ({
 			...state,
 			likeShare: {
 				...state.likeShare,
-				share: state.likeShare.share + 1,
+				share,
 				shareActive: false,
 			},
 		}),

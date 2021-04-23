@@ -156,18 +156,16 @@ class IssueContainer extends Component {
 	async componentDidMount() {
 		try {
 			const result = await axios.get("http://119.196.223.231:4000/posts");
-			console.log("CHECK RESUL3232322T", result);
 
 			const {
 				data: { contents: contentsData },
 			} = result;
-			console.log(contentsData);
+
 			const contents = [];
 
 			for (let i = 0; i < contentsData.length; i++) {
 				if (contentsData[i]) {
 					const { title, id } = contentsData[i];
-					console.log(title);
 					contents.push({ title, id });
 				}
 			}

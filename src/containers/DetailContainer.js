@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import styled from "styled-components";
+import styled, { ThemeConsumer } from "styled-components";
 import { Route, Link, withRouter, useHistory } from "react-router-dom";
 import ReactHtmlParser from "react-html-parser";
 import { bindActionCreators, compose } from "redux";
@@ -261,18 +261,28 @@ const ContentBottomBottomAfter = styled.div`
 
 class DetailContainer extends Component {
 	id = this.props.match.params.id; //class 변수
+	path = `/issue/${this.id}/edit`;
 
-	async componentDidMount() {
+	async setReplies() {
 		try {
 			const result = await axios.get(
 				`http://119.196.223.231:4000/posts/${this.id}` // this = class
 			);
 			const { data } = result;
-			this.props.setDetail(data);
+			if (data[0].replies) {
+				var replyData = JSON.parse(data[0].replies); //JSON.parse를 통해 JSON을 기존 배열 객체 로 바꿔준다
+				this.props.setReply(replyData);
+			}
+			return data;
+		} catch (error) {
+			alert(`error: ${error}`);
+		}
+	}
 
-			var replyData = JSON.parse(data[0].replies); //JSON.parse를 통해 JSON을 기존 배열 객체 로 바꿔준다.
-			console.log(replyData);
-			this.props.setReply(replyData);
+	async componentDidMount() {
+		try {
+			const data = await this.setReplies();
+			this.props.setDetail(data);
 		} catch (error) {
 			alert(`error :( ${error})`);
 		}
@@ -283,7 +293,6 @@ class DetailContainer extends Component {
 
 		const onRemove = async () => {
 			try {
-				console.log("this.id", this.id);
 				if (window.confirm("정말 삭제합니까?")) {
 					const url = `http://119.196.223.231:4000/posts/${this.id}/`;
 					await axios.delete(url); // delete는 파라미터가 url만 이씀
@@ -299,17 +308,22 @@ class DetailContainer extends Component {
 
 		const likeButton = document.getElementsByClassName("like");
 
-		const onLike = () => {
-			if (likeShare.likeActive === true) {
-				const likeData = axios.put(
-					`http://119.196.223.231:4000/posts/${this.id}/`,
-					{
-						like: "likecountup",
-					}
-				);
-				console.log(likeData);
+		const LikeShareCountUp = async () => {
+			const url = `http://119.196.223.231:4000/posts/${this.id}/`;
+			var data = JSON.stringify({
+				like: likeShare.like,
+				share: likeShare.share,
+			});
+			const headers = { "Content-Type": "application/json" };
+			const result = await axios.put(url, data, { headers });
 
-				this.props.onLike();
+			return result;
+		};
+
+		const onLike = async () => {
+			if (likeShare.likeActive === true) {
+				var result = await LikeShareCountUp();
+				this.props.onLike(result.data.like + 1);
 
 				likeButton[0].attributes.style.textContent =
 					"color: #ffa8a8; font-size: 30px; cursor: pointer; transition: all 0.5s ease-in";
@@ -319,25 +333,21 @@ class DetailContainer extends Component {
 			}
 		};
 
-		function onShare() {
+		const onShare = async () => {
 			window.prompt("아래 주소를 복사해서 공유해주세요.", currentAddress);
 			if (likeShare.shareActive === true) {
-				console.log(this.props);
-				axios.put(`http://119.196.223.231:4000/posts/${this.id}/`, {
-					share: "sharecountup",
-				});
-				this.props.onShare();
+				var result = await LikeShareCountUp();
+				this.props.onShare(result.data.share + 1);
 			} else {
 				return;
 			}
-		}
+		};
 
 		const testF = onShare.bind(this);
 
 		const currentAddress = window.location.href;
 
 		var replyInput = {
-			id: 0,
 			name: "",
 			replyPassword: "",
 			body: "",
@@ -351,12 +361,17 @@ class DetailContainer extends Component {
 			};
 		}
 
-		const { name, replyPassword, body } = replyInput;
+		//createReply 1. name replyPassword body 가 작성되었는지? => if문
+		// 2. error가 발생 하는가? -> try catch
+		// 3. data에는 어떤것이 담겨있고, 데이터 타입은 무엇인가? JSON.stringify()
+		// 4. try 문에서 데이터를 post 메소드로 보낼때 비동기로 요청하는가? await
+		// 5. 새로이 추가된 replies data를 리렌더링 하는가? setReplies()
 
 		const createReply = async () => {
+			var { name, replyPassword, body } = replyInput;
+
 			if (name !== "" && replyPassword !== "" && body !== "") {
 				try {
-					const { name, body } = replyInput;
 					const url = `http://119.196.223.231:4000/posts/${this.id}/comments`;
 					const data = JSON.stringify({
 						name,
@@ -367,6 +382,7 @@ class DetailContainer extends Component {
 					const headers = { "Content-Type": "application/json" }; //content-type을 선언해서 JSON을 기본 데이터 타입으로 사용!
 
 					const replyResult = await axios.post(url, data, { headers });
+
 					const {
 						data: { ok, err },
 					} = replyResult;
@@ -375,6 +391,8 @@ class DetailContainer extends Component {
 						alert(`error: ${err}`);
 						return false;
 					}
+
+					await this.setReplies();
 				} catch (error) {
 					alert(`error:${error}`);
 				}
@@ -385,17 +403,25 @@ class DetailContainer extends Component {
 
 		const handleRemove = async (e) => {
 			if (window.confirm("정말 삭제합니까?")) {
-				let test = prompt("비밀번호를 입력해주세요.", replyPassword);
-				if (test === replies[e - 1].password) {
-					try {
-						const url = `http://119.196.223.231:4000/posts/${this.id}/comments/`;
-						await axios.delete(url); // delete는 파라미터가 url만 이씀
-					} catch (error) {
-						console.log(error);
+				let passwordCheck = prompt("비밀번호를 입력해주세요.");
+
+				try {
+					const url = `http://119.196.223.231:4000/posts/${this.id}/comments/${e}`;
+
+					const data = JSON.stringify({ password: passwordCheck });
+
+					const headers = { "Content-Type": "application/json" }; //content-type을 선언해서 JSON을 기본 데이터 타입으로 사용!
+
+					const deleteReply = await axios.delete(url, { data, headers });
+
+					if (!deleteReply.data.ok) {
+						alert("비밀번호를 확인해주세요.");
+						return false;
 					}
-					alert("삭제 되었습니다.");
-				} else {
-					alert("비밀번호가 다릅니다.");
+
+					await this.setReplies();
+				} catch (error) {
+					alert(`error: ${error}`);
 				}
 			} else {
 				alert("취소합니다.");
@@ -415,10 +441,14 @@ class DetailContainer extends Component {
 						<ContentBlock>
 							<Content>
 								<BtnBlock>
-									<BtnEdit to={`/issue/${1}/edit`}>
+									<BtnEdit
+										to={{
+											pathname: `/issue/${this.id}/edit`,
+										}}>
 										<VscEdit style={{ fontSize: "0.7rem" }} />
 										<span style={{ paddingLeft: "2px" }}>수정</span>
 									</BtnEdit>
+
 									<BtnDelete onClick={onRemove}>
 										<VscChromeClose style={{ fontSize: "0.7rem" }} />
 										<span style={{ paddingLeft: "2px" }}>삭제</span>
@@ -500,12 +530,6 @@ class DetailContainer extends Component {
 							handleRemove={handleRemove}
 						/>
 					</MainBlock>
-					<Route
-						path="/issue/:id/edit"
-						contentData={content.contentData}
-						component={Edit}>
-						<Edit />
-					</Route>
 				</MainPosition>
 			</>
 		);

@@ -1,6 +1,10 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
+import { connect } from "react-redux";
+import { useHistory } from "react-router";
+import { bindActionCreators } from "redux";
 import styled from "styled-components";
+import { setEdit } from "../modules/edit";
 
 const BrdBox = styled.form`
 	display: flex;
@@ -28,7 +32,7 @@ const TextareaBlock = styled.div`
 	text-indent: 2px;
 `;
 
-const TextArea = styled.textarea`
+const TextAreaInput = styled.textarea`
 	min-height: 600px;
 	width: 100%;
 	resize: vertical;
@@ -74,26 +78,32 @@ const BrdBtn = styled.button`
 	cursor: pointer;
 `;
 
-
-export default function Edit() {
-	
-	const dataLoad = async () => {
-		try {
-			const url = `http://119.196.223.231:4000/posts/1`;
-			const result = await axios.get(url);
-			console.log(result);
-		} catch (error) {}
-	};
-	dataLoad();
+function EditContainer(props, { content }) {
+	const {
+		props: {
+			match: {
+				params: { id },
+			},
+		},
+	} = props;
 
 	const [input, setInput] = useState({
-		title: "",
-		content: "",
+		inputTitle: "",
+		inputBody: "",
 	});
 
-	const { title, content } = input;
+	const { inputTitle, inputBody } = input;
 
-	const [viewContent, setViewContent] = useState([]);
+	const getData = async (a) => {
+		const url = `http://119.196.223.231:4000/posts/${id}`;
+		var result = await axios.get(url);
+		var isData = result.data[0];
+		setEdit(isData);
+	};
+
+	getData();
+
+	/// content 받아서 input에 입력하는거 해야함.
 
 	const getValue = (e) => {
 		const { name, value } = e.target;
@@ -103,18 +113,21 @@ export default function Edit() {
 		});
 	};
 
+	const history = useHistory();
+
 	const onEdit = async () => {
 		try {
-			const url = "https://jsonplaceholder.typicode.com/posts/1";
+			const url = `http://119.196.223.231:4000/posts/26`;
 			const data = {
 				body: JSON.stringify({
-					id: this.id,
-					title: "foo",
-					body: "hey",
+					title: inputTitle,
+					content: inputBody,
 				}),
 			};
 
-			const updateResult = await axios.put(url, data);
+			const headers = { "Content-Type": "application/json" };
+			const updateResult = await axios.put(url, data, { headers });
+			history.push(`http://119.196.223.231:4000/posts`);
 			console.log(updateResult);
 		} catch (error) {
 			console.log(`Error:${error}`);
@@ -124,14 +137,20 @@ export default function Edit() {
 	return (
 		<BrdBox>
 			<BrdTitle
-				name="title"
+				name="inputTitle"
 				type="text"
 				onChange={getValue}
 				placeholder="글 제목을 입력해주세요."
-				value={title}
+				value={inputTitle}
 			/>
+
 			<TextareaBlock>
-				<TextArea />
+				<TextAreaInput
+					name="inputBody"
+					onChange={getValue}
+					placeholder="내용을 수정해주세요."
+					value={inputBody}></TextAreaInput>
+
 				<TextAreaToolTip>글 상자 사이즈를 변경 할 수 있어요.</TextAreaToolTip>
 			</TextareaBlock>
 			<BrdBtnBlock>
@@ -140,3 +159,17 @@ export default function Edit() {
 		</BrdBox>
 	);
 }
+
+const mapStateToProps = (state) => ({
+	content: state.edit.content,
+});
+
+const mapDispatchToProps = (dispatch) =>
+	bindActionCreators(
+		{
+			setEdit,
+		},
+		dispatch
+	);
+
+export default connect(mapStateToProps, mapDispatchToProps)(EditContainer);

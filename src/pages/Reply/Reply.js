@@ -161,8 +161,8 @@ export default function Reply({
 							value={name}
 						/>
 						<ReplyInputPassword
-							onInput={handleReplyInput}
 							name="replyPassword"
+							onInput={handleReplyInput}
 							maxLength="6"
 							placeholder="비밀번호 입력"
 							value={replyPassword}
