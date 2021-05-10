@@ -1,11 +1,17 @@
 import React from "react";
 import styled from "styled-components";
 
+
+import { bindActionCreators } from "redux";
+import { connect } from "react-redux";
+import { setList, setPage } from "../modules/pages";
+
 //images
 import covid from "../images/covid.png";
 import diablo from "../images/diablo2re.png";
 import parasite from "../images/parasite.png";
 import { Link } from "react-router-dom";
+
 
 // 제작-> 경쟁과 협력, 커뮤니티 3대종파 이슈 게임 무비,
 // 올림픽처럼 1, 2, 3 등을 정해서 그들끼리 경쟁하고 협력할 수 있게끔 만듬
@@ -172,7 +178,9 @@ const RankTitle = styled.div`
 	text-overflow: ellipsis;
 `;
 
-export default function Home() {
+function Home(props)
+{
+  console.log(props)
 	return (
 		<MainBlock>
 			<MainPosition>
@@ -466,5 +474,21 @@ export default function Home() {
 	);
 }
 
+
+const mapStateToProps = (state) => ({
+	page: state.pages.page,
+	contents: state.pages.contents,
+});
+
+const mapDispatchToProps = (dispatch) =>
+	bindActionCreators(
+		{
+			setList,
+			setPage,
+		},
+		dispatch
+	);
+
+export default connect(mapStateToProps, mapDispatchToProps)(Home);
 // link 로 각각 해당 게시글로 연결 -> 각블록 전체에 걸기
 // P 1920// 1360 // 1200 //M 992 // 768

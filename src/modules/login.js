@@ -10,25 +10,26 @@ export const logout = createAction(LOGOUT);
 
 export const initialState = {
 	user: {
-		userId: "",
-		userActive: false,
+		email: "",
+		name: "",
 	},
+	userActive: false,
 };
 
 const login = handleActions(
 	{
-		[SET_LOGIN]: (state, { payload: userId }) => ({
+		[SET_LOGIN]: (state, { payload }) => ({
 			...state,
 			user: {
-				userId,
-				userActive: true,
+				email: payload.email,
+				name: payload.name,
 			},
+			userActive: true,
 		}),
-		[LOGOUT]: (state) => ({
+		[LOGOUT]: (state, { payload: user }) => ({
 			...state,
-			user: {
-				userActive: false,
-			},
+			user,
+			userActive: false,
 		}),
 	},
 	initialState

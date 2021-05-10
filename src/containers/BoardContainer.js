@@ -3,7 +3,7 @@ import styled from "styled-components";
 import ReactHtmlParser from "react-html-parser";
 import axios from "axios";
 import { useHistory } from "react-router";
-import { BsCardImage } from "react-icons/bs";
+import { BsCardImage, BsMusicNoteBeamed } from "react-icons/bs";
 
 const BrdBox = styled.form`
 	display: flex;
@@ -29,7 +29,7 @@ const BrdToolbar = styled.div`
 	margin: 8px 0px;
 `;
 
-const BrdImageUpload = styled.label`
+const BrdImageUploadInput = styled.input`
 	display: block;
 	height: 1.5rem;
 	font-size: 0.9rem;
@@ -38,17 +38,16 @@ const BrdImageUpload = styled.label`
 	text-align: center;
 	cursor: pointer;
 	border-radius: 2px;
-	border-bottom: 0.5px solid rgba(0, 0, 0, 0.3);
-	box-shadow: 0px 1px 3px 0.3px rgba(0, 0, 0, 0.1);
-	&:active {
-		border: 2px solid black;
-		box-shadow: none;
+	border: 1px solid #ced4da;
+	background-color: #f1f3f5;
+	color: #343a40;
+	&:hover {
+		box-shadow: 0px 1px 1px black;
 	}
-`;
-
-const BrdImageUploadInput = styled.input`
-	display: none;
-	visibility: none;
+	&:active {
+		transform: translate(0px, 3%);
+		box-shadow: 0px 0px 1px black;
+	}
 `;
 
 const BrdTextarea = styled.textarea`
@@ -70,16 +69,18 @@ const BrdBtn = styled.button`
 	width: 50px;
 	font-size: 0.9rem;
 	padding: 3px 2px;
-	background-color: transparent;
+	background-color: #f1f3f5;
 	text-align: center;
 	cursor: pointer;
 	border-radius: 2px;
-	border: none;
-	border-bottom: 0.5px solid rgba(0, 0, 0, 0.3);
-	box-shadow: 0px 1px 3px 0.3px rgba(0, 0, 0, 0.1);
+	border: 1px solid #ced4da;
+	color: #343a40;
+	&:hover {
+		box-shadow: 0px 1px 1px black;
+	}
 	&:active {
-		border: 2px solid black;
-		box-shadow: none;
+		transform: translate(0px, 3%);
+		box-shadow: 0px 0px 1px black;
 	}
 `;
 
@@ -92,11 +93,9 @@ export default function BoardContainer() {
 
 	const { content, title, img } = input;
 
-	const [viewContent, setViewContent] = useState([]);
-
 	const history = useHistory();
 
-	const getValue = (e) => {
+	const getValue = async (e) => {
 		const { name, value } = e.target;
 		setInput({
 			...input,
@@ -104,19 +103,31 @@ export default function BoardContainer() {
 		});
 	};
 
-	var nextId = 0;
+	const imageUpload = async (e) => {
+		try {
+			const { name, value } = e.target;
+			console.log("check name", name);
+			console.log("check value", value);
+			const url = "http://119.196.222.239:4000/posts";
+			const data = JSON.stringify({
+				img,
+			});
+			const options = {
+				headers: { "Content-Type": "application/json" },
+			};
+			const result = await axios.post(url, data, { options });
+
+			console.log(result);
+		} catch (error) {
+			alert(`error :< : ${error}`);
+		}
+	};
 
 	const callSave = async (e) => {
 		e.preventDefault();
 
 		try {
-			const url = "http://119.196.223.231:4000/posts";
-
-			console.log({
-				title,
-				content,
-				userId: "test",
-			});
+			const url = "http://119.196.222.239:4000/posts";
 
 			const data = JSON.stringify({
 				title,
@@ -159,21 +170,21 @@ export default function BoardContainer() {
 				type="text"
 				onChange={getValue}
 				placeholder="글 제목을 입력해주세요."
-				value={viewContent.title}
+				value={input.title}
 			/>
 			<BrdToolbar>
-				<BrdImageUpload htmlFor="input-file">이미지 업로드</BrdImageUpload>
 				<BrdImageUploadInput
 					name="img"
 					id="input-file"
 					type="file"
-					onChange={getValue}
+					accept="image/jpeg, image/jpg"
+					onChange={imageUpload}
 				/>
 			</BrdToolbar>
 			<BrdTextarea
 				name="content"
 				onChange={getValue}
-				value={viewContent.content}
+				value={input.content}
 				placeholder="내용을입력해주세요."></BrdTextarea>
 			<BrdBtnBlock>
 				<BrdBtn onClick={callSave}>저장</BrdBtn>

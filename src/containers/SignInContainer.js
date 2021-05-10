@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import axios from "axios";
@@ -45,7 +45,7 @@ const SignInBlock = styled.div`
 
 const SignInSignIn = styled.div`
 	font-size: 1.5rem;
-	margin-top: 40px;
+	margin-top: 70px;
 	font-weight: 600;
 	margin-bottom: 5px;
 `;
@@ -133,12 +133,13 @@ const SignInButtonBlock = styled.div`
 	justify-content: center;
 `;
 
-const SignInBottomButton = styled.a`
+const SignInBottomButton = styled.input`
 	font-size: 1rem;
 	border: 1px solid grey;
 	border-radius: 2px;
 	padding: 10px 100px;
 	cursor: pointer;
+	background-color: white;
 	&:active {
 		color: white;
 		background-color: rgba(0, 0, 0, 1);
@@ -182,94 +183,129 @@ const SignInFootKakao = styled(RiKakaoTalkFill)`
 	cursor: pointer;
 `;
 
+// 회원가입 -> 닉네임, 이메일 중복 및 형식 확인 -> 패스워드 확인 -> 회원가입 post
+
 function SignInContainer() {
 	const [input, setInput] = useState({
 		nickname: "",
-		userId: "",
+		email: "",
 		checkUser: false,
 		password: "",
 		passwordCheck: "",
 	});
 
-	const { nickname, userId, password, passwordCheck, checkUser } = input;
+	var { nickname, email, password, passwordCheck, checkUser } = input;
 
 	const getValue = (e) => {
 		const { name, value } = e.target;
-		console.log(name, value);
 		setInput({
 			...input,
 			[name]: value,
 		});
 	};
 
-	const example = [
-		{
-			nickname: "test1",
-			userId: "test2",
-		},
-	];
+	const postData = async () => {
+		const url = "http://119.196.222.239:4000/users/signup";
+		const data = JSON.stringify({ email, password, name: nickname });
+		const headers = { "Content-Type": "application/json" };
+		const result = await axios.post(url, data, { headers });
+	};
+
+	function isEmail(asValue) {
+		var regExp = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
+
+		return regExp.test(asValue);
+	}
+
+	const emailCheck = async () => {
+		const url = `http://119.196.222.239:4000/users/check-duplicate/email/${email}`;
+		const result = await axios.get(url);
+
+		return result.data.ok;
+	};
+
+	const nameCheck = async () => {
+		const url = `http://119.196.222.239:4000/users/check-duplicate/name/${nickname}`;
+		const result = await axios.get(url);
+
+		return result.data.ok;
+	};
 
 	const nicknameRef = useRef(null);
 	const idRef = useRef(null);
 	const passwordRef = useRef(null);
 	const passwordCheckRef = useRef(null);
 
-	const checkNickname = (e) => {
-		e.preventDefault();
+	///checkUser 이용해서 로그인 아이디 닉네임 확인하기,
+	/// page만들기
 
-		if (nickname !== "" || userId !== "") {
-			for (let i = 0; i < example.length; i++) {
-				if (userId === example[i].userId && nickname === example[i].nickname) {
+	/// check user false => 초기상태, nick, id가 true => checkuser도 true  => 회원가입 완료
+
+	// useEffect는 펑션 작동에 시간이 조금 걸린다 (현재 확인된건 componentDidndUpdate처럼 사용할 경우);
+
+	const checkNickname = async () => {
+		if (nickname !== "" && email !== "") {
+			if (isEmail(email)) {
+				if ((await emailCheck()) === false && (await nameCheck()) === false) {
 					alert("닉네임과 아이디 중복입니다. :(");
-					setInput({ ...input, nickname: "", userId: "", checkUser: false });
+					setInput({ ...input, nickname: "", email: "", checkUser: false });
 					nicknameRef.current.focus();
 					return false;
 				}
-				if (nickname === example[i].nickname) {
+				if ((await nameCheck()) === false) {
 					alert("닉네임 중복입니다. : (");
 					setInput({ ...input, nickname: "", checkUser: false });
 					nicknameRef.current.focus();
 					return false;
 				}
-				if (userId === example[i].userId) {
+				if ((await emailCheck()) === false) {
 					alert("아이디 중복입니다. :(");
-					setInput({ ...input, userId: "", checkUser: false });
+					setInput({ ...input, email: "", checkUser: false });
 					idRef.current.focus();
 					return false;
 				} else {
-					alert("중복 확인되었습니다.");
 					setInput({ ...input, checkUser: true });
-					console.log(checkUser);
+					alert("중복 확인되었습니다.");
 				}
+			} else {
+				setInput({ ...input, checkUser: false });
+				alert("아이디는 이메일 형식이어야 합니다.");
+				return false;
 			}
 		} else {
 			alert("닉네임 또는 아이디를 입력해주세요.");
+			return false;
 		}
 	};
 
-	let checkSpc = /[~!@#$%^&*()_+|<>?:{}]/;
+	// 회원가입 버튼 클릭 시, password 확인, 회원가입 post
+
+	let checkSpc = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*[~!@#$%^&*()_+|<>?:{}]/;
 
 	const history = useHistory();
 
 	const joinUser = (e) => {
 		e.preventDefault();
 		if (checkUser === true && password !== "" && passwordCheck !== "") {
-			if (password !== passwordCheck && checkSpc.test(password)) {
-				alert("비밀번호를 확인해주세요.");
+			if (
+				password !== passwordCheck ||
+				!checkSpc.test(password) ||
+				password.length >= 10
+			) {
+				alert(
+					"비밀번호를 확인해주세요. \n *비밀번호는 10자 이상 특수 문자를 포함해야 합니다.*"
+				);
 				setInput({ ...input, passwordCheck: "" });
-				passwordCheckRef.current.focus();
-				console.log("working");
+				passwordRef.current.focus();
 				return false;
 			} else {
 				setInput({ ...input, checkPassword: true });
+				postData();
 				alert("환영합니다. :))");
 				history.push("/");
 			}
-		} else if (checkUser !== true) {
-			alert("중복 확인을 눌러주세요.");
-			return false;
 		} else {
-			alert("비밀번호 입력 및 비밀번호 확인해주세요.");
+			alert("비밀번호 및 비밀번호 확인란을 다시 입력해주세요.");
 			passwordRef.current.focus();
 			return false;
 		}
@@ -295,12 +331,12 @@ function SignInContainer() {
 						/>
 						<SignInIdInput
 							ref={idRef}
-							name="userId"
+							name="email"
 							onInput={getValue}
-							value={userId}
-							placeholder="아이디"
+							value={email}
+							placeholder="아이디@이메일.형식"
 						/>
-						<SignInIdCheck onClick={checkNickname}>중복 확인</SignInIdCheck>
+						<SignInIdCheck onClick={checkNickname}>확인</SignInIdCheck>
 					</SignInIdBox>
 					<SignInPWBox>
 						<SignInPWInput
@@ -308,6 +344,8 @@ function SignInContainer() {
 							name="password"
 							onInput={getValue}
 							value={password}
+							minlength="10"
+							pattern="[A-Za-z]+"
 							placeholder="비밀번호"
 						/>
 						<SignInPWInput
@@ -315,23 +353,22 @@ function SignInContainer() {
 							name="passwordCheck"
 							onInput={getValue}
 							value={passwordCheck}
+							minlength="10"
+							pattern="[A-Za-z]+"
 							placeholder="비밀번호 확인"
 						/>
 						<SignInPWSpan>* 주의 *</SignInPWSpan>
 						<SignInPWSpan>
-							비밀번호는 특수문자를 포함해 10글자 이상 작성해주세요.
+							비밀번호는 특수문자를 포함해 영문자로 10글자 이상 작성해주세요.
 						</SignInPWSpan>
 					</SignInPWBox>
 					<SignInButtonBlock>
-						<SignInBottomButton onClick={joinUser}>회원가입</SignInBottomButton>
+						<SignInBottomButton
+							type="submit"
+							onClick={joinUser}
+							value="회원가입"></SignInBottomButton>
 					</SignInButtonBlock>
-					<SignInFootBlock>
-						<SignInFootOthers>또는 다른 계정으로 로그인</SignInFootOthers>
-						<SignInFootOtherSignIns>
-							<SignInFootGoogle />
-							<SignInFootKakao />
-						</SignInFootOtherSignIns>
-					</SignInFootBlock>
+					<SignInFootBlock></SignInFootBlock>
 				</SignInBlock>
 			</MainBlock>
 		</MainPosition>

@@ -7,8 +7,9 @@ import BannerImg from "../images/banner.png";
 
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import { setList } from "../modules/pages";
+import { setList, setPage } from "../modules/pages";
 import axios from "axios";
+import Page from "../pages/Pagenation/Page";
 
 const MainBlock = styled.div`
 	width: 90%;
@@ -99,34 +100,54 @@ const SearchText = styled.input`
 	}
 `;
 
-const SearchBtn = styled(Link)`
+const SearchBtn = styled.button`
 	display: inline-block;
-	padding: 2px 5px;
+	padding: 1px 5px;
 	font-weight: 300;
 	border-radius: 2px;
 	border: 1px solid #ced4da;
 	background-color: #f1f3f5;
 	color: #343a40;
 	font-size: 0.8rem;
+	cursor: pointer;
+	&:hover {
+		box-shadow: 0px 1px 1px black;
+	}
+	&:active {
+		transform: translate(0px, 3%);
+		box-shadow: 0px 0px 1px black;
+	}
 `;
 
 const Guides = styled.td`
-	margin-left: -12%;
+	display: flex;
+	flex-direction: row;
+	margin-top: 3px;
+	margin-left: -8%;
 `;
 
-const Prev = styled(Link)`
+const First = styled.a`
+	padding-top: 2px;
 	font-size: 0.8rem;
 	margin-right: 10px;
+	cursor: pointer;
+	&:hover {
+		font-weight: 600;
+	}
+	&:active {
+		color: red;
+	}
 `;
 
-const Pages = styled(Link)`
+const Pages = styled.span`
+	display: flex;
+	height: 1rem;
 	font-size: 0.8rem;
 	margin-right: 10px;
-`;
-
-const Next = styled(Link)`
-	font-size: 0.8rem;
-	margin-right: 10px;
+	width: 68px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
 `;
 
 const PostBlock = styled.td`
@@ -135,27 +156,45 @@ const PostBlock = styled.td`
 
 const Post = styled(Link)`
 	display: block;
-	padding: 2px 5px;
+	margin-top: -1px;
+	padding: 3px 5px;
 	border-radius: 2px;
 	font-weight: 300;
+	font-size: 0.8rem;
 	border: 1px solid #ced4da;
 	background-color: #f1f3f5;
 	color: #343a40;
-	font-size: 0.8rem;
+	&:hover {
+		box-shadow: 0px 1px 1px black;
+	}
+	&:active {
+		transform: translate(0px, 3%);
+		box-shadow: 0px 0px 1px black;
+	}
 `;
 
 // issue 포스팅 누르면 /issue/1 -> 가라 포스팅 (수정,삭제버튼 링크) -> 수정링크 issue/1/modify /삭제링크 issue/1/delete
 
 class IssueContainer extends Component {
+	constructor(props) {
+		super(props);
+		this.state = {
+			userInput: "",
+		};
+	}
 	//data 요청 -> data에서 필요한거 뽑아내기 (여기서는 for,if문을 사용해서 title,id)
 	//얻은 데이터를 원하는 데이터형식으로 (여기선어레이) 저장 , const contents = [] 에 해당 데이터를 넣는다.
 	//해당데이터를 넣는기능은 이전에 리듀서(handleActions)에서 정의한 setList 기능을 mapDispatchToProps를 통해 얻어서 사용;
 	// 얻은 데이터를 this.props.setList(contents); 로 저장
 	// 기종 initialstate가 내가 원하는 데이터를 저장한 initialstate로 됨.
 
+	// 1. async 기본페이지 -> 페이지 데이터  2. 클릭 async 데이터 변경 -> 페이지에 반영
+
 	async componentDidMount() {
 		try {
-			const result = await axios.get("http://119.196.223.231:4000/posts");
+			const result = await axios.get(
+				"http://119.196.222.239:4000/posts?page=1"
+			);
 
 			const {
 				data: { contents: contentsData },
@@ -169,20 +208,130 @@ class IssueContainer extends Component {
 					contents.push({ title, id });
 				}
 			}
+
 			this.props.setList(contents);
 		} catch (error) {
 			alert(`error :(( ${error}`);
 		}
 	}
 
+	getFirstData = async () => {
+		try {
+			const result = await axios.get(
+				`http://119.196.222.239:4000/posts?page=1`
+			);
+
+			const {
+				data: { contents: contentsData, page },
+			} = result;
+
+			const contents = [];
+
+			for (let i = 0; i < contentsData.length; i++) {
+				if (contentsData[i]) {
+					const { title, id } = contentsData[i];
+					contents.push({ title, id });
+				}
+			}
+			this.props.setList(contents);
+			this.props.setPage(page);
+		} catch (error) {
+			alert(`error :(( ${error}`);
+		}
+	};
+
+	//currentPage post 사용해서 추가하기
+
+	getCurrentPage = async (e) => {
+		var currentPage = parseInt(e.target.innerText, 10);
+		try {
+			const result = await axios.get(
+				`http://119.196.222.239:4000/posts?page=${currentPage}`
+			);
+
+			const {
+				data: { contents: contentsData, page },
+			} = result;
+
+			const contents = [];
+
+			for (let i = 0; i < contentsData.length; i++) {
+				if (contentsData[i]) {
+					const { title, id } = contentsData[i];
+					contents.push({ title, id });
+				}
+			}
+
+			if (contents[0] === undefined) {
+				alert("게시글이 없습니다.");
+				return false;
+			} else {
+				this.props.setList(contents);
+				this.props.setPage(page);
+			}
+		} catch (error) {
+			alert(`error :(( ${error}`);
+		}
+	};
+
+	getValue = (e) => {
+		var { value } = e.target;
+		this.setState({ ...this.state, userInput: value });
+	};
+
+	getSearch = async () => {
+		try {
+			const result = await axios.get(`http://119.196.222.239:4000/posts`);
+
+			const {
+				data: { contents: contentsData },
+			} = result;
+
+			const contents = [];
+			const filteredContents = contentsData.filter((contentsData) => {
+				return contentsData.title.includes(this.state.userInput);
+			});
+
+			for (let i = 0; i < filteredContents.length; i++) {
+				if (filteredContents[i]) {
+					const { title, id } = filteredContents[i];
+					contents.push({ title, id });
+				}
+			}
+
+			this.props.setList(contents);
+		} catch (error) {
+			alert(`error:< : ${error}`);
+		}
+	};
+
 	render() {
-		const data = this.props.contents;
+		//declare contents data
+		const data = this.props.contents.reverse();
+
+		//pageRance setting function
+		function pageRange(size, startAt) {
+			return [...Array(size).keys()].map((i) => i + startAt);
+		}
+
+		var pageNumbers = pageRange(
+			this.props.page.totalPage,
+			this.props.page.currentPage
+		);
 
 		return (
 			<MainBlock>
 				<BannerBlock>
 					<Banner alt="bannerImage" src={BannerImg} />
 				</BannerBlock>
+
+				<form
+					action="http://localhost:4000/images"
+					method="post"
+					encType="multipart/form-data">
+					<input type="file" name="image" />
+					<input type="submit" />
+				</form>
 				<MainTable>
 					<Thead>
 						<TheadContent>
@@ -191,7 +340,7 @@ class IssueContainer extends Component {
 							<td>날짜</td>
 						</TheadContent>
 					</Thead>
-					<Tbody>
+					<Tbody id="test">
 						{data ? (
 							data.map((row) => (
 								<List
@@ -203,20 +352,30 @@ class IssueContainer extends Component {
 							))
 						) : (
 							<tr>
-								<td>"not found"</td>
+								<td>"data has not found"</td>
 							</tr>
 						)}
 					</Tbody>
 					<TFooter>
 						<TTools>
 							<TSearch>
-								<SearchBtn to="/serach">검색</SearchBtn>
-								<SearchText placeholder="검색어를 입력해주세요." />
+								<SearchBtn onClick={this.getSearch}>검색</SearchBtn>
+								<SearchText
+									onInput={this.getValue}
+									placeholder="검색어를 입력해주세요."
+								/>
 							</TSearch>
 							<Guides>
-								<Prev to="/issue">◀ 이전</Prev>
-								<Pages to="/issue">1 2 3 4 5 ...</Pages>
-								<Next to="/issue">다음 ▶</Next>
+								<First onClick={this.getFirstData}>■ 처음</First>
+								<Pages>
+									{pageNumbers.map((data) => (
+										<Page
+											key={data}
+											getCurrentPage={this.getCurrentPage}
+											data={data}
+										/>
+									))}
+								</Pages>
 							</Guides>
 							<PostBlock>
 								<Post to="/board">
@@ -241,6 +400,7 @@ const mapDispatchToProps = (dispatch) =>
 	bindActionCreators(
 		{
 			setList,
+			setPage,
 		},
 		dispatch
 	);

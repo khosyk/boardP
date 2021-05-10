@@ -1,10 +1,7 @@
 import axios from "axios";
-import React, { useState } from "react";
-import { connect } from "react-redux";
+import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router";
-import { bindActionCreators } from "redux";
 import styled from "styled-components";
-import { setEdit } from "../modules/edit";
 
 const BrdBox = styled.form`
 	display: flex;
@@ -78,7 +75,7 @@ const BrdBtn = styled.button`
 	cursor: pointer;
 `;
 
-function EditContainer(props, { content }) {
+function EditContainer(props) {
 	const {
 		props: {
 			match: {
@@ -94,17 +91,25 @@ function EditContainer(props, { content }) {
 
 	const { inputTitle, inputBody } = input;
 
-	const getData = async (a) => {
-		const url = `http://119.196.223.231:4000/posts/${id}`;
+	const getData = async () => {
+		const url = `http://119.196.222.239:4000/posts/${id}`;
 		var result = await axios.get(url);
 		var isData = result.data[0];
-		setEdit(isData);
+
+		return isData;
 	};
 
-	getData();
+	useEffect(() => {
+		getData().then((isData) =>
+			setInput({
+				inputTitle: isData.title,
+				inputBody: isData.body,
+			})
+		);
+	}, []);
 
-	/// content 받아서 input에 입력하는거 해야함.
-
+	// useEffect 를 사용해서 componentDidMount 처럼 사용, 무한루프 방지, .then에서 얻어온 isData로 인풋 업데이트
+	// .then 사용 이유는 getData()가 프로미스 객체라서
 	const getValue = (e) => {
 		const { name, value } = e.target;
 		setInput({
@@ -115,20 +120,20 @@ function EditContainer(props, { content }) {
 
 	const history = useHistory();
 
-	const onEdit = async () => {
+	const onEdit = async (e) => {
+		e.preventDefault();
 		try {
-			const url = `http://119.196.223.231:4000/posts/26`;
-			const data = {
-				body: JSON.stringify({
-					title: inputTitle,
-					content: inputBody,
-				}),
-			};
-
+			const url = `http://119.196.222.239:4000/posts/${id}`;
+			const data = JSON.stringify({
+				title: inputTitle,
+				body: inputBody,
+			});
 			const headers = { "Content-Type": "application/json" };
 			const updateResult = await axios.put(url, data, { headers });
-			history.push(`http://119.196.223.231:4000/posts`);
-			console.log(updateResult);
+			const { ok } = updateResult.data;
+			if (ok) {
+				history.push(`/issue/${id}`);
+			}
 		} catch (error) {
 			console.log(`Error:${error}`);
 		}
@@ -160,16 +165,4 @@ function EditContainer(props, { content }) {
 	);
 }
 
-const mapStateToProps = (state) => ({
-	content: state.edit.content,
-});
-
-const mapDispatchToProps = (dispatch) =>
-	bindActionCreators(
-		{
-			setEdit,
-		},
-		dispatch
-	);
-
-export default connect(mapStateToProps, mapDispatchToProps)(EditContainer);
+export default EditContainer;

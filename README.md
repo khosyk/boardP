@@ -1,21 +1,24 @@
 ## portfolio posting board
 
-[] single page
-[] page logo
-[] page nav
-[] table / porums/ games, movies, issues
-    - can post, update, delete
-[] table pages
-[] side
-    - best posts, history
+[] 싱글페이지
 
-[] use styled components
+[] 반응형 웹 디자인 (flex사용)
 
-1. router, create pages.
-2. page create home
- - logo nav articles
- - daily best post article
+[] issue game movie 페이지
+  - 배너 제작 (포토샵 이미지, 핸드폰 스크린 사이즈 지원)
+  - 읽기, 생성, 삭제, 수정
+  - 페이지 이동
+  - 검색 
 
-3. games create
- - board> posts> post
- - follow history, show aside menu
+[] Home 페이지
+  - 각 페이지에서 타이틀, 바디 불러와서 보여줌
+  - 핸드폰 사용자를 위한 페이지
+
+[] 로그인, 회원가입 기능
+
+
+
+
+
+
+

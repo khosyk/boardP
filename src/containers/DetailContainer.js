@@ -266,7 +266,7 @@ class DetailContainer extends Component {
 	async setReplies() {
 		try {
 			const result = await axios.get(
-				`http://119.196.223.231:4000/posts/${this.id}` // this = class
+				`http://119.196.222.239:4000/posts/${this.id}` // this = class
 			);
 			const { data } = result;
 			if (data[0].replies) {
@@ -294,7 +294,7 @@ class DetailContainer extends Component {
 		const onRemove = async () => {
 			try {
 				if (window.confirm("정말 삭제합니까?")) {
-					const url = `http://119.196.223.231:4000/posts/${this.id}/`;
+					const url = `http://119.196.222.239:4000/posts/${this.id}/`;
 					await axios.delete(url); // delete는 파라미터가 url만 이씀
 					alert("삭제되었습니다.");
 					window.history.back();
@@ -309,7 +309,7 @@ class DetailContainer extends Component {
 		const likeButton = document.getElementsByClassName("like");
 
 		const LikeShareCountUp = async () => {
-			const url = `http://119.196.223.231:4000/posts/${this.id}/`;
+			const url = `http://119.196.222.239:4000/posts/${this.id}/`;
 			var data = JSON.stringify({
 				like: likeShare.like,
 				share: likeShare.share,
@@ -372,7 +372,7 @@ class DetailContainer extends Component {
 
 			if (name !== "" && replyPassword !== "" && body !== "") {
 				try {
-					const url = `http://119.196.223.231:4000/posts/${this.id}/comments`;
+					const url = `http://119.196.222.239:4000/posts/${this.id}/comments`;
 					const data = JSON.stringify({
 						name,
 						body,
@@ -406,7 +406,7 @@ class DetailContainer extends Component {
 				let passwordCheck = prompt("비밀번호를 입력해주세요.");
 
 				try {
-					const url = `http://119.196.223.231:4000/posts/${this.id}/comments/${e}`;
+					const url = `http://119.196.222.239:4000/posts/${this.id}/comments/${e}`;
 
 					const data = JSON.stringify({ password: passwordCheck });
 
