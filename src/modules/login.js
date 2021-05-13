@@ -25,10 +25,13 @@ const login = handleActions(
 				name: payload.name,
 			},
 			userActive: true,
-		}),
-		[LOGOUT]: (state, { payload: user }) => ({
+    }),
+		[LOGOUT]: (state) => ({
 			...state,
-			user,
+      user: {
+        email: '',
+        name:''
+      },
 			userActive: false,
 		}),
 	},

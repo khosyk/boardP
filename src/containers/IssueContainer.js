@@ -10,6 +10,7 @@ import { connect } from "react-redux";
 import { setList, setPage } from "../modules/pages";
 import axios from "axios";
 import Page from "../pages/Pagenation/Page";
+import config from "../config.json";
 
 const MainBlock = styled.div`
 	width: 90%;
@@ -182,6 +183,7 @@ class IssueContainer extends Component {
 			userInput: "",
 		};
 	}
+
 	//data 요청 -> data에서 필요한거 뽑아내기 (여기서는 for,if문을 사용해서 title,id)
 	//얻은 데이터를 원하는 데이터형식으로 (여기선어레이) 저장 , const contents = [] 에 해당 데이터를 넣는다.
 	//해당데이터를 넣는기능은 이전에 리듀서(handleActions)에서 정의한 setList 기능을 mapDispatchToProps를 통해 얻어서 사용;
@@ -192,9 +194,7 @@ class IssueContainer extends Component {
 
 	async componentDidMount() {
 		try {
-			const result = await axios.get(
-				"http://119.196.222.239:4000/posts?page=1"
-			);
+			const result = await axios.get(`${config.host}/posts?page=1`);
 
 			const {
 				data: { contents: contentsData },
@@ -217,9 +217,7 @@ class IssueContainer extends Component {
 
 	getFirstData = async () => {
 		try {
-			const result = await axios.get(
-				`http://119.196.222.239:4000/posts?page=1`
-			);
+			const result = await axios.get(`${config.host}/posts?page=1`);
 
 			const {
 				data: { contents: contentsData, page },
@@ -246,7 +244,7 @@ class IssueContainer extends Component {
 		var currentPage = parseInt(e.target.innerText, 10);
 		try {
 			const result = await axios.get(
-				`http://119.196.222.239:4000/posts?page=${currentPage}`
+				`${config.host}/posts?page=${currentPage}`
 			);
 
 			const {
@@ -281,7 +279,7 @@ class IssueContainer extends Component {
 
 	getSearch = async () => {
 		try {
-			const result = await axios.get(`http://119.196.222.239:4000/posts`);
+			const result = await axios.get(`${config.host}/posts`);
 
 			const {
 				data: { contents: contentsData },
@@ -306,9 +304,9 @@ class IssueContainer extends Component {
 	};
 
 	render() {
+		const userActive = this.props.userActive;
 		//declare contents data
 		const data = this.props.contents.reverse();
-
 		//pageRance setting function
 		function pageRange(size, startAt) {
 			return [...Array(size).keys()].map((i) => i + startAt);
@@ -324,14 +322,6 @@ class IssueContainer extends Component {
 				<BannerBlock>
 					<Banner alt="bannerImage" src={BannerImg} />
 				</BannerBlock>
-
-				<form
-					action="http://localhost:4000/images"
-					method="post"
-					encType="multipart/form-data">
-					<input type="file" name="image" />
-					<input type="submit" />
-				</form>
 				<MainTable>
 					<Thead>
 						<TheadContent>
@@ -377,12 +367,18 @@ class IssueContainer extends Component {
 									))}
 								</Pages>
 							</Guides>
-							<PostBlock>
-								<Post to="/board">
-									<FiEdit2 style={{ fontSize: "0.7rem", marginRight: "3px" }} />
-									글쓰기
-								</Post>
-							</PostBlock>
+							{userActive ? (
+								<PostBlock>
+									<Post to="/board">
+										<FiEdit2
+											style={{ fontSize: "0.7rem", marginRight: "3px" }}
+										/>
+										글쓰기
+									</Post>
+								</PostBlock>
+							) : (
+								<td></td>
+							)}
 						</TTools>
 					</TFooter>
 				</MainTable>
@@ -394,6 +390,7 @@ class IssueContainer extends Component {
 const mapStateToProps = (state) => ({
 	page: state.pages.page,
 	contents: state.pages.contents,
+	userActive: state.login.userActive,
 });
 
 const mapDispatchToProps = (dispatch) =>

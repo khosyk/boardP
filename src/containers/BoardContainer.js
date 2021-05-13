@@ -1,11 +1,9 @@
-import React, { useState, uesRef } from "react";
+import React, { useState, uesRef, useRef } from "react";
 import styled from "styled-components";
-import ReactHtmlParser from "react-html-parser";
 import axios from "axios";
 import { useHistory } from "react-router";
-import { BsCardImage, BsMusicNoteBeamed } from "react-icons/bs";
-
-const BrdBox = styled.form`
+import config from "../config.json";
+const BrdBox = styled.div`
 	display: flex;
 	flex-direction: column;
 	align-items: center;
@@ -103,31 +101,11 @@ export default function BoardContainer() {
 		});
 	};
 
-	const imageUpload = async (e) => {
-		try {
-			const { name, value } = e.target;
-			console.log("check name", name);
-			console.log("check value", value);
-			const url = "http://119.196.222.239:4000/posts";
-			const data = JSON.stringify({
-				img,
-			});
-			const options = {
-				headers: { "Content-Type": "application/json" },
-			};
-			const result = await axios.post(url, data, { options });
-
-			console.log(result);
-		} catch (error) {
-			alert(`error :< : ${error}`);
-		}
-	};
-
 	const callSave = async (e) => {
 		e.preventDefault();
 
 		try {
-			const url = "http://119.196.222.239:4000/posts";
+			const url = `${config.host}/posts`;
 
 			const data = JSON.stringify({
 				title,
@@ -143,8 +121,6 @@ export default function BoardContainer() {
 			const {
 				data: { err, ok },
 			} = result;
-
-			console.log(result);
 
 			if (!ok) {
 				alert(`error : ${err}`);
@@ -163,6 +139,50 @@ export default function BoardContainer() {
 		// setInput({ id: id + 1 }); //id값은 서버에서 생성한다. (재시작 리로드에서 변경될 수 있다.)
 	};
 
+	//admin 일떄만 수정 가능하게
+	// image src 로 해당 이미지 사용하기,
+	const textAreaRef = useRef(null);
+
+	const uploadImage = async (e) => {
+		try {
+			const file = e.target.files[0];
+			const uri = "http://localhost:4000/images";
+
+			const formData = new FormData();
+			formData.append("image", file);
+
+			/*
+      위 두줄은
+      <form>
+				<input type="file" name="image" />
+			</form>;
+      */
+
+			const config = {
+				headers: {
+					"content-type": "multipart/form-data", //파일 데이터를 보내겠다.
+				},
+			};
+
+			const result = await axios.post(uri, formData, config);
+			//img 글상자 안에 넣기 시도중. 현재 태그를 넣어서 등록은 되는데 스타일이 적용안되고,
+			//글상자에 스트링이 아닌 이미지 태그로 들어가기를 원함
+			var imgPath = result.data.path;
+			var imgStyle = '{width:"150px", height:"150px"}';
+			var imgArray = [
+				`<img style={${imgStyle}} src=${imgPath} alt=${imgPath}/>`,
+			];
+			const test = imgArray.map((data) => data);
+			setInput({
+				...input,
+				content: test,
+			});
+		} catch (err) {
+			console.log("err", err);
+		}
+		e.preventDefault();
+	};
+
 	return (
 		<BrdBox>
 			<BrdTitle
@@ -173,19 +193,14 @@ export default function BoardContainer() {
 				value={input.title}
 			/>
 			<BrdToolbar>
-				<BrdImageUploadInput
-					name="img"
-					id="input-file"
-					type="file"
-					accept="image/jpeg, image/jpg"
-					onChange={imageUpload}
-				/>
+				<input type="file" name="image" id="imageData" onChange={uploadImage} />
 			</BrdToolbar>
 			<BrdTextarea
 				name="content"
 				onChange={getValue}
 				value={input.content}
-				placeholder="내용을입력해주세요."></BrdTextarea>
+				placeholder="내용을입력해주세요."
+				ref={textAreaRef}></BrdTextarea>
 			<BrdBtnBlock>
 				<BrdBtn onClick={callSave}>저장</BrdBtn>
 			</BrdBtnBlock>

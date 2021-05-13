@@ -1,12 +1,14 @@
 import React, { useMemo, useRef, useState } from "react";
 import { Link, useHistory } from "react-router-dom";
 import styled from "styled-components";
-import { connect } from "react-redux";
+import { connect, useDispatch } from "react-redux";
 import { bindActionCreators } from "redux";
 import axios from "axios";
 import { FcGoogle } from "react-icons/fc";
 import { RiKakaoTalkFill } from "react-icons/ri";
 import { useCookies } from "react-cookie";
+import { setLogin } from "../modules/login";
+import config from "../config.json";
 
 const MainPosition = styled.div`
 	display: flex;
@@ -176,9 +178,13 @@ const LoginFootKakao = styled(RiKakaoTalkFill)`
 	cursor: pointer;
 `;
 
-function LoginContainer() {
+function LoginContainer({ user }) {
 	const [cookies, setCookie, removeCookie] = useCookies(["USID"]);
 	// 1. 회원가입이 되어있는가? -> y 2. 회원 확인  -> y 3. 로그인 정보 확인 -> y 4. 페이지 이동 (다른페이지에서도 유지)
+
+	const dispatch = useDispatch();
+
+	const setLoginFunc = (user) => dispatch(setLogin(user));
 
 	const randomHello = useMemo(() => {
 		var a = [
@@ -208,22 +214,55 @@ function LoginContainer() {
 
 	const handleLogin = async () => {
 		try {
-			const url = "http://119.196.222.239:4000/users/login";
+			const url = `${config.host}/users/login`;
 			const data = JSON.stringify({
 				email: userId,
 				password,
 			});
 			const headers = { "Content-Type": "application/json" };
 			const result = await axios.post(url, data, { headers });
-			console.log(result.data.token, "t1");
 			var tokenResult = result.data.token;
+			if (!result.data.ok) {
+				alert(result.data.err);
+				return false;
+			}
 			//token -> 로그인 성공, 로그인 유지 장치 -> 저장은 setCookies (쿠키에 저장한다.)
 			// 쿠키 (이름 ,값, 옵션)   maxAge = 걸리는 시간
 			setCookie("USID", tokenResult, { path: "/", maxAge: 10800 });
+			return tokenResult;
 		} catch (error) {
 			alert(`로그인페이지 에러 : ${error}`);
 		}
 	};
+
+	async function handleCookie(cookie) {
+		try {
+			if (!cookie) {
+				return;
+			}
+
+			const url = `${config.host}/users/token-verify`;
+			const data = JSON.stringify({
+				token: cookie,
+			});
+			const headers = {
+				"Content-Type": "application/json",
+			};
+			const result = await axios.post(url, data, { headers });
+
+			const ok = result.data.ok;
+			if (!ok) {
+				return;
+			}
+			const userData = result.data.userInfo;
+			setLoginFunc(userData);
+
+			alert("환영합니다.");
+			history.push("/");
+		} catch (error) {
+			alert(`헤더에러:${error}`);
+		}
+	}
 
 	const idRef = useRef(null);
 	const passwordRef = useRef(null);
@@ -231,13 +270,17 @@ function LoginContainer() {
 
 	const onClickLogin = async (e) => {
 		e.preventDefault();
-		if (userId === "" || password === "") {
-			alert("아이디, 비밀번호를 입력해주세요.");
-			idRef.current.focus();
-		} else {
-			await handleLogin();
-			alert("환영합니다.");
-			history.push("/");
+		try {
+			if (userId === "" || password === "") {
+				alert("아이디, 비밀번호를 입력해주세요.");
+				idRef.current.focus();
+			} else {
+				const tokenCookie = await handleLogin();
+				await handleCookie(tokenCookie);
+			}
+		} catch (err) {
+			alert("로그인중 에러 발생");
+			console.log(err);
 		}
 	};
 
@@ -280,4 +323,10 @@ function LoginContainer() {
 	);
 }
 
-export default LoginContainer;
+const mapStateToProps = (state) => {
+	return {
+		user: state.login.user,
+	};
+};
+
+export default connect(mapStateToProps)(LoginContainer);

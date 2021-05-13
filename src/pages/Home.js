@@ -1,7 +1,6 @@
 import React from "react";
 import styled from "styled-components";
 
-
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { setList, setPage } from "../modules/pages";
@@ -11,7 +10,6 @@ import covid from "../images/covid.png";
 import diablo from "../images/diablo2re.png";
 import parasite from "../images/parasite.png";
 import { Link } from "react-router-dom";
-
 
 // 제작-> 경쟁과 협력, 커뮤니티 3대종파 이슈 게임 무비,
 // 올림픽처럼 1, 2, 3 등을 정해서 그들끼리 경쟁하고 협력할 수 있게끔 만듬
@@ -178,9 +176,7 @@ const RankTitle = styled.div`
 	text-overflow: ellipsis;
 `;
 
-function Home(props)
-{
-  console.log(props)
+function Home(props) {
 	return (
 		<MainBlock>
 			<MainPosition>
@@ -473,7 +469,6 @@ function Home(props)
 		</MainBlock>
 	);
 }
-
 
 const mapStateToProps = (state) => ({
 	page: state.pages.page,

@@ -2,6 +2,7 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router";
 import styled from "styled-components";
+import config from "../config.json";
 
 const BrdBox = styled.form`
 	display: flex;
@@ -92,7 +93,7 @@ function EditContainer(props) {
 	const { inputTitle, inputBody } = input;
 
 	const getData = async () => {
-		const url = `http://119.196.222.239:4000/posts/${id}`;
+		const url = `${config.host}/posts/${id}`;
 		var result = await axios.get(url);
 		var isData = result.data[0];
 
@@ -123,7 +124,7 @@ function EditContainer(props) {
 	const onEdit = async (e) => {
 		e.preventDefault();
 		try {
-			const url = `http://119.196.222.239:4000/posts/${id}`;
+			const url = `${config.host}/posts/${id}`;
 			const data = JSON.stringify({
 				title: inputTitle,
 				body: inputBody,
@@ -134,8 +135,9 @@ function EditContainer(props) {
 			if (ok) {
 				history.push(`/issue/${id}`);
 			}
-		} catch (error) {
-			console.log(`Error:${error}`);
+		} catch (err) {
+			alert("게시물 수정에 실패하였습니다.");
+			console.log("err", err);
 		}
 	};
 

@@ -4,6 +4,7 @@ import styled from "styled-components";
 import axios from "axios";
 import { FcGoogle } from "react-icons/fc";
 import { RiKakaoTalkFill } from "react-icons/ri";
+import config from "../config.json";
 
 const MainPosition = styled.div`
 	display: flex;
@@ -205,27 +206,28 @@ function SignInContainer() {
 	};
 
 	const postData = async () => {
-		const url = "http://119.196.222.239:4000/users/signup";
+		const url = `${config.host}/users/signup`;
 		const data = JSON.stringify({ email, password, name: nickname });
 		const headers = { "Content-Type": "application/json" };
-		const result = await axios.post(url, data, { headers });
+		await axios.post(url, data, { headers });
 	};
 
 	function isEmail(asValue) {
-		var regExp = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
+		var regExp =
+			/^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
 
 		return regExp.test(asValue);
 	}
 
 	const emailCheck = async () => {
-		const url = `http://119.196.222.239:4000/users/check-duplicate/email/${email}`;
+		const url = `${config.host}/users/check-duplicate/email/${email}`;
 		const result = await axios.get(url);
 
 		return result.data.ok;
 	};
 
 	const nameCheck = async () => {
-		const url = `http://119.196.222.239:4000/users/check-duplicate/name/${nickname}`;
+		const url = `${config.host}/users/check-duplicate/name/${nickname}`;
 		const result = await axios.get(url);
 
 		return result.data.ok;
@@ -280,7 +282,7 @@ function SignInContainer() {
 
 	// 회원가입 버튼 클릭 시, password 확인, 회원가입 post
 
-	let checkSpc = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*[~!@#$%^&*()_+|<>?:{}]/;
+	let checkSpc = /^(?=.*[a-zA-Z])((?=.*\d)|(?=.*\W)).{10,30}$/;
 
 	const history = useHistory();
 
@@ -290,7 +292,7 @@ function SignInContainer() {
 			if (
 				password !== passwordCheck ||
 				!checkSpc.test(password) ||
-				password.length >= 10
+				password.length <= 10
 			) {
 				alert(
 					"비밀번호를 확인해주세요. \n *비밀번호는 10자 이상 특수 문자를 포함해야 합니다.*"
@@ -340,6 +342,7 @@ function SignInContainer() {
 					</SignInIdBox>
 					<SignInPWBox>
 						<SignInPWInput
+							type="password"
 							ref={passwordRef}
 							name="password"
 							onInput={getValue}
@@ -349,6 +352,7 @@ function SignInContainer() {
 							placeholder="비밀번호"
 						/>
 						<SignInPWInput
+							type="password"
 							ref={passwordCheckRef}
 							name="passwordCheck"
 							onInput={getValue}
