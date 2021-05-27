@@ -4,7 +4,6 @@ import {
   Route,
   Redirect,
 } from 'react-router-dom';
-import Home from '../pages/Home';
 import Issue from '../pages/Issue';
 import Game from '../pages/Game';
 import Movie from '../pages/Movie';
