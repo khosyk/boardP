@@ -1,10 +1,16 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { setList, setPage } from '../modules/pages';
 import Home from '../pages/Home';
 
+import Profile from '../images/profile.jpg';
+import Ability from '../images/ability.jpg';
+import Career from '../images/career.jpg';
+import List from '../images/list.jpg';
+import LoginImage from '../images/login.jpg';
+import SigninImage from '../images/signin.jpg';
 // 제작-> 경쟁과 협력, 커뮤니티 3대종파 이슈 게임 무비,
 // 올림픽처럼 1, 2, 3 등을 정해서 그들끼리 경쟁하고 협력할 수 있게끔 만듬
 
@@ -14,16 +20,139 @@ import Home from '../pages/Home';
 // 화면이 960px 이하 => 일정크기까지 줄어들다가, 화면 안으로 (기준은 768px)
 
 function HomeContainer() {
+  try {
+  } catch (error) {
+    alert(`Home error: ${error}`);
+  }
 
-  const [artilceData, setAlticleData] = useState({
-    title: '',
-    image: '',
-    writer: '',
-    date: '',
-  });
+  const resumeData = [
+    {
+      title: '자기소개',
+      user: '이희운',
+      img: '/static/media/profile.1f9219a8.jpg',
+      link: '/issue/1',
+    },
+    {
+      title: '역량',
+      user: '이희운',
+      img: '/static/media/ability.0d839a5a.jpg',
+      link: '/issue/2',
+    },
+    {
+      title: '경력',
+      user: '이희운',
+      img: '/static/media/career.27e87147.jpg',
+      link: '/issue/3',
+    },
+    {
+      title: '게시판 둘러보기',
+      user: '이희운',
+      img: '/static/media/list.eacc4e23.jpg',
+      link: '/issue',
+    },
+    {
+      title: '로그인 둘러보기',
+      user: '이희운',
+      img: '/static/media/login.76357c14.jpg',
+      link: '/login',
+    },
+    {
+      title: '회원가입 둘러보기',
+      user: '이희운',
+      img: '/static/media/signin.01849878.jpg',
+      link: '/signin',
+    },
+    {
+      title: '비전공자가 개발자가 되고 싶은 이유?',
+      user: '이희운',
+      img: '',
+      link: '/',
+    },
+    {
+      title: '블로그 글 살펴보기',
+      user: '이희운',
+      img: '',
+      link: '/',
+    },
+    {
+      title: '깃허브 살펴보기',
+      user: '이희운',
+      img: '',
+      link: '/',
+    },
+    
+    {
+      title: '깃허브 살펴보기',
+      user: '이희운',
+      img: '',
+      link: '/',
+    },
+    {
+      title: '깃허브 살펴보기',
+      user: '이희운',
+      img: '',
+      link: '/',
+    },
+    {
+      title: '깃허브 살펴보기',
+      user: '이희운',
+      img: '',
+      link: '/',
+    },
+    {
+      title: '깃허브 살펴보기',
+      user: '이희운',
+      img: '',
+      link: '/',
+    },
+    {
+      title: '깃허브 살펴보기',
+      user: '이희운',
+      img: '',
+      link: '/',
+    },
+    {
+      title: '깃허브 살펴보기',
+      user: '이희운',
+      img: '',
+      link: '/',
+    },
+    {
+      title: '깃허브 살펴보기',
+      user: '이희운',
+      img: '',
+      link: '/',
+    },
+    {
+      title: '깃허브 살펴보기',
+      user: '이희운',
+      img: '',
+      link: '/',
+    },
+    {
+      title: '깃허브 살펴보기',
+      user: '이희운',
+      img: '',
+      link: '/',
+    },
+    {
+      title: '깃허브 살펴보기',
+      user: '이희운',
+      img: '',
+      link: '/',
+    },
+    {
+      title: '깃허브 살펴보기',
+      user: '이희운',
+      img: '',
+      link: '/',
+    },
+  ];
 
-  const sideData = {title:'어떤 개발자가 되고 싶은지?', content:'소통을 중요하게 생각하는 개발자가 되고싶습니다.'}
-  return <Home />;
+  
+
+
+  return <Home resumeData={resumeData}  />;
 }
 
 const mapStateToProps = (state) => ({

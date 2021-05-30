@@ -1,14 +1,28 @@
-import { createGlobalStyle } from "styled-components";
-import reset from "styled-reset";
+import { createGlobalStyle } from 'styled-components';
+import reset from 'styled-reset';
 
 const GlobalStyles = createGlobalStyle`
     ${reset};
 
     @font-face {      
       font-family:'NanumBarunpenR';
-      src: url('/font/NanumBarunpenR.ttf') format('truetype');
+      font-weight:400;
+      src:
+      url('/font/NanumBarunpenR.woff') format('woff'),
+      url('/font/NanumBarunpenR.otf') format('otf'),
+      url('/font/NanumBarunpenR.ttf') format('truetype');
     }
-    body{      
+    
+    @font-face {      
+      font-family:'NanumBarunpenR';
+      font-weight:600;
+      src:
+      url('/font/NanumBarunpenB.woff') format('woff'),
+      url('/font/NanumBarunpenB.otf') format('otf'),
+      url('/font/NanumBarunpenB.ttf') format('truetype');
+    }
+    body{
+	    background-color: rgba(0, 0, 0, 0.02);;      
       font-family:'NanumBarunpenR';
       font-weight:lighter;
       color:#343a40;

@@ -1,10 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useMemo, useState } from "react";
 import { useHistory, withRouter } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../modules/login";
 import { useCookies } from "react-cookie";
 
 import Header from "../components/Header";
+
+import { AiOutlineSmile,AiFillFire,AiOutlineBulb,AiFillThunderbolt, } from "react-icons/ai";
 
 //1. Header로 로그인 상태 확인하고, 로그인 되었음을 알려주는 태그 만들기,
 //2. 로그아웃 기능 구현 (useCookies에 removeCookies('USID')) 호출
@@ -21,7 +23,7 @@ const HeaderContainer = () => {
 	}));
 
 	const dispatch = useDispatch();
-  const setLogoutFunc = () => dispatch(logout());
+ 	const setLogoutFunc = () => dispatch(logout());
 
 	//Hooks
 	const [visibleMenu, setVisibleMenu] = useState(false);
@@ -37,6 +39,18 @@ const HeaderContainer = () => {
 		setLogoutFunc();
 	};
 
+	
+	const randomTrait = useMemo(() => {
+		var a = [
+			<span><AiOutlineSmile style={{fontSize:'20px',}}/>POSITIVE</span>,
+			<span><AiFillThunderbolt style={{fontSize:'20px',}}/>ACTIVE</span>,
+			<span><AiOutlineBulb style={{fontSize:'20px',}}/>CREATIVE</span>,
+			<span><AiFillFire style={{fontSize:'20px',}}/>PASSIONATE</span>,
+		];
+		var b = Math.floor(Math.random() * 4);
+		return a[b];
+	}, []);
+
 	return (
 		<>
 			<Header
@@ -45,6 +59,7 @@ const HeaderContainer = () => {
 				userActive={userActive}
 				user={user}
 				logoutFunction={logoutFunction}
+				randomTrait={randomTrait}
 			/>
 		</>
 	);
