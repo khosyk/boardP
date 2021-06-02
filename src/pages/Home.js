@@ -6,7 +6,6 @@ import Article from './Article/Article';
 const MainBlock = styled('div')`
   display: flex;
   justify-content: center;
-  margin-top:30px;
   width: 100%;
   height: 100%;
 `;
@@ -15,7 +14,7 @@ const MainPosition = styled.div`
   width: 90%;
   margin-left: auto;
   margin-right: auto;
-  display:flex;
+  display: flex;
   flex-direction: column;
   align-items: center;
 `;
@@ -23,17 +22,17 @@ const MainPosition = styled.div`
 const MainAriticleBlock = styled.div`
   display: flex;
   flex-wrap: wrap;
-  flex-grow:1;
+  flex-grow: 1;
   @media (max-width: 768px) {
-  width:100%;
-  flex-direction: column;
-  margin:0px;
+    width: 100%;
+    flex-direction: column;
+    margin: 0px;
   }
-  @media (min-width:1201px){
-  justify-content: space-evenly;
-  padding-left:auto;
-  padding-right:auto;
-  } 
+  @media (min-width: 1201px) {
+    justify-content: space-evenly;
+    padding-left: auto;
+    padding-right: auto;
+  }
 `;
 
 const SidePosition = styled.div`
@@ -133,9 +132,9 @@ function Home({ resumeData }) {
           </RankBlock> 
         </RanksBlock> */}
         <MainAriticleBlock>
-        {resumeData.map((resumeData, index) => (
-          <Article key={index} resumeData={resumeData} />
-        ))}
+          {resumeData.map((resumeData, index) => (
+            <Article key={index} resumeData={resumeData} />
+          ))}
         </MainAriticleBlock>
       </MainPosition>
     </MainBlock>

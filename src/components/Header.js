@@ -1,67 +1,11 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import styled from 'styled-components';
-import axios from 'axios';
 import { Link, withRouter } from 'react-router-dom';
-import { connect, useDispatch } from 'react-redux';
-import { useCookies } from 'react-cookie';
-import { setLogin } from '../modules/login';
-import config from '../config.json';
+import { connect } from 'react-redux';
 
 import { BiMenu, BiXCircle } from 'react-icons/bi';
 
-const HeaderBlock = styled('header')`
-  display: flex;
-  padding-top: 10px;
-  padding-bottom: 30px;
-  justify-content: center;
-  @media (max-width: 480px) {
-    padding: 0px;
-    padding-top: 5px;
-    margin: 5px 30px;
-  }
-`;
-
-const Main = styled.div`
-  width: 180px;
-  height: 100px;
-  margin-left: 5%;
-  position: absolute;
-  top: 5px;
-  text-align: left;
-  line-height: 100px;
-  font-size:30px;
-  @media (max-width: 768px) {
-    position: fixed;
-    opacity: 0.5;
-    margin-left: 2%;
-    width: 100px;
-    height: 40px;
-    bottom: 20px;
-    top: 92%;
-    transition: width 0.1s ease-in;
-    z-index: 1;
-  }
-`;
-
-const LinkList = styled('li')`
-  display: flex;
-  justify-content: space-around;
-  width: 500px;
-  min-width: 250px;
-`;
-
-const Item = styled('ul')`
-  font-size: 1.1rem;
-  font-weight: 600;
-  color: ${(props) => (props.selected ? '#343a40' : 'black')};
-  border-bottom: ${(props) => (props.selected ? '#ff6b6b' : 'transparent')} 2px solid;
-  @media (max-width: 480px) {
-    font-size: 0.8rem;
-  }
-`;
-
-
-// menus
+// Header Top menus
 
 // mobile Menus
 
@@ -200,9 +144,8 @@ const LoginBottomMenu = styled(Link)`
 // PC Version Menus
 
 const HeaderTopBlock = styled.div`
-  margin-left: auto;
-  margin-right: auto;
   width: 100%;
+  margin-top: 10px;
   display: flex;
   justify-content: center;
   @media (max-width: 480px) {
@@ -212,22 +155,17 @@ const HeaderTopBlock = styled.div`
 `;
 
 const HeaderTopList = styled.li`
-  margin-top: 10px;
   display: flex;
   justify-content: flex-end;
-  width: 75%;
+  width: 85%;
 `;
 
 const HeaderTopMenus = styled.ul`
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 600;
-  margin-left:50px;
-`;
-
-const HeaderTopSignin = styled.span`
-  cursor: pointer;
+  margin-left: 50px;
   &:hover {
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
   }
   &:active {
     color: red;
@@ -235,22 +173,88 @@ const HeaderTopSignin = styled.span`
 `;
 
 const HeaderTopUserBlock = styled.div`
-display:flex;
-width:fit-content;
+  display: flex;
+  width: fit-content;
 `;
 
-const HeaderTopUser = styled.span`
-`;
+const HeaderTopUser = styled.span``;
 
 const HeaderTopLogout = styled.a`
   margin-left: 50px;
-  margin-right:-50px;
+  margin-right: -50px;
   cursor: pointer;
   &:hover {
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
   }
   &:active {
     color: red;
+  }
+`;
+
+/// Header main menus
+
+const HeaderBlock = styled('header')`
+  display: flex;
+  padding: 40px 0px;
+  justify-content: center;
+  @media (max-width: 480px) {
+    padding: 0px;
+    padding-top: 5px;
+    margin: 5px 30px;
+  }
+`;
+
+const Main = styled.span`
+  margin-left: 5%;
+  position: absolute;
+  top: 8px;
+  text-align: center;
+  font-size: 18px;
+  line-height: 25px;
+  height: 25px;
+  width: 130px;
+  border-radius: 20px;
+  cursor: pointer;
+  background-color: rgba(0, 0, 0, 0.9);
+  color: white;
+  @media (max-width: 768px) {
+    font-size: 16px;
+    height: 20px;
+    width: 100px;
+    line-height: 20px;
+  }
+  @media (max-width: 480px) {
+    position: fixed;
+    font-size: 15px;
+    opacity: 0.7;
+    margin-left: 2%;
+    bottom: 20px;
+    top: 92%;
+    transition: width 0.1s ease-in;
+    z-index: 1;
+    background-color: transparent;
+  }
+  transition: all 0.2s ease-in-out;
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.8);
+  }
+`;
+
+const LinkList = styled('li')`
+  display: flex;
+  justify-content: space-around;
+  width: 500px;
+  min-width: 250px;
+`;
+
+const Item = styled('ul')`
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: ${(props) => (props.selected ? '#343a40' : 'black')};
+  border-bottom: ${(props) => (props.selected ? '#ff6b6b' : 'transparent')} 2px
+    solid;
+  @media (max-width: 480px) {
+    font-size: 0.8rem;
   }
 `;
 
@@ -268,56 +272,21 @@ const Header = ({
   user,
   userActive,
   logoutFunction,
-  randomTrait
+  randomTrait,
+  moveToMain,
 }) => {
-  const [cookies] = useCookies(['USID']);
-
-  const dispatch = useDispatch();
-  const setLoginFunc = (user) => dispatch(setLogin(user));
-
-  const getLoginInfo = async () => {
-    try {
-      const token = cookies.USID;
-      if (!token) return;
-
-      const url = `${config.host}/users/token-verify`;
-      const data = JSON.stringify({
-        token,
-      });
-      const headers = {
-        'Content-Type': 'application/json',
-      };
-      const result = await axios.post(url, data, { headers });
-
-      const ok = result.data.ok;
-      if (!ok) {
-        return;
-      }
-      const userData = result.data.userInfo;
-      setLoginFunc(userData);
-    } catch (err) {
-      console.log(err);
-      alert('에러 발생 관리자에게 문의하세요.');
-      return;
-    }
-  };
-
-  useEffect(() => {
-    getLoginInfo();
-  }, []);
-
   return (
     <>
-      <Main>{randomTrait}</Main>
+      <Main onClick={moveToMain}>{randomTrait}</Main>
       <VisibleButton onClick={() => setVisibleMenu(!visibleMenu)}>
-        <BiMenu style={{ fontSize: '1rem', color: ' rgba(0, 0, 0, 0.7)' }} />
+        <BiMenu style={{ fontSize: '13px', color: ' rgba(0, 0, 0, 0.7)' }} />
       </VisibleButton>
       {visibleMenu ? (
         <VisibleMenus>
           <LoginCloseButton>
             <BiXCircle
               onClick={() => setVisibleMenu(!visibleMenu)}
-              style={{ fontSize: '1rem', color: 'rgba(255,255,255,0.8)' }}
+              style={{ fontSize: '13px', color: 'rgba(255,255,255,0.8)' }}
             />
           </LoginCloseButton>
           <LoginBlock>

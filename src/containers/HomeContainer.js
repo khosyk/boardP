@@ -20,6 +20,7 @@ import SigninImage from '../images/signin.jpg';
 // 화면이 960px 이하 => 일정크기까지 줄어들다가, 화면 안으로 (기준은 768px)
 
 function HomeContainer() {
+  console.log(Profile);
   try {
   } catch (error) {
     alert(`Home error: ${error}`);
@@ -29,7 +30,7 @@ function HomeContainer() {
     {
       title: '자기소개',
       user: '이희운',
-      img: '/static/media/profile.1f9219a8.jpg',
+      img: '/static/media/profile.3b48f36f.jpg',
       link: '/issue/1',
     },
     {
@@ -80,7 +81,7 @@ function HomeContainer() {
       img: '',
       link: '/',
     },
-    
+
     {
       title: '깃허브 살펴보기',
       user: '이희운',
@@ -149,10 +150,7 @@ function HomeContainer() {
     },
   ];
 
-  
-
-
-  return <Home resumeData={resumeData}  />;
+  return <Home resumeData={resumeData} />;
 }
 
 const mapStateToProps = (state) => ({

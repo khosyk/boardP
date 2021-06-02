@@ -21,8 +21,9 @@ const GlobalStyles = createGlobalStyle`
       url('/font/NanumBarunpenB.otf') format('otf'),
       url('/font/NanumBarunpenB.ttf') format('truetype');
     }
+    
     body{
-	    background-color: rgba(0, 0, 0, 0.02);;      
+	    background-color: rgba(0, 0, 0, 0.02);      
       font-family:'NanumBarunpenR';
       font-weight:lighter;
       color:#343a40;
