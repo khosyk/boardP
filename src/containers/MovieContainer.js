@@ -8,7 +8,7 @@ import axios from "axios";
 import BannerImg from "../images/movieBanner.png";
 import { FiEdit2 } from "react-icons/fi";
 
-import List from "../pages/List";
+import List from '../pages/PageComponents/List';
 import { setList } from "../modules/pages";
 
 const MainBlock = styled.div`

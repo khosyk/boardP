@@ -32,6 +32,7 @@ export default function Router() {
         <Route path="/issue/:id" exact component={Detail} />{' '}
         {/* /:id -> 변수 */}
         <Route path="/issue/:id/edit" component={Edit} />
+        <Redirect from ='*' to='/'/>
       </Switch>
     </Rotuer>
   );

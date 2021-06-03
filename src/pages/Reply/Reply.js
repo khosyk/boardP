@@ -12,15 +12,14 @@ const ReplyBlock = styled.div`
 
 // Reply header body
 
-const ReplyHeader = styled.div`
+const ReplyTitle = styled.div`
 	display: flex;
-	margin-left: -0.5rem;
-	padding-top: 0.5rem;
-	padding-left: 0.5rem;
-	width: 102%;
-	height: 2rem;
-	font-size: 0.9rem;
-	font-weight: 300;
+	margin-left: -8px;
+	padding-top: 8px;
+	padding-left: 8px;
+	width: 101.4%;
+	height: 32px;
+	font-size: 13px;
 	background-color: rgba(0, 0, 0, 0.03);
 `;
 
@@ -33,7 +32,7 @@ const ReplyBottom = styled.div`
 	margin-left: -0.5rem;
 	padding-top: 0.5rem;
 	padding-left: 0.5rem;
-	width: 102%;
+	width: 101.4%;
 	height: 1rem;
 	font-size: 0.9rem;
 	font-weight: 300;
@@ -95,9 +94,8 @@ const ReplyInputContent = styled.textarea`
 	padding: 5px;
 	border: 1px solid rgba(0, 0, 0, 0.3);
 	min-height: 4.5rem;
-	font-size: 1rem;
-	line-height: 1.2rem;
-	letter-spacing: 0.1rem;
+	font-size: 14px;
+	line-height: 16px;
 	resize: vertical;
 	&:hover {
 		& + div {
@@ -111,13 +109,15 @@ const ReplyToolTip = styled.div`
 	opacity: 0;
 	display: none;
 	position: absolute;
-	width: 230px;
+	width: 235px;
 	color: white;
 	justify-content: flex-end;
 	background-color: rgba(0, 0, 0, 0.78);
 	border-radius: 4px;
-	height: 1.4rem;
-	line-height: 1.2rem;
+	height: 20px;
+	line-height: 18px;
+	font-size:14px;
+	letter-spacing: -0.5px;
 	margin-top: 5px;
 	transition: all 0.2s ease-in;
 	bottom: -25px;
@@ -130,16 +130,15 @@ export default function Reply({
 	ReplyData,
 	count,
 	handleRemove,
-	ReplyInput,
 }) {
 	const { name, replyPassword, body } = ReplyData;
 
 	return (
 		<>
 			<ReplyBlock>
-				<ReplyHeader>
+				<ReplyTitle>
 					<div>전체 댓글 ({count > 0 ? count : 0})</div>
-				</ReplyHeader>
+				</ReplyTitle>
 				<ReplyBody>
 					{ReplyData.map((ReplyData) => (
 						<ReplyContents
@@ -178,7 +177,7 @@ export default function Reply({
 						value={body}
 					/>
 					<ReplyToolTip>
-						댓글창 사이즈를 변경 할 수 있어요. <VscArrowSmallUp />
+						댓글창 사이즈를 변경 할 수 있어요.<VscArrowSmallUp />
 					</ReplyToolTip>
 				</ReplyInputPosition>
 			</ReplyBlock>

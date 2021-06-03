@@ -178,7 +178,7 @@ const LoginFootKakao = styled(RiKakaoTalkFill)`
 	cursor: pointer;
 `;
 
-function LoginContainer({ user }) {
+function LoginContainer() {
 	const [cookies, setCookie, removeCookie] = useCookies(["USID"]);
 	// 1. 회원가입이 되어있는가? -> y 2. 회원 확인  -> y 3. 로그인 정보 확인 -> y 4. 페이지 이동 (다른페이지에서도 유지)
 
@@ -240,7 +240,6 @@ function LoginContainer({ user }) {
 			if (!cookie) {
 				return;
 			}
-
 			const url = `${config.host}/users/token-verify`;
 			const data = JSON.stringify({
 				token: cookie,
@@ -285,7 +284,7 @@ function LoginContainer({ user }) {
 	};
 
 	return (
-		<MainPosition>
+		<MainPosition id='Login'>
 			<MainBlock>
 				<LoginBlock>
 					<LoginLogin>로그인</LoginLogin>

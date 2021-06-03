@@ -76,7 +76,7 @@ const SignInIdInput = styled.input`
 	border: none;
 	width: 250px;
 	padding: 10px;
-	padding-right: 82px;
+	padding-right: 75px;
 	height: 40px;
 	font-size: 1.2rem;
 	border-radius: 2px;
@@ -316,7 +316,7 @@ function SignInContainer() {
 	//1.중복확인을 눌렀는지 2. 비밀번호 중복이 안되는지 -> 회원가입
 
 	return (
-		<MainPosition>
+		<MainPosition id='Signin'>
 			<MainBlock>
 				<SignInBlock>
 					<SignInSignIn>회원가입</SignInSignIn>

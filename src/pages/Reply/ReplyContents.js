@@ -6,8 +6,8 @@ import Reply from "./Reply";
 // 전체 댓글 내용 표시
 
 const RepliesPosition = styled.div`
-	margin-top: 0.5rem;
-	margin-bottom: 0.5rem;
+	margin-top: 8px;
+	margin-bottom: 8px;
 `;
 
 //댓글들 css 댓글, 버튼

@@ -7,6 +7,9 @@ import { BiMenu, BiXCircle } from 'react-icons/bi';
 
 // Header Top menus
 
+const HeaderBlock = styled.header`
+`;
+
 // mobile Menus
 
 const VisibleButton = styled.div`
@@ -14,9 +17,10 @@ const VisibleButton = styled.div`
   height: 25px;
   position: absolute;
   top: 8px;
-  left: 16px;
+  left: 19px;
   display: none;
   visibility: hidden;
+  
   @media (max-width: 480px) {
     display: block;
     visibility: visible;
@@ -66,7 +70,7 @@ const LoginIdBox = styled.div`
 `;
 
 const LoginIdSpan = styled.span`
-  font-size: 0.8rem;
+  font-size: 11px;
   display: inline-block;
   width: 20px;
 `;
@@ -90,7 +94,7 @@ const LoginPWBox = styled.div`
 
 const LoginPwSpan = styled.span`
   display: inline-block;
-  font-size: 0.8rem;
+  font-size: 11px;
   width: 20px;
 `;
 
@@ -111,16 +115,16 @@ const LoginButtonBlock = styled.div`
   margin-top: 5px;
 `;
 
-const LoginButton = styled(Link)`
+const LoginButtonLogin = styled(Link)`
   border: 1px solid rgba(0, 0, 0, 0.5);
   padding: 0px 5px;
   border-radius: 2px;
   background-color: white;
-  font-size: 0.7rem;
+  font-size: 10px;
 `;
 
-const LoginButtonMenu = styled(Link)`
-  font-size: 0.7rem;
+const LoginButtonSignin = styled(Link)`
+  font-size: 10px;
   margin-left: 10px;
 `;
 
@@ -133,7 +137,7 @@ const LoginBottomBlock = styled.div`
 `;
 
 const LoginBottomMenu = styled(Link)`
-  font-size: 0.7rem;
+  font-size: 11px;
   margin-left: 10px;
   &:active:hover {
     color: red;
@@ -145,9 +149,10 @@ const LoginBottomMenu = styled(Link)`
 
 const HeaderTopBlock = styled.div`
   width: 100%;
-  margin-top: 10px;
+  margin-top: 8px;
   display: flex;
   justify-content: center;
+  padding: 2px 0px;
   @media (max-width: 480px) {
     display: none;
     visibility: hidden;
@@ -157,18 +162,14 @@ const HeaderTopBlock = styled.div`
 const HeaderTopList = styled.li`
   display: flex;
   justify-content: flex-end;
-  width: 85%;
+  width: 90%;
 `;
 
 const HeaderTopMenus = styled.ul`
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 600;
-  margin-left: 50px;
   &:hover {
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
-  }
-  &:active {
-    color: red;
   }
 `;
 
@@ -181,7 +182,7 @@ const HeaderTopUser = styled.span``;
 
 const HeaderTopLogout = styled.a`
   margin-left: 50px;
-  margin-right: -50px;
+  padding-right:20px;
   cursor: pointer;
   &:hover {
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
@@ -189,25 +190,49 @@ const HeaderTopLogout = styled.a`
   &:active {
     color: red;
   }
+@media(max-width:768px){
+  padding-right:0px;
+}
 `;
 
-/// Header main menus
-
-const HeaderBlock = styled('header')`
-  display: flex;
-  padding: 40px 0px;
-  justify-content: center;
-  @media (max-width: 480px) {
-    padding: 0px;
-    padding-top: 5px;
-    margin: 5px 30px;
+const HeaderTopLogin = styled(Link)`
+  margin-right:50px;
+&:active {
+    color: red;
   }
 `;
 
-const Main = styled.span`
+const HeaderTopSignin = styled(Link)`
+padding-right:20px;
+&:active {
+    color: red;
+  }
+@media(max-width:768px){
+  padding-right:0px;
+}
+`
+
+/// Header main menus
+
+const HeaderMenus = styled.div`
+  display: flex;
+  padding: 25px 0px;
+  justify-content: center;
+  @media (max-width: 480px) {
+    padding: 0px;
+    padding-top: 2px;
+    padding-bottom:5px;
+    margin: 5px 30px;
+  }
+  @media (min-width: 769px){
+    padding-bottom:30px;
+  }
+`;
+
+const LinktoMain = styled.span`
   margin-left: 5%;
   position: absolute;
-  top: 8px;
+  top: 5px;
   text-align: center;
   font-size: 18px;
   line-height: 25px;
@@ -218,6 +243,7 @@ const Main = styled.span`
   background-color: rgba(0, 0, 0, 0.9);
   color: white;
   @media (max-width: 768px) {
+    top:7px;
     font-size: 16px;
     height: 20px;
     width: 100px;
@@ -240,21 +266,28 @@ const Main = styled.span`
   }
 `;
 
-const LinkList = styled('li')`
+const LinkList = styled.li`
   display: flex;
-  justify-content: space-around;
-  width: 500px;
-  min-width: 250px;
+  justify-content: space-between;
+  width: 450px;
+  font-weight:600;
+  @media (max-width: 768px) {
+    width: 350px;
+  }
+  @media (max-width: 480px){
+    width: 230px;
+  }
+  transition: all 0.2s ease-in-out;
 `;
 
-const Item = styled('ul')`
-  font-size: 1.1rem;
-  font-weight: 600;
+const Item = styled.ul`
+  font-size: 16px;
+  letter-spacing: -0.1px;
   color: ${(props) => (props.selected ? '#343a40' : 'black')};
   border-bottom: ${(props) => (props.selected ? '#ff6b6b' : 'transparent')} 2px
     solid;
   @media (max-width: 480px) {
-    font-size: 0.8rem;
+    font-size: 12px;
   }
 `;
 
@@ -276,8 +309,8 @@ const Header = ({
   moveToMain,
 }) => {
   return (
-    <>
-      <Main onClick={moveToMain}>{randomTrait}</Main>
+    <HeaderBlock>
+      <LinktoMain onClick={moveToMain}>{randomTrait}</LinktoMain>
       <VisibleButton onClick={() => setVisibleMenu(!visibleMenu)}>
         <BiMenu style={{ fontSize: '13px', color: ' rgba(0, 0, 0, 0.7)' }} />
       </VisibleButton>
@@ -291,14 +324,14 @@ const Header = ({
           </LoginCloseButton>
           <LoginBlock>
             <LoginIdBox>
-              <LoginIdSpan>I D:</LoginIdSpan> <LoginIdInput />
+              <LoginIdSpan>ID :</LoginIdSpan> <LoginIdInput />
             </LoginIdBox>
             <LoginPWBox>
               <LoginPwSpan>PW:</LoginPwSpan> <LoginPWInput />
             </LoginPWBox>
             <LoginButtonBlock>
-              <LoginButton to="/login">로그인</LoginButton>
-              <LoginButtonMenu to="/signIn">회원가입</LoginButtonMenu>
+              <LoginButtonLogin to="/login">로그인</LoginButtonLogin>
+              <LoginButtonSignin to="/signIn">회원가입</LoginButtonSignin>
             </LoginButtonBlock>
           </LoginBlock>
           <LoginBottomBlock>
@@ -320,20 +353,20 @@ const Header = ({
                 </HeaderTopLogout>
               </HeaderTopUserBlock>
             ) : (
-              <Link to="/login">로그인</Link>
+              <HeaderTopLogin to="/login">로그인</HeaderTopLogin>
             )}
           </HeaderTopMenus>
           <HeaderTopMenus>
             {!userActive ? (
               <HeaderTopUserBlock>
-                <Link to="/signIn">회원가입</Link>
+                <HeaderTopSignin to="/signIn">회원가입</HeaderTopSignin>
               </HeaderTopUserBlock>
             ) : null}
           </HeaderTopMenus>
         </HeaderTopList>
       </HeaderTopBlock>
 
-      <HeaderBlock>
+      <HeaderMenus>
         <LinkList>
           <Item selected={pathname === '/'}>
             <Link to="/">HOME</Link>
@@ -348,8 +381,8 @@ const Header = ({
             <Link to="/movie">MOVIE</Link>
           </Item>
         </LinkList>
-      </HeaderBlock>
-    </>
+      </HeaderMenus>
+    </HeaderBlock>
   );
 };
 

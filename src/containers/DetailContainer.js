@@ -19,8 +19,6 @@ import {
 
 //directories
 
-import covid from "../images/covid.png";
-import Edit from "../pages/Edit";
 import Reply from "../pages/Reply/Reply";
 
 //icons
@@ -37,20 +35,21 @@ const MainPosition = styled.div`
 	flex-direction: column;
 	align-items: center;
 	justify-content: center;
-	margin-left: auto;
-	margin-right: auto;
+	margin-bottom:150px;
 `;
 
 const MainBlock = styled.div`
 	display: flex;
 	flex-direction: column;
-	width: 80%;
-	margin-top: 2rem;
+	width: 90%;
 	min-height: 600px;
 	min-width: 700px;
 	max-width: 1200px;
 	border-bottom: 1px solid #adb5bd;
 	margin-bottom: 5vh;
+	background-color: white;
+	box-shadow: 0px 1px 3px 1px rgba(0, 0, 0, 0.05);
+	border-radius: 2px;
 	@media (max-width: 767px) {
 		min-width: 330px;
 	}
@@ -58,16 +57,22 @@ const MainBlock = styled.div`
 
 const Title = styled.div`
 	display: flex;
-	padding: 1rem 0px;
 	border-top: 1px solid #adb5bd;
 	border-bottom: 1px solid #adb5bd;
 	background-color: rgba(0, 0, 0, 0.01);
-	min-height: 3rem;
-	font-size: 1rem;
+	min-height: 54px;
+	font-size: 16px;
 	font-weight: 600;
-	padding: 1rem;
-	line-height: 1.2rem;
-	text-align: center;
+	padding: 16px;
+	line-height: 18px;
+	justify-content: space-between;
+`;
+
+const TitleLeft = styled.span`
+
+`;
+
+const TitleRight = styled.span`
 `;
 
 const ContentBlock = styled.div`
@@ -146,6 +151,7 @@ const ContentBottomBlock = styled.div`
 	display: flex;
 	justify-content: center;
 	flex-direction: row;
+	margin-left:10px;
 	margin-bottom: 30px;
 `;
 
@@ -189,9 +195,9 @@ const ContentBottomMenuToolTip = styled.div`
 	position: absolute;
 	text-align: center;
 	visibility: hidden;
-	text-shadow: 1px 1px #ffa8a8;
+	text-shadow: 1px 1px #ff8e8e;
 	color: #fff5f5;
-	font-size: 1.1rem;
+	font-size: 14px;
 	top: -25px;
 	opacity: 0;
 	left: -17px;
@@ -205,8 +211,9 @@ const ContentBottomMenuToolTipSecond = styled.div`
 	text-align: center;
 	visibility: hidden;
 	color: black;
-	font-size: 1.1rem;
-	top: -25px;
+	font-weight:600;
+	font-size: 14px;
+	top: -23px;
 	opacity: 0;
 	left: -17px;
 	width: 4rem;
@@ -220,6 +227,7 @@ const ContentBottomMenusCount = styled.div`
 `;
 
 //이전글, 다음글
+
 const ContentBottomBottomBlock = styled.div`
 	display: flex;
 	width: 100%;
@@ -230,45 +238,77 @@ const ContentBottomBottomBefore = styled.div`
 	display: inline-block;
 	background-color: black;
 	color: white;
-	border-radius: 3px;
+	border-radius: 20px;
 	height: 20px;
 	width: 60px;
 	text-align: center;
-	padding-top: 1px;
-	font-size: 1.1rem;
+	padding-top:4px;
+	padding-right:2.5px;
+	font-size: 12px;
+	margin-left:5px;
 `;
 
 const ContentBottomBottomLeftTitle = styled.span`
-	font-size: 0.9rem;
+	display:block;
+	position:relative;
+	left:63px;
+	top:-15px;
+	width:fit-content;
+	max-width:120px;
+	font-size: 12px;
 	margin-left: 3px;
-`;
+	letter-spacing: -0.5px;
+	word-break: break-word;
+  	white-space: nowrap;
+  	overflow: hidden;
+  	text-overflow: ellipsis;
+	`;
 
-const ContentBottomBottomRightTitle = styled.span`
-	font-size: 0.9rem;
-	margin-right: 3px;
+const ContentBottomBottomAfterPosition = styled(Link)`
+	display:flex;
+	
 `;
 
 const ContentBottomBottomAfter = styled.div`
 	display: inline-block;
 	background-color: black;
 	color: white;
-	border-radius: 3px;
+	border-radius: 20px;
 	height: 20px;
 	width: 60px;
 	text-align: center;
-	padding-top: 1px;
-	font-size: 1.1rem;
+	padding-top:4px;
+	padding-left:4.5px;
+	font-size: 12px;
+	margin-right:5px;
 `;
+
+const ContentBottomBottomRightTitle = styled.span`
+	width:fit-content;
+	height:fit-content;
+	margin-top:4px;
+	margin-right:1.5px;
+	max-width:120px;
+	font-size: 12px;
+	margin-left: 3px;
+	letter-spacing: -0.5px;
+	word-break: break-word;
+  	white-space: nowrap;
+  	overflow: hidden;
+  	text-overflow: ellipsis;
+`;
+
 
 class DetailContainer extends Component {
 	id = this.props.match.params.id; //class 변수
 	path = `/issue/${this.id}/edit`;
 
-	async setReplies() {
+	async setDetailData() {
 		try {
 			const result = await axios.get(
 				`${config.host}/posts/${this.id}` // this = class
 			);
+
 			const { data } = result;
 			if (data[0].replies) {
 				var replyData = JSON.parse(data[0].replies); //JSON.parse를 통해 JSON을 기존 배열 객체 로 바꿔준다
@@ -282,7 +322,7 @@ class DetailContainer extends Component {
 
 	async componentDidMount() {
 		try {
-			const data = await this.setReplies();
+			const data = await this.setDetailData();
 			this.props.setDetail(data);
 		} catch (error) {
 			alert(`error :( ${error})`);
@@ -290,15 +330,15 @@ class DetailContainer extends Component {
 	}
 
 	render() {
-		const { likeShare, content, replies } = this.props;
-
+		const { likeShare, content, replies,userActive } = this.props;
+		
 		const onRemove = async () => {
 			try {
 				if (window.confirm("정말 삭제합니까?")) {
 					const url = `${config.host}/posts/${this.id}/`;
 					await axios.delete(url); // delete는 파라미터가 url만 이씀
 					alert("삭제되었습니다.");
-					window.history.back();
+					window.history.go(-1);
 				} else {
 					alert("취소합니다.");
 				}
@@ -366,7 +406,7 @@ class DetailContainer extends Component {
 		// 2. error가 발생 하는가? -> try catch
 		// 3. data에는 어떤것이 담겨있고, 데이터 타입은 무엇인가? JSON.stringify()
 		// 4. try 문에서 데이터를 post 메소드로 보낼때 비동기로 요청하는가? await
-		// 5. 새로이 추가된 replies data를 리렌더링 하는가? setReplies()
+		// 5. 새로이 추가된 replies data를 리렌더링 하는가? setDetailData()
 
 		const createReply = async () => {
 			var { name, replyPassword, body } = replyInput;
@@ -393,7 +433,7 @@ class DetailContainer extends Component {
 						return false;
 					}
 
-					await this.setReplies();
+					await this.setDetailData();
 				} catch (error) {
 					alert(`error:${error}`);
 				}
@@ -420,7 +460,7 @@ class DetailContainer extends Component {
 						return false;
 					}
 
-					await this.setReplies();
+					await this.setDetailData();
 				} catch (error) {
 					alert(`error: ${error}`);
 				}
@@ -434,27 +474,26 @@ class DetailContainer extends Component {
 				<MainPosition>
 					<MainBlock>
 						<Title>
-							<span>
+							<TitleLeft>
 								{this.id} : {content.title}
-							</span>
-							<span>{content.userId}</span>
+							</TitleLeft>
+							<TitleRight>{content.userId}</TitleRight>
 						</Title>
 						<ContentBlock>
 							<Content>
-								<BtnBlock>
+								{userActive ? (<BtnBlock>
 									<BtnEdit
 										to={{
-											pathname: `/issue/${this.id}/edit`,
+											pathname: `/issue/${ this.id }/edit`,
 										}}>
 										<VscEdit style={{ fontSize: "0.7rem" }} />
 										<span style={{ paddingLeft: "2px" }}>수정</span>
 									</BtnEdit>
-
 									<BtnDelete onClick={onRemove}>
 										<VscChromeClose style={{ fontSize: "0.7rem" }} />
 										<span style={{ paddingLeft: "2px" }}>삭제</span>
 									</BtnDelete>
-								</BtnBlock>
+								</BtnBlock>) : (null)}
 								{content.img ? (
 									<ContentImg src={content.img} alt={content.img} />
 								) : (
@@ -498,9 +537,9 @@ class DetailContainer extends Component {
 										</ContentBottomMenusCount>
 									</ContentBottomMenuShare>
 								</ContentBottomBlock>
-								<ContentBottomBottomBlock>
+								{/* <ContentBottomBottomBlock>
 									<div>
-										<Link to={() => `/issue/0`}>
+										<Link to='/issue/0'>
 											<ContentBottomBottomBefore>
 												◀이전글
 											</ContentBottomBottomBefore>
@@ -510,16 +549,16 @@ class DetailContainer extends Component {
 										</Link>
 									</div>
 									<div>
-										<Link to={`/issue/2`}>
+										<ContentBottomBottomAfterPosition to='/issue/2'>
 											<ContentBottomBottomRightTitle>
-												다음글 제목 :
+												<span>다음글 제목</span> : 
 											</ContentBottomBottomRightTitle>
 											<ContentBottomBottomAfter>
 												다음글▶
 											</ContentBottomBottomAfter>
-										</Link>
+										</ContentBottomBottomAfterPosition>
 									</div>
-								</ContentBottomBottomBlock>
+								</ContentBottomBottomBlock> */}
 							</ContentBottomPosition>
 						</ContentBlock>
 						<Reply
@@ -541,6 +580,7 @@ const mapStateToProps = (state) => ({
 	content: state.detail.content,
 	likeShare: state.detail.likeShare,
 	replies: state.detail.replies,
+	userActive: state.login.userActive,
 });
 
 const mapDispatchToProps = (dispatch) =>

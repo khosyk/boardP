@@ -14,7 +14,7 @@ const GlobalStyles = createGlobalStyle`
     }
     
     @font-face {      
-      font-family:'NanumBarunpenR';
+      font-family:'NanumBarunpenB';
       font-weight:600;
       src:
       url('/font/NanumBarunpenB.woff') format('woff'),
@@ -22,9 +22,40 @@ const GlobalStyles = createGlobalStyle`
       url('/font/NanumBarunpenB.ttf') format('truetype');
     }
     
+    @font-face {
+      font-family:'NanumBarunGothicBold' ;
+      src: url('/font/NanumBarunGothicBold.otf') format('otf'),
+      url('/font/NanumBarunGothicBold.ttf') format('ttf'),
+      ;
+    }
+    
+    
+    @font-face {
+      font-family:'NanumBarunGothic' ;
+      src: url('/font/NanumBarunGothic.otf') format('otf'),
+      url('/font/NanumBarunGothic.ttf') format('ttf'),
+      ;
+    }
+    
+    @font-face {
+      font-family:'NanumBarunGothicLight' ;
+      src: url('/font/NanumBarunGothicLight.otf') format('otf'),
+      url('/font/NanumBarunGothicLight.ttf') format('ttf'),
+      ;
+    }
+    
+    
+    @font-face {
+      font-family:'NanumBarunGothicUltraLight' ;
+      src: url('/font/NanumBarunGothicUltraLight.otf') format('otf'),
+      url('/font/NanumBarunGothicUltraLight.ttf') format('ttf'),
+      ;
+    }
+
     body{
 	    background-color: rgba(0, 0, 0, 0.02);      
-      font-family:'NanumBarunpenR';
+      font-family:'NanumBarunGothicUltraLight';
+      letter-spacing: -10px;
       font-weight:lighter;
       color:#343a40;
 	    letter-spacing: 0.5px;
@@ -39,13 +70,22 @@ const GlobalStyles = createGlobalStyle`
     }
     input{
       font-family: "NanumBarunpenR";
-	    letter-spacing: 0.5px;
     }
     textarea{
       font-family: "NanumBarunpenR";
     }
     button{
       font-family:'NanumBarunpenR';
+      letter-spacing: -0.5px;
+    }
+    header{
+      font-family: "NanumBarunpenB";
+    }
+    #Login{
+      font-family: "NanumBarunpenR";
+    }
+    #Signin{
+      font-family: "NanumBarunpenR";
     }
 `;
 

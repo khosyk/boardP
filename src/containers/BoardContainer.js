@@ -1,25 +1,26 @@
-import React, { useState, uesRef, useRef } from 'react';
+import React, { useState, useRef } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
 import { useHistory } from 'react-router';
 import config from '../config.json';
+import { connect } from 'react-redux';
+
 const BrdBox = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
   height: fit-content;
-  min-height: 120vh;
+	min-height: 750px;
 `;
 
 const BrdTitle = styled.input`
-  margin-top: 30px;
+  margin-top: 20px;
   width: 70%;
   height: 30px;
   font-size: 1rem;
-  border: none;
   border-radius: 2px;
   text-indent: 2px;
-  font-family: 'NanumBarunpenR';
+  background-color: rgba(255,255,255,0.8);
   border: 1px solid #757e86;
 `;
 
@@ -33,9 +34,11 @@ const BrdTextarea = styled.div`
   width: 70%;
   resize: vertical;
   padding: 10px;
-  min-height: 500px;
   height: fit-content;
-  min-height: 500px;
+  min-height: 600px;
+  font-size:14px;
+  line-height: 16px;
+  background-color: rgba(255,255,255,0.8);
   border: 1px solid #757e86;
   border-radius: 2px;
 `;
@@ -68,13 +71,15 @@ const BrdBtn = styled.button`
   }
 `;
 
-export default function BoardContainer() {
+ function BoardContainer({user}) {
+   
   const [input, setInput] = useState({
     title: '',
     content: '',
+    imagePath:''
   });
 
-  const { content, title } = input;
+  const { content, title,imagePath } = input;
 
   const history = useHistory();
 
@@ -103,9 +108,9 @@ export default function BoardContainer() {
       const data = JSON.stringify({
         title,
         content,
-        userId: 'test',
+        imagePath,
+        userId: user.name,
       });
-      console.log(data, 'check data');
       const options = {
         headers: { 'Content-Type': 'application/json' },
       };
@@ -142,13 +147,13 @@ export default function BoardContainer() {
       const uri = `${config.host}/images`;
       const file = e.target.files[0];
       var targetDiv = document.getElementById('textArea');
-      var img2 = document.createElement('img');
-      img2.setAttribute('style', 'width:90%; position:relative,'); //img 스타일 설정
+      var targetImg = document.createElement('img');
+      targetImg.setAttribute('style',  'max-width:400px','position:relative','padding:50px' ); //img 스타일 설정
       /*
       var reader = new FileReader(); // FilReader 설정 > 객체를 이용하여 업로드된 파일을 읽을 수 있다.
-      targetDiv.append(img2); // textArea에 img 추가
+      targetDiv.append(targetImg); // textArea에 img 추가
       reader.addEventListener('load', function () {
-        img2.src = reader.result;
+        targetImg.src = reader.result;
       }); // FileReader 는 비동기라서 콜백 함수를 추가해준다. 여기선 img2의 src를 reader.resulet로 설정
       if (file) reader.readAsDataURL(file);
 	  */
@@ -178,15 +183,15 @@ export default function BoardContainer() {
       if (ok === false) {
         return;
       }
-      img2.src = path;
+      targetImg.src = path;
 
-      targetDiv.append(img2); // textArea에 img 추가
-
-      setInput({})
+      targetDiv.append(targetImg); // textArea에 img 추가
+      
+      setInput({ ...input, imagePath: path });
       // 이미지 업로드를 안했으면 처음 업로드 한 이미지의 src를 imagePath에 담아서
       // post 저장할때 같이 보내라
-    } catch (err) {
-      console.log('err', err);
+    } catch (error) {
+      alert(`Error from image upload:${error}`);
     }
     e.preventDefault();
   };
@@ -218,3 +223,12 @@ export default function BoardContainer() {
     </BrdBox>
   );
 }
+
+
+const mapStateToProps = (state) => {
+	return {
+		user: state.login.user,
+	};
+};
+
+export default connect(mapStateToProps)(BoardContainer);

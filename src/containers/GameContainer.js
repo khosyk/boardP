@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { FiEdit2 } from "react-icons/fi";
-import List from "../pages/List";
+import List from '../pages/PageComponents/List';
 import BannerImg from "../images/gameBanner.png";
 
 import { bindActionCreators } from "redux";

@@ -2,14 +2,14 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { FiEdit2 } from 'react-icons/fi';
-import List from '../pages/List';
+import List from '../pages/PageComponents/List';
 import BannerImg from '../images/banner.png';
 
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { setList, setPage } from '../modules/pages';
 import axios from 'axios';
-import Page from '../pages/Pagenation/Page';
+import Page from '../pages/PageComponents/Page';
 import config from '../config.json';
 
 const MainBlock = styled.div`
@@ -17,10 +17,14 @@ const MainBlock = styled.div`
   margin-left: auto;
   margin-right: auto;
   background-color: rgba(255, 255, 255, 0.9);
+	box-shadow: 0px 1px 3px 1px rgba(0, 0, 0, 0.05);
+  border-radius: 2px;
   box-sizing: border-box;
   margin-top: -0.5px;
   margin-bottom: 10vh;
   max-width: 1060px;
+  padding-bottom:10px;
+  min-height:750px;
 `;
 
 const BannerBlock = styled.div`
@@ -55,7 +59,7 @@ const TheadContent = styled.tr`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin: 0px 15px;
+  margin: 0px 20px;
   padding-bottom: 5px;
 `;
 
@@ -76,10 +80,8 @@ const TTools = styled.tr`
   justify-content: space-between;
   margin: 0px 5px;
   margin-top: 10px;
-
   @media (max-width: 450px) {
     margin: 0px;
-    margin-top: 10px;
   }
 `;
 
@@ -124,7 +126,7 @@ const Guides = styled.td`
   display: flex;
   flex-direction: row;
   margin-top: 3px;
-  margin-left: -8%;
+  margin-left: -2%;
 `;
 
 const First = styled.a`
@@ -157,8 +159,8 @@ const PostBlock = styled.td`
 
 const Post = styled(Link)`
   display: block;
-  margin-top: -1px;
-  padding: 3px 5px;
+  margin-top: 1px;
+  padding: 3px 3px;
   border-radius: 2px;
   font-weight: 300;
   font-size: 0.8rem;
@@ -192,29 +194,6 @@ class IssueContainer extends Component {
 
   // 1. async 기본페이지 -> 페이지 데이터  2. 클릭 async 데이터 변경 -> 페이지에 반영
 
-  async componentDidMount() {
-    try {
-      const result = await axios.get(`${config.host}/posts?page=1`);
-
-      const {
-        data: { contents: contentsData },
-      } = result;
-
-      const contents = [];
-
-      for (let i = 0; i < contentsData.length; i++) {
-        if (contentsData[i]) {
-          const { title, id } = contentsData[i];
-          contents.push({ title, id });
-        }
-      }
-
-      this.props.setList(contents);
-    } catch (error) {
-      alert(`error :(( ${error}`);
-    }
-  }
-
   getFirstData = async () => {
     try {
       const result = await axios.get(`${config.host}/posts?page=1`);
@@ -238,7 +217,6 @@ class IssueContainer extends Component {
     }
   };
 
-  //currentPage post 사용해서 추가하기
 
   getCurrentPage = async (e) => {
     var currentPage = parseInt(e.target.innerText, 10);
@@ -271,6 +249,10 @@ class IssueContainer extends Component {
       alert(`error :(( ${error}`);
     }
   };
+
+  async componentDidMount() {
+    this.getFirstData();
+  }
 
   getValue = (e) => {
     var { value } = e.target;
@@ -310,8 +292,8 @@ class IssueContainer extends Component {
     //pageRance setting function
     function pageRange(size, startAt) {
       return [...Array(size).keys()].map((i) => i + startAt);
-    }
-
+    } 
+    
     var pageNumbers = pageRange(
       this.props.page.totalPage,
       this.props.page.currentPage
@@ -342,7 +324,7 @@ class IssueContainer extends Component {
               ))
             ) : (
               <tr>
-                <td>"data has not found"</td>
+                <td>"Data has not found"</td>
               </tr>
             )}
           </Tbody>

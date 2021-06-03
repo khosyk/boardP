@@ -8,26 +8,27 @@ const BrdBox = styled.form`
 	display: flex;
 	flex-direction: column;
 	align-items: center;
+	height: fit-content;
+	min-height: 750px;
 `;
 
 const BrdTitle = styled.input`
-	margin-top: 3%;
-	width: 80%;
+	margin-top: 20px;
+	width: 70%;
 	height: 30px;
 	font-size: 1rem;
-	border-radius: 2px;
-	text-indent: 2px;
-	font-family: "NanumBarunpenR";
-	border: 1px solid #757e86;
+  	border-radius: 2px;
+  	text-indent: 2px;
+  	background-color: rgba(255,255,255,0.8);
+  	border: 1px solid #757e86;
 `;
 
 const TextareaBlock = styled.div`
 	margin-top: 10px;
 	font-size: 1rem;
-	width: 80%;
+	width: 70%;
 	border: none;
 	border-radius: 2px;
-	text-indent: 2px;
 `;
 
 const TextAreaInput = styled.textarea`
@@ -47,14 +48,15 @@ const TextAreaToolTip = styled.div`
 	opacity: 0;
 	display: none;
 	position: absolute;
-	width: 230px;
+	width: 235px;
 	color: white;
 	justify-content: center;
 	background-color: rgba(0, 0, 0, 0.78);
 	text-align: left;
 	border-radius: 4px;
-	height: 1.4rem;
-	line-height: 1.2rem;
+	line-height: 18px;
+	font-size:14px;
+	letter-spacing: -0.5px;
 	margin-top: 5px;
 	transition: all 0.2s ease-in;
 `;
@@ -67,16 +69,15 @@ const BrdBtnBlock = styled.div`
 `;
 
 const BrdBtn = styled.button`
-	font-family: "NanumBarunpenR";
 	border: 1px solid #757e86;
 	border-radius: 2px;
-	padding: 3px 15px;
+	padding: 3px 12px;
 	font-weight: 300;
-	font-size: 0.8rem;
+	font-size: 13px;
 	cursor: pointer;
 `;
 
-function EditContainer(props) {
+function EditContainer(props) {	
 	const {
 		props: {
 			match: {
@@ -85,12 +86,14 @@ function EditContainer(props) {
 		},
 	} = props;
 
+	const history = useHistory();
+	
 	const [input, setInput] = useState({
 		inputTitle: "",
 		inputBody: "",
 	});
-
 	const { inputTitle, inputBody } = input;
+	
 
 	const getData = async () => {
 		const url = `${config.host}/posts/${id}`;
@@ -119,7 +122,6 @@ function EditContainer(props) {
 		});
 	};
 
-	const history = useHistory();
 
 	const onEdit = async (e) => {
 		e.preventDefault();
@@ -136,8 +138,7 @@ function EditContainer(props) {
 				history.push(`/issue/${id}`);
 			}
 		} catch (err) {
-			alert("게시물 수정에 실패하였습니다.");
-			console.log("err", err);
+			alert(`Error from onEdit:${err}`);
 		}
 	};
 
