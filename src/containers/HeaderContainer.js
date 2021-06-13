@@ -45,8 +45,8 @@ const HeaderContainer = () => {
     setLogoutFunc();
   };
 
-  const randomTrait = useMemo(() => {
-    var a = [
+  const randomTrait =() => {
+    var traits = [
       <span>
         <AiOutlineSmile
           style={{
@@ -88,9 +88,11 @@ const HeaderContainer = () => {
         PASSIONATE
       </span>,
     ];
-    var b = Math.floor(Math.random() * 4);
-    return a[b];
-  }, []);
+    var n = Math.floor(Math.random() * 4);
+    return traits[n];
+  };
+
+  const test = randomTrait();
 
   const moveToMain = (e) => {
     e.preventDefault();
@@ -119,9 +121,8 @@ const HeaderContainer = () => {
       }
       const userData = result.data.userInfo;
       setLoginFunc(userData);
-    } catch (err) {
-      console.log(err);
-      alert('에러 발생 관리자에게 문의하세요.');
+    } catch (error) {
+      alert(`'에러 발생 관리자에게 문의하세요.'${error}`);
       return;
     }
   };
@@ -138,7 +139,7 @@ const HeaderContainer = () => {
         userActive={userActive}
         user={user}
         logoutFunction={logoutFunction}
-        randomTrait={randomTrait}
+        randomTrait={test}
         moveToMain={moveToMain}
       />
     </>

@@ -17,6 +17,9 @@ import {
 	deleteReply,
 } from "../modules/detail";
 
+import {
+	setType
+} from '../modules/pages';
 //directories
 
 import Reply from "../pages/Reply/Reply";
@@ -301,15 +304,22 @@ const ContentBottomBottomRightTitle = styled.span`
 
 class DetailContainer extends Component {
 	id = this.props.match.params.id; //class 변수
-	path = `/issue/${this.id}/edit`;
-
+	
 	async setDetailData() {
 		try {
 			const result = await axios.get(
 				`${config.host}/posts/${this.id}` // this = class
 			);
-
+			const localPath = this.props.location.pathname;
+			if (localPath.includes('issue')) {
+				this.props.setType('issue')
+			}if (localPath.includes('game')) {
+				this.props.setType('game')
+			}if (localPath.includes('movie')) {
+				this.props.setType('movie')
+			}
 			const { data } = result;
+			
 			if (data[0].replies) {
 				var replyData = JSON.parse(data[0].replies); //JSON.parse를 통해 JSON을 기존 배열 객체 로 바꿔준다
 				this.props.setReply(replyData);
@@ -319,7 +329,7 @@ class DetailContainer extends Component {
 			alert(`error: ${error}`);
 		}
 	}
-
+	
 	async componentDidMount() {
 		try {
 			const data = await this.setDetailData();
@@ -331,7 +341,6 @@ class DetailContainer extends Component {
 
 	render() {
 		const { likeShare, content, replies,userActive } = this.props;
-		
 		const onRemove = async () => {
 			try {
 				if (window.confirm("정말 삭제합니까?")) {
@@ -384,7 +393,7 @@ class DetailContainer extends Component {
 			}
 		};
 
-		const testF = onShare.bind(this);
+		const handleShare = onShare.bind(this);
 
 		const currentAddress = window.location.href;
 
@@ -468,7 +477,6 @@ class DetailContainer extends Component {
 				alert("취소합니다.");
 			}
 		};
-
 		return (
 			<>
 				<MainPosition>
@@ -477,7 +485,7 @@ class DetailContainer extends Component {
 							<TitleLeft>
 								{this.id} : {content.title}
 							</TitleLeft>
-							<TitleRight>{content.userId}</TitleRight>
+							<TitleRight>from. {content.userId}</TitleRight>
 						</Title>
 						<ContentBlock>
 							<Content>
@@ -526,7 +534,7 @@ class DetailContainer extends Component {
 										<ContentBottomMenuShareIcon>
 											<VscDebugStepOut
 												style={{ fontSize: "30px", cursor: "pointer" }}
-												onClick={testF}
+												onClick={handleShare}
 											/>
 											<ContentBottomMenuToolTipSecond>
 												공유하기
@@ -581,6 +589,7 @@ const mapStateToProps = (state) => ({
 	likeShare: state.detail.likeShare,
 	replies: state.detail.replies,
 	userActive: state.login.userActive,
+	type: state.pages.type
 });
 
 const mapDispatchToProps = (dispatch) =>
@@ -592,6 +601,7 @@ const mapDispatchToProps = (dispatch) =>
 			setReply,
 			createReply,
 			deleteReply,
+			setType
 		},
 		dispatch
 	);

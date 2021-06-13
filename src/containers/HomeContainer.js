@@ -23,13 +23,12 @@ function HomeContainer() {
   const getFirstData = async () => {
     try {
       const result = await axios.get(`${config.host}/posts?page=1`);
-
       const {
         data: { contents: contentsData,ok },
       } = result;
       
       if (!ok) {
-        console.log('failed to load data');
+        alert("failed to load data");
         return;
       }
 

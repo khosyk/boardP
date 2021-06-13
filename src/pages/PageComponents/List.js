@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 
 const Tlist = styled.tr`
 	display: flex;
@@ -59,14 +59,12 @@ const TDate = styled.td`
 	margin-right: -10px;
 `;
 
-export default function List({ id, review, title }) {
+export default function List({ id, review, title, type }) {
 	var date = new Date();
-
 	// Format day/month/year to two digits
 	var formattedDate = ("0" + date.getDate()).slice(-2);
 	var formattedMonth = ("0" + (date.getMonth() + 1)).slice(-2);
 	var formattedYear = date.getFullYear().toString().substr(2, 2);
-
 	// Combine and format date string
 	var dateString = formattedYear + "/" + formattedMonth + "/" + formattedDate;
 	return (
@@ -74,10 +72,10 @@ export default function List({ id, review, title }) {
 			<TNumber>{id}</TNumber>
 			<TTitle>
 				<TContent>
-					<Link to={`/issue/${id}`}>{title}</Link>
+					<Link to={`/${type}/${id}`}>{title}</Link>
 				</TContent>
 				<Reply>
-					<Link to={`/issue/${id}`}>{review}</Link>
+					<Link to={`/${type}/${id}`}>{review}</Link>
 				</Reply>
 			</TTitle>
 			<TDate>{dateString}</TDate>

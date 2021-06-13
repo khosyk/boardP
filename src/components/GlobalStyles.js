@@ -23,29 +23,6 @@ const GlobalStyles = createGlobalStyle`
     }
     
     @font-face {
-      font-family:'NanumBarunGothicBold' ;
-      src: url('/font/NanumBarunGothicBold.otf') format('otf'),
-      url('/font/NanumBarunGothicBold.ttf') format('ttf'),
-      ;
-    }
-    
-    
-    @font-face {
-      font-family:'NanumBarunGothic' ;
-      src: url('/font/NanumBarunGothic.otf') format('otf'),
-      url('/font/NanumBarunGothic.ttf') format('ttf'),
-      ;
-    }
-    
-    @font-face {
-      font-family:'NanumBarunGothicLight' ;
-      src: url('/font/NanumBarunGothicLight.otf') format('otf'),
-      url('/font/NanumBarunGothicLight.ttf') format('ttf'),
-      ;
-    }
-    
-    
-    @font-face {
       font-family:'NanumBarunGothicUltraLight' ;
       src: url('/font/NanumBarunGothicUltraLight.otf') format('otf'),
       url('/font/NanumBarunGothicUltraLight.ttf') format('ttf'),
@@ -55,6 +32,7 @@ const GlobalStyles = createGlobalStyle`
     body{
 	    background-color: rgba(0, 0, 0, 0.02);      
       font-family:'NanumBarunGothicUltraLight';
+      font-weight:400;
       letter-spacing: -10px;
       font-weight:lighter;
       color:#343a40;

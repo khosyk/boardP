@@ -7,7 +7,7 @@ import BannerImg from '../images/banner.png';
 
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { setList, setPage } from '../modules/pages';
+import { setList, setPage,setType } from '../modules/pages';
 import axios from 'axios';
 import Page from '../pages/PageComponents/Page';
 import config from '../config.json';
@@ -196,12 +196,11 @@ class IssueContainer extends Component {
 
   getFirstData = async () => {
     try {
-      const result = await axios.get(`${config.host}/posts?page=1`);
+      const result = await axios.get(`${config.host}/posts?page=1&type=issue`);
 
       const {
         data: { contents: contentsData, page },
       } = result;
-
       const contents = [];
 
       for (let i = 0; i < contentsData.length; i++) {
@@ -252,6 +251,7 @@ class IssueContainer extends Component {
 
   async componentDidMount() {
     this.getFirstData();
+    this.props.setType('issue')
   }
 
   getValue = (e) => {
@@ -261,7 +261,7 @@ class IssueContainer extends Component {
 
   getSearch = async () => {
     try {
-      const result = await axios.get(`${config.host}/posts`);
+      const result = await axios.get(`${config.host}/posts?type=issue`);
 
       const {
         data: { contents: contentsData },
@@ -288,7 +288,10 @@ class IssueContainer extends Component {
   render() {
     const userActive = this.props.userActive;
     //declare contents data
-    const data = this.props.contents.reverse();
+    const data = this.props.contents.sort(function test(a, b) {
+        return a - b;
+    });
+    
     //pageRance setting function
     function pageRange(size, startAt) {
       return [...Array(size).keys()].map((i) => i + startAt);
@@ -298,73 +301,77 @@ class IssueContainer extends Component {
       this.props.page.totalPage,
       this.props.page.currentPage
     );
-
+    
     return (
-      <MainBlock>
-        <BannerBlock>
-          <Banner alt="bannerImage" src={BannerImg} />
-        </BannerBlock>
-        <MainTable>
-          <Thead>
-            <TheadContent>
-              <td>번호</td>
-              <td>제목</td>
-              <td>날짜</td>
-            </TheadContent>
-          </Thead>
-          <Tbody id="test">
-            {data ? (
-              data.map((row) => (
-                <List
-                  key={row.id}
-                  id={row.id}
-                  title={row.title}
-                  review={row.review}
-                />
-              ))
-            ) : (
-              <tr>
-                <td>"Data has not found"</td>
-              </tr>
-            )}
-          </Tbody>
-          <TFooter>
-            <TTools>
-              <TSearch>
-                <SearchBtn onClick={this.getSearch}>검색</SearchBtn>
-                <SearchText
-                  onInput={this.getValue}
-                  placeholder="검색어를 입력해주세요."
-                />
-              </TSearch>
-              <Guides>
-                <First onClick={this.getFirstData}>■ 처음</First>
-                <Pages>
-                  {pageNumbers.map((data) => (
-                    <Page
-                      key={data}
-                      getCurrentPage={this.getCurrentPage}
-                      data={data}
-                    />
-                  ))}
-                </Pages>
-              </Guides>
-              {userActive ? (
-                <PostBlock>
-                  <Post to="/board">
-                    <FiEdit2
-                      style={{ fontSize: '0.7rem', marginRight: '3px' }}
-                    />
-                    글쓰기
-                  </Post>
-                </PostBlock>
-              ) : (
-                <td></td>
-              )}
-            </TTools>
-          </TFooter>
-        </MainTable>
-      </MainBlock>
+        <MainBlock>
+            <BannerBlock>
+                <Banner alt="bannerImage" src={BannerImg} />
+            </BannerBlock>
+            <MainTable>
+                <Thead>
+                    <TheadContent>
+                        <td>번호</td>
+                        <td>제목</td>
+                        <td>날짜</td>
+                    </TheadContent>
+                </Thead>
+                <Tbody id="test">
+                    {data ? (
+                        data.map((row) => (
+                            <List
+                                key={row.id}
+                                id={row.id}
+                                title={row.title}
+                                review={row.review}
+                                type={this.props.type}
+                            />
+                        ))
+                    ) : (
+                        <tr>
+                            <td>"Data has not found"</td>
+                        </tr>
+                    )}
+                </Tbody>
+                <TFooter>
+                    <TTools>
+                        <TSearch>
+                            <SearchBtn onClick={this.getSearch}>검색</SearchBtn>
+                            <SearchText
+                                onInput={this.getValue}
+                                placeholder="검색어를 입력해주세요."
+                            />
+                        </TSearch>
+                        <Guides>
+                            <First onClick={this.getFirstData}>■ 처음</First>
+                            <Pages>
+                                {pageNumbers.map((data) => (
+                                    <Page
+                                        key={data}
+                                        getCurrentPage={this.getCurrentPage}
+                                        data={data}
+                                    />
+                                ))}
+                            </Pages>
+                        </Guides>
+                        {userActive ? (
+                            <PostBlock>
+                                <Post to="/board" >
+                                    <FiEdit2
+                                        style={{
+                                            fontSize: "0.7rem",
+                                            marginRight: "3px",
+                                        }}
+                                    />
+                                    글쓰기
+                                </Post>
+                            </PostBlock>
+                        ) : (
+                            <td></td>
+                        )}
+                    </TTools>
+                </TFooter>
+            </MainTable>
+        </MainBlock>
     );
   }
 }
@@ -373,6 +380,7 @@ const mapStateToProps = (state) => ({
   page: state.pages.page,
   contents: state.pages.contents,
   userActive: state.login.userActive,
+  type: state.pages.type
 });
 
 const mapDispatchToProps = (dispatch) =>
@@ -380,6 +388,7 @@ const mapDispatchToProps = (dispatch) =>
     {
       setList,
       setPage,
+      setType,
     },
     dispatch
   );
